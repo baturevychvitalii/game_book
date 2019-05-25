@@ -1,1 +1,11 @@
 .vscode
+.o
+.so
+.a
+CMakeCache.txt
+CMakeFiles/*
+cmake_install.cmake
+Makefile
+executable
+*.cbp
+.idea/
