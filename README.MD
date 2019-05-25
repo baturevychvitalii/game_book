@@ -21,3 +21,5 @@ it'll still process whole window.
 do inputbox class: a window which will get user input in form of text from keyboard.
 
 possibly keylistener is needed.
+
+possibly the base of the window will becume ncurses pad. (created with newpad()). didn't test that, it might be a better way of doing things, cause it refreshes only part of the window. and sometimes there'll be no need in clearing whole screen with clear().
