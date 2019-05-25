@@ -40,8 +40,9 @@ void main_screen()
                                 white_on_red, red_on_white, white_on_red, 5);
    
     menu.AppendText("CHOOSE STH.!");
-    menu.AppendText("press 'ENTER' to show your choice on another screen");
     menu.NewLine();
+    menu.AppendText("press <- or -> to select different options");
+    menu.AppendText("press 'ENTER' to show your choice on another screen");
     menu.AppendText("press 'q' to quit", red_on_black);
     menu.AddOption("za");
     menu.AddOption("zel");
