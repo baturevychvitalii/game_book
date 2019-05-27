@@ -37,6 +37,14 @@ void Screen::Clear()
     windows.clear();
 }
 
+const Window & Screen::LastAdded() const
+{
+    if (windows.empty())
+        throw GraphicsException("screen is empty");
+    
+    return *(windows[windows.size() - 1]);
+}
+
 void Screen::RemoveWindow(Window & win)
 {
     for (size_t i = 0; i < windows.size(); i++)
@@ -49,23 +57,4 @@ void Screen::RemoveWindow(Window & win)
     }
     
     throw std::invalid_argument("window doesn't exist");
-}
-
-
-Textbox & Screen::AddTextbox(size_t width, short y, short x, short color)
-{
-    Textbox * tb = new Textbox(nullptr, width, y, x, color);
-    windows.emplace_back(tb);
-    return *tb;
-}
-
-Menu & Screen::AddMenu(size_t width, short y, short x,
-                       short bg_color,
-                       short active_color,
-                       short inactive_color,
-                       size_t colomns)
-{
-    Menu * mn = new Menu(nullptr, width, y, x, bg_color, active_color, inactive_color, colomns);
-    windows.emplace_back(mn);
-    return *mn;
 }

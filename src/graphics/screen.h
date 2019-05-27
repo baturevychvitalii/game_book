@@ -15,27 +15,22 @@ class Screen
         Screen & operator=(const Screen & sc) = delete;
         ~Screen() = default;
 
-        Textbox & AddTextbox(size_t width, short y, short x, short color); 
-        Menu & AddMenu(size_t width, short y, short x,
-                       short bg_color,
-                       short active_color,
-                       short inactive_color,
-                       size_t colomns);
-        
-        template <typename Win>
-        Group<Win> & AddGroup(size_t width, short y, short x, short color,
-                              size_t colomns, size_t y_indent, size_t x_indent)
-        {
-            Group<Win> * gr = new Group<Win>(nullptr, width, y, x, color, colomns, y_indent, x_indent);
-            windows.emplace_back(gr);
-            return *gr;
-        }
+
+        const Window & LastAdded() const;
 
         void RemoveWindow(Window & win);
         void Clear();
         void Commit();
         void Draw();
         void Move(short dy, short dx);
+
+        template <typename Win, typename ... UniqueArgs>
+        Win & AddWindow(size_t width, short y, short x, short bg_color, UniqueArgs && ... args)
+        {
+            Win * new_win = new Win(nullptr, width, y, x, bg_color, std::forward<UniqueArgs>(args) ...);
+            windows.emplace_back(new_win);
+            return *new_win;
+        }
 };
 
 
