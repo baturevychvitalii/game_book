@@ -1,21 +1,22 @@
 #include "graphics/window_manager.h"
+#include "graphics/textbox.h"
+#include "graphics/menu.h"
 
 size_t red_on_white = 1,
-       unselected = 2,
-       default_bg = 3,
+       magneta_on_blue = 3,
        white_on_red = 4,
        red_on_black = 5;
 
-WindowManager wm;
+graphics::WindowManager wm;
 
 void show_choice_screen(const std::string & text)
 {
-    Screen & holla = wm.SelectScreen("holla");
+    auto & holla = wm.SelectScreen("holla");
     holla.Clear();
 
-    auto & finito = holla.AddWindow<Textbox>(Window::WidthPercent(50),
+    auto & finito = holla.AddWindow<graphics::Textbox>(graphics::Window::WidthPercent(50),
                                      20,
-                                     Window::WidthPercent(25), white_on_red);
+                                     graphics::Window::WidthPercent(25), white_on_red);
     finito.AppendText(text, red_on_white);
     finito.NewLine();
     finito.AppendText("you'll be redirected to main screen after pushing any button", red_on_black);
@@ -25,18 +26,18 @@ void show_choice_screen(const std::string & text)
 
 void main_screen()
 {
-    Screen & main = wm.SelectScreen("main");
+    auto & main = wm.SelectScreen("main");
 
 
-    auto & tb = main.AddWindow<Textbox>(40, 3, 3, default_bg);
+    auto & tb = main.AddWindow<graphics::Textbox>(40, 3, 3, magneta_on_blue);
     tb.AppendText("use UP and DOWN to scroll");
     tb.AppendText("astala vista, baby");
     tb.AppendText("hold Shift + -> or <- to move me around :):0000))");
     tb.Commit();
 
-    auto & menu = main.AddWindow<Menu>(Window::WidthPercent(80),
-                               tb.LowestPoint() + 3,
-                               Window::WidthPercent(10),
+    auto & menu = main.AddWindow<graphics::Menu>(graphics::Window::WidthPercent(80),
+                               main.LastAdded().LowestPoint() + 3,
+                               graphics::Window::WidthPercent(10),
                                 white_on_red, red_on_white, white_on_red, 5);
    
     menu.AppendText("CHOOSE STH.!");
@@ -53,7 +54,7 @@ void main_screen()
 
     menu.Commit();
 
-    auto & group = main.AddWindow<Group<Textbox>>(Window::WidthPercent(50),
+    auto & group = main.AddWindow<graphics::Group<graphics::Textbox>>(graphics::Window::WidthPercent(50),
                                           menu.LowestPoint() + 3,
                                           5, red_on_white, 2, 5, 10);
     auto & gtb1 = group.EmplaceBack(white_on_red);
@@ -72,10 +73,10 @@ void main_screen()
         switch (ch)
         {
             case KEY_UP:
-                wm.Move(Direction::Up);
+                wm.Move(graphics::Direction::Up);
                 break;
             case KEY_DOWN:
-                wm.Move(Direction::Down);
+                wm.Move(graphics::Direction::Down);
                 break;
             case KEY_LEFT:
                 menu--;
@@ -107,7 +108,7 @@ int main()
 
     init_pair(white_on_red, COLOR_WHITE, COLOR_RED);
     init_pair(red_on_white, COLOR_RED, COLOR_WHITE);
-    init_pair(default_bg, COLOR_MAGENTA, COLOR_BLACK);
+    init_pair(magneta_on_blue, COLOR_MAGENTA, COLOR_BLUE);
     init_pair(red_on_black, COLOR_RED, COLOR_BLACK);
 
     main_screen();

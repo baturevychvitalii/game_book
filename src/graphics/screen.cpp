@@ -1,27 +1,27 @@
 #include "screen.h"
 
-short Window::max_x = -1;
-short Window::max_y = -1;
+short graphics::Window::max_x = -1;
+short graphics::Window::max_y = -1;
 
-Screen::Screen()
+graphics::Screen::Screen()
 {
     windows.reserve(15);
 }
 
-void Screen::Commit()
+void graphics::Screen::Commit()
 {
     for (auto & winptr : windows)
         winptr->Commit();
 }
 
-void Screen::Move(short dy, short dx)
+void graphics::Screen::Move(short dy, short dx)
 {
     Commit();
     for (auto & w : windows)
         w->Move(dy,dx);
 }
 
-void Screen::Draw()
+void graphics::Screen::Draw()
 {
     Commit();
 
@@ -32,12 +32,12 @@ void Screen::Draw()
     refresh();
 }
 
-void Screen::Clear()
+void graphics::Screen::Clear()
 {
     windows.clear();
 }
 
-const Window & Screen::LastAdded() const
+const graphics::Window & graphics::Screen::LastAdded() const
 {
     if (windows.empty())
         throw GraphicsException("screen is empty");
@@ -45,7 +45,7 @@ const Window & Screen::LastAdded() const
     return *(windows[windows.size() - 1]);
 }
 
-void Screen::RemoveWindow(Window & win)
+void graphics::Screen::RemoveWindow(Window & win)
 {
     for (size_t i = 0; i < windows.size(); i++)
     {

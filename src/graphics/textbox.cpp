@@ -1,18 +1,18 @@
 #include "textbox.h"
 #include "../utils/helpers.h"
 
-Textbox::Textbox(IChangeable * parent, size_t width, short y, short x, short color)
+graphics::Textbox::Textbox(IChangeable * parent, size_t width, short y, short x, short color)
     : Window(parent, width, y, x, color)
 {
 }
 
-void Textbox::ApplyChange()
+void graphics::Textbox::ApplyChange()
 {
     if (act_h < MinHeight())
         SetHeight(MinHeight());
 }
 
-void Textbox::Draw()
+void graphics::Textbox::Draw()
 {
     Window::Draw();
 
@@ -31,22 +31,22 @@ void Textbox::Draw()
     }
 }
 
-size_t Textbox::TopIndent() const
+size_t graphics::Textbox::TopIndent() const
 {
     return MidYStart(lines.size()) - act_y;
 }
 
-size_t Textbox::MinHeight() const
+size_t graphics::Textbox::MinHeight() const
 {
     return lines.size() + 2;
 }
 
-size_t Textbox::SizeLines() const
+size_t graphics::Textbox::SizeLines() const
 {
     return lines.size();
 }
 
-void Textbox::InsertText(size_t idx, const std::string & text, short color)
+void graphics::Textbox::InsertText(size_t idx, const std::string & text, short color)
 {
     if (idx > lines.size())
         throw std::invalid_argument("idx");
@@ -62,19 +62,23 @@ void Textbox::InsertText(size_t idx, const std::string & text, short color)
     NotifyChange();
 }
 
-void Textbox::AppendText(const std::string & text, short color)
+void graphics::Textbox::AppendText(const std::string & text, short color)
 {
     InsertText(lines.size(), text, color);
 }
 
-void Textbox::NewLine()
+size_t graphics::Textbox::NewLine(const std::string & text, short color)
 {
-    lines.emplace_back("", window_color);
+    if (text.length() > act_w - 2)
+        throw std::invalid_argument("line length is longer than allowed width");
+
+    lines.emplace_back(text, color < 0 ? window_color : color);
 
     NotifyChange();
+    return lines.size() - 1;
 }
 
-void Textbox::EraseLines(size_t idx, size_t n)
+void graphics::Textbox::EraseLines(size_t idx, size_t n)
 {
     if (idx >= lines.size())
         throw std::invalid_argument("idx");
@@ -83,7 +87,12 @@ void Textbox::EraseLines(size_t idx, size_t n)
     NotifyChange();
 }
 
-void Textbox::AlterText(size_t idx, const std::string & new_text)
+void graphics::Textbox::Clear()
+{
+    EraseLines(0, lines.size());
+}
+
+void graphics::Textbox::AlterText(size_t idx, const std::string & new_text)
 {
     if (idx >= lines.size())
         throw std::invalid_argument("idx");
@@ -94,17 +103,17 @@ void Textbox::AlterText(size_t idx, const std::string & new_text)
     lines[idx].first = new_text;
 }
 
-void Textbox::AlterColor(size_t idx, short color)
+void graphics::Textbox::AlterColor(size_t idx, short color)
 {
     lines[idx].second = color;
 }
 
-const std::string & Textbox::LineAt(size_t idx) const
+const std::string & graphics::Textbox::LineAt(size_t idx) const
 {
     return lines[idx].first;
 }
 
-std::string Textbox::GetText(char delim_lines) const
+std::string graphics::Textbox::GetText(char delim_lines) const
 {
     if (lines.empty())
         return "";

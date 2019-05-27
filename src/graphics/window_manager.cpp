@@ -1,6 +1,6 @@
 #include "window_manager.h"
 
-WindowManager::WindowManager()
+graphics::WindowManager::WindowManager()
     : selected_screen(nullptr)
 {
     
@@ -17,12 +17,12 @@ WindowManager::WindowManager()
     screens.reserve(5);
 }
 
-WindowManager::~WindowManager()
+graphics::WindowManager::~WindowManager()
 {
     endwin();
 }
 
-Screen & WindowManager::AddScreen(const std::string & name)
+graphics::Screen & graphics::WindowManager::AddScreen(const std::string & name)
 {
     if (screens.find(name) != screens.end())
         throw std::invalid_argument("screen with this name already exists");
@@ -30,12 +30,12 @@ Screen & WindowManager::AddScreen(const std::string & name)
     return *(screens[name] = std::make_unique<Screen>());
 }
 
-void WindowManager::RemoveScreen(const std::string & name)
+void graphics::WindowManager::RemoveScreen(const std::string & name)
 {
     screens.erase(name);
 }
 
-Screen & WindowManager::SelectScreen(const std::string & name)
+graphics::Screen & graphics::WindowManager::SelectScreen(const std::string & name)
 {
     selected_screen = screens.find(name) == screens.end() ?
         (screens[name] = std::make_unique<Screen>()).get() :
@@ -44,7 +44,7 @@ Screen & WindowManager::SelectScreen(const std::string & name)
     return *selected_screen;
 }
 
-void WindowManager::Draw()
+void graphics::WindowManager::Draw()
 {
     if (!selected_screen)
         throw GraphicsException("no screen is selected");
@@ -52,7 +52,7 @@ void WindowManager::Draw()
     selected_screen->Draw();
 }
 
-void WindowManager::Move(Direction direction, unsigned multiplier)
+void graphics::WindowManager::Move(Direction direction, unsigned multiplier)
 {
     if (!selected_screen)
         throw GraphicsException("no screen is selected");

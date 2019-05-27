@@ -3,24 +3,26 @@
 
 #include "textbox.h"
 
-// final class
-class Button : public Textbox
+namespace graphics
 {
-    short active_color, inactive_color;         
-    bool is_active;   
-    public:
-        Button(IChangeable * parent,
-               size_t width,
-               short y,
-               short x,
-               short active_color,
-               short inactive_color);
-        Button(const Button & butt) = delete;
-        Button & operator=(const Button& other) = delete;
+    class Button : public Textbox
+    {
+        short active_color, inactive_color;         
+        bool is_active;   
+        public:
+            Button(IChangeable * parent,
+                size_t width,
+                short y,
+                short x,
+                short active_color,
+                short inactive_color);
+            Button(const Button & butt) = delete;
+            Button & operator=(const Button& other) = delete;
 
-        void Select();
-        void Unselect();
-        bool IsSelected() const;
-};
+            void Select();
+            void Unselect();
+            bool IsSelected() const;
+    };
+}
 
 #endif

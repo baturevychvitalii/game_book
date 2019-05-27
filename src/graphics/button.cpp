@@ -1,6 +1,6 @@
 #include "button.h"
 
-Button::Button(IChangeable * parent,
+graphics::Button::Button(IChangeable * parent,
                size_t width,
                short y,
                short x,
@@ -13,7 +13,7 @@ Button::Button(IChangeable * parent,
 {
 }
 
-void Button::Select()
+void graphics::Button::Select()
 {
     is_active = true;
     window_color = active_color;
@@ -22,7 +22,7 @@ void Button::Select()
         AlterColor(i, active_color);
 }
 
-void Button::Unselect()
+void graphics::Button::Unselect()
 {
     is_active = false;
     window_color = inactive_color;
@@ -31,7 +31,7 @@ void Button::Unselect()
         AlterColor(i, inactive_color);
 }
 
-bool Button::IsSelected() const
+bool graphics::Button::IsSelected() const
 {
     return is_active;
 }

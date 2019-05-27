@@ -1,7 +1,7 @@
 #include "menu.h"
 #include "../utils/helpers.h"
 
-Menu::Menu(IChangeable * parent, size_t width, short y, short x,
+graphics::Menu::Menu(IChangeable * parent, size_t width, short y, short x,
            short bg_color,
            short active_color,
            short inactive_color,
@@ -14,29 +14,29 @@ Menu::Menu(IChangeable * parent, size_t width, short y, short x,
 {
 }
 
-size_t Menu::MinHeight() const
+size_t graphics::Menu::MinHeight() const
 {
     return Textbox::MinHeight() + buttons.Height() + 1;
 }
 
-void Menu::Draw()
+void graphics::Menu::Draw()
 {
     Textbox::Draw();
     buttons.Draw();
 }
 
-void Menu::Move(short dy, short dx)
+void graphics::Menu::Move(short dy, short dx)
 {
     Textbox::Move(dy,dx);
     buttons.Move(dy,dx);
 }
 
-size_t Menu::TopIndent() const
+size_t graphics::Menu::TopIndent() const
 {
     return 1;
 }
 
-int Menu::FindButton(const std::string & text) const
+int graphics::Menu::FindButton(const std::string & text) const
 {
     for (size_t i = 0; i < buttons.Size(); i++)
     {
@@ -47,7 +47,7 @@ int Menu::FindButton(const std::string & text) const
     return -1;
 }
 
-void Menu::ApplyChange()
+void graphics::Menu::ApplyChange()
 {
     buttons.Commit();
     buttons.MoveTo(act_y + Textbox::MinHeight(), act_x + 1);
@@ -56,7 +56,7 @@ void Menu::ApplyChange()
         SetHeight(Textbox::MinHeight() + buttons.MinHeight() + 1);
 }
 
-void Menu::AddOption(const std::string & text)
+void graphics::Menu::AddOption(const std::string & text)
 {
     if (FindButton(text) != -1)
         throw std::invalid_argument("requested option already exists");
@@ -65,7 +65,7 @@ void Menu::AddOption(const std::string & text)
     buttons[current].Select();
 }
 
-void Menu::RemoveOption(const std::string & to_remove)
+void graphics::Menu::RemoveOption(const std::string & to_remove)
 {
     int idx = FindButton(to_remove);
     if (idx == -1)
@@ -78,7 +78,7 @@ void Menu::RemoveOption(const std::string & to_remove)
 
 
 
-size_t Menu::operator++(int)
+size_t graphics::Menu::operator++(int)
 {
     buttons[current].Unselect();
     current++;
@@ -87,7 +87,7 @@ size_t Menu::operator++(int)
     return current;
 }
 
-size_t Menu::operator--(int)
+size_t graphics::Menu::operator--(int)
 {
     buttons[current].Unselect();
     if (current == 0)
@@ -99,12 +99,12 @@ size_t Menu::operator--(int)
     return current;
 }
 
-size_t Menu::GetChoice() const
+size_t graphics::Menu::GetChoice() const
 {
     return current;
 }
 
-std::string Menu::GetChoiceText() const
+std::string graphics::Menu::GetChoiceText() const
 {
     return std::move(buttons[current].GetText());
 }
