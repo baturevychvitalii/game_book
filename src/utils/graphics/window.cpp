@@ -1,5 +1,5 @@
 #include "window.h"
-#include "../utils/helpers.h"
+#include "../helpers.h"
 
 
 graphics::Window::Window(IChangeable * parent, size_t width, short y, short x, short color)

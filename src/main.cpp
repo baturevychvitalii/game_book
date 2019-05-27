@@ -1,6 +1,7 @@
-#include "graphics/window_manager.h"
-#include "graphics/textbox.h"
-#include "graphics/menu.h"
+#include "utils/graphics/textbox.h"
+#include "utils/graphics/menu.h"
+
+#include "utils/graphics/window_manager.h"
 
 size_t red_on_white = 1,
        magneta_on_blue = 3,
@@ -104,7 +105,7 @@ void main_screen()
 }
 
 int main()
-{   
+{
 
     init_pair(white_on_red, COLOR_WHITE, COLOR_RED);
     init_pair(red_on_white, COLOR_RED, COLOR_WHITE);
@@ -112,5 +113,5 @@ int main()
     init_pair(red_on_black, COLOR_RED, COLOR_BLACK);
 
     main_screen();
-    
+
 }

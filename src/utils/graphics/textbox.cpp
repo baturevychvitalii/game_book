@@ -1,5 +1,5 @@
 #include "textbox.h"
-#include "../utils/helpers.h"
+#include "../helpers.h"
 
 graphics::Textbox::Textbox(IChangeable * parent, size_t width, short y, short x, short color)
     : Window(parent, width, y, x, color)

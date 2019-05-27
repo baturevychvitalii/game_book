@@ -3,7 +3,7 @@
 #include <vector>
 #include <memory>
 #include "window.h"
-#include "../utils/helpers.h"
+#include "../helpers.h"
 
 
 namespace graphics
@@ -18,7 +18,8 @@ namespace graphics
         {
             if (windows.empty())
             {
-                SetHeight(0);
+                act_h = 0;
+                UpdateOnScreenHeight();
                 return;
             }
 

@@ -1,5 +1,5 @@
 #include "menu.h"
-#include "../utils/helpers.h"
+#include "../helpers.h"
 
 graphics::Menu::Menu(IChangeable * parent, size_t width, short y, short x,
            short bg_color,
