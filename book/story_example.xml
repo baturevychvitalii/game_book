@@ -1,0 +1,16 @@
+<page type="story">
+    <header>
+        Night is dark, outside is cold
+    </header>
+
+    <body>
+        It was so dark, and outside was so cold
+        that our hero decided to stay home.
+    </body>
+
+    <crossroad>
+        <path to="other.xml">Shall i go to other direction</path>
+        <path to="jonny.xml">Or to jonny</path>
+        <path to="some_other_file.xml">Or maybe completely other direction</path>
+    </crossroad>
+</page>

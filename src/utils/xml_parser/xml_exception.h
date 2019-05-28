@@ -3,7 +3,7 @@
 
 #include <exception>
 
-namespace xml_parser
+namespace xml
 {
     class XmlException : public std::exception
     {

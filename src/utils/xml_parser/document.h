@@ -3,7 +3,7 @@
 
 #include "tag.h"
 
-namespace xml_parser
+namespace xml
 {
     class Document
     {

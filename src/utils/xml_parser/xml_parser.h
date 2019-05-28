@@ -3,7 +3,7 @@
 
 #include "document.h"
 
-namespace xml_parser
+namespace xml
 {
     class Parser final
     {
@@ -11,9 +11,9 @@ namespace xml_parser
             Parser();
             ~Parser();
 
-            Document GetDoc(const std::string & name);
-            Document NewDoc(const std::string & name, const std::string & root);
-            Document NewDoc(const std::string & name, Tag & root);
+            static Document GetDoc(const std::string & name);
+            static Document NewDoc(const std::string & name, const std::string & root);
+            static Document NewDoc(const std::string & name, Tag & root);
     };
 }
 

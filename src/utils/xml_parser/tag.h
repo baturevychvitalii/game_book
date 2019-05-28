@@ -9,7 +9,7 @@
 
 #include "xml_exception.h"
 
-namespace xml_parser
+namespace xml
 {
     struct Tag
     {
@@ -32,6 +32,12 @@ namespace xml_parser
         std::string Text() const;
         void AddText(const std::string & text);
         bool Real() const;
+
+        template<typename T>
+        static T Deserialize(const Tag & tag)
+        {
+            return T(tag);
+        }
 
         private:
             static const char * textContentTagName;

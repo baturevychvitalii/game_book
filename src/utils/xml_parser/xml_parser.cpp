@@ -1,17 +1,17 @@
 #include "xml_parser.h"
 
-xml_parser::Parser::Parser()
+xml::Parser::Parser()
 {
     LIBXML_TEST_VERSION
 }
 
-xml_parser::Parser::~Parser()
+xml::Parser::~Parser()
 {
     xmlCleanupParser();
     xmlMemoryDump();
 }
 
-xml_parser::Document xml_parser::Parser::GetDoc(const std::string & filename)
+xml::Document xml::Parser::GetDoc(const std::string & filename)
 {
     try
     {
@@ -23,12 +23,12 @@ xml_parser::Document xml_parser::Parser::GetDoc(const std::string & filename)
     }
 }
 
-xml_parser::Document xml_parser::Parser::NewDoc(const std::string & filename, const std::string & root)
+xml::Document xml::Parser::NewDoc(const std::string & filename, const std::string & root)
 {
     return Document(filename, root);
 }
 
-xml_parser::Document xml_parser::Parser::NewDoc(const std::string & filename, xml_parser::Tag & root)
+xml::Document xml::Parser::NewDoc(const std::string & filename, xml::Tag & root)
 {
     return Document(filename, root);
 }
