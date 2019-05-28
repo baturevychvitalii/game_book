@@ -138,9 +138,14 @@ size_t graphics::Window::Width() const
     return act_w;
 }
 
-size_t graphics::Window::WidthPercent(size_t percents) noexcept
+size_t graphics::Window::XPercent(size_t percents) noexcept
 {
     return (max_x * percents) / 100;
+}
+
+size_t graphics::Window::YPercent(size_t percents) noexcept
+{
+    return (max_y * percents) / 100;
 }
 
 void graphics::Window::SetMaxes(short maxy, short maxx) noexcept

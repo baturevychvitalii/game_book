@@ -25,7 +25,8 @@ namespace graphics
         public:
             static short max_y, max_x;
             static void SetMaxes(short maxy, short maxx) noexcept;
-            static size_t WidthPercent(size_t percents) noexcept;
+            static size_t XPercent(size_t percents) noexcept;
+            static size_t YPercent(size_t percents) noexcept;
 
 
             Window(IChangeable * parent, size_t width, short y, short x, short color);
