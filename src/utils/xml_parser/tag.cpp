@@ -37,9 +37,10 @@ std::string xml::Tag::Prop(const std::string & prop_name) const
     return GetContent(found_prop);
 }
 
-void xml::Tag::AddProp(const std::string & prop_name, const std::string & value)
+xml::Tag & xml::Tag::AddProp(const std::string & prop_name, const std::string & value)
 {
     xmlNewProp(node, BAD_CAST prop_name.c_str(), BAD_CAST value.c_str());
+    return *this;
 }
 
 xml::Tag xml::Tag::Child(const std::string & child_name) const
@@ -56,9 +57,9 @@ xml::Tag xml::Tag::AddChild(const std::string & child_name)
     return xmlAddChild(node, xmlNewNode(NULL, BAD_CAST child_name.c_str()));
 }
 
-void xml::Tag::AddChild(const xml::Tag & other)
+xml::Tag xml::Tag::AddChild(const xml::Tag & other)
 {
-    xmlAddChild(node, other.node);
+    return xmlAddChild(node, other.node);
 }
 
 xml::Tag xml::Tag::Next() const

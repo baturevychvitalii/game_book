@@ -2,7 +2,7 @@
 #define __GAMEBOOK_PAGE_STORY__
 
 
-#include "page.h"
+#include "../page.h"
 
 class Story : public Page
 {

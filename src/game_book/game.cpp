@@ -30,7 +30,7 @@ std::unique_ptr<Page> Game::GetPage(const std::string & filename)
     
     if (type == "story")
     {
-        return std::make_unique<Story>(filename, root, player);
+        return std::move(std::make_unique<Story>(filename, root, *player));
     }
     else
     {
@@ -82,7 +82,7 @@ void Game::StartFromMainMenu()
         {
             wm.SelectScreen("author");
             wm.Draw();
-            getch;
+            getch();
         }
         else if (option == 4)
         {

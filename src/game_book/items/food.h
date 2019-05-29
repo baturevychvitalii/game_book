@@ -6,10 +6,11 @@
 class Food : Item
 {
     private:
-        /* data */
+        int heal_value;
     public:
-        Food(/* args */);
+        Food(const xml::Tag & t);
         ~Food();
+        xml::Tag Serialize() const override;
 };
 
 #endif

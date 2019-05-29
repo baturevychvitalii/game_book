@@ -31,6 +31,15 @@ Page::Page(const std::string & file, const xml::Tag & root, Creature & pleya)
     screen.Commit();
 }
 
+void Page::Bookmark() const
+{
+    auto root = xml::Tag("save");
+    root.AddChild(Serialize());
+    root.AddChild(player.Serialize());
+    auto doc = xml::Parser::NewDoc(save_path, root);
+    doc.Save();
+}
+
 Page::~Page()
 {
     screen.Clear();

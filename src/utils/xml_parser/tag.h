@@ -22,10 +22,10 @@ namespace xml
         xmlNodePtr node;
 
         std::string Prop(const std::string & prop_name) const;
-        void AddProp(const std::string & prop_name, const std::string & value);
+        Tag & AddProp(const std::string & prop_name, const std::string & value);
         Tag Child(const std::string & child_name) const;
         Tag AddChild(const std::string & child_name);
-        void AddChild(const Tag & other);
+        Tag AddChild(const Tag & other);
         Tag Next() const;
         std::vector<Tag> GetVector(const std::string & tag_name) const;
         std::string Name() const;
