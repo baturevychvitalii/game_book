@@ -9,7 +9,7 @@
     </body>
 
     <crossroad>
-        <path to="story_example1.xml">Shall i go to other direction</path>
-        <path to="story_example2.xml">Or to jonny</path>
+        <path to="book/story_example1.xml">Shall i go to other direction</path>
+        <path to="book/story_example2.xml">Or to jonny</path>
     </crossroad>
 </page>

@@ -5,20 +5,10 @@ Page::Page(const std::string & file, const xml::Tag & root, Creature & pleya)
     screen(wm.SelectScreen("page"))
 {
     crossroads.reserve(5);
-    try
+    for (const xml::Tag & tag : root.Child("crossroad").GetVector("path"))
     {
-        for (const xml::Tag & tag : root.Child("crossroad").GetVector("path"))
-        {
-            crossroads.emplace_back(tag.Prop("to"), tag.Text());
-        }
+        crossroads.emplace_back(tag.Prop("to"), tag.Text());
     }
-    catch(const xml::XmlException & e)
-    {
-        // if some crossroads were added - incorrect format in current tag
-        // else - end game because no further path
-        if (!crossroads.empty())
-            throw e;
-    } 
 
     screen.AddWindow<graphics::Textbox>(
         "header",

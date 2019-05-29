@@ -12,7 +12,7 @@ class Game
     
     size_t MainMenu() const;
     std::string Load();
-    std::unique_ptr<Page> GetPage(const std::string & filename);
+    Page * GetPage(const std::string & filename);
     void Play(std::string from_page);
     public:
         Game();

@@ -26,7 +26,7 @@ std::string Game::Load()
     return doc.Root().Child("page").Text();
 }
 
-std::unique_ptr<Page> Game::GetPage(const std::string & filename)
+Page * Game::GetPage(const std::string & filename)
 {
     auto doc = xmp.GetDoc(filename);
     auto root = doc.Root();
@@ -37,7 +37,7 @@ std::unique_ptr<Page> Game::GetPage(const std::string & filename)
     
     if (type == "story")
     {
-        return std::move(std::make_unique<Story>(filename, root, *player));
+        return new Story(filename, root, *player);
     }
     else
     {
@@ -47,11 +47,12 @@ std::unique_ptr<Page> Game::GetPage(const std::string & filename)
 
 void Game::Play(std::string page_path)
 {
-    std::unique_ptr<Page> curr_page = GetPage(page_path);
+    std::unique_ptr<Page> curr_page(GetPage(page_path));
     while (curr_page->Play())
     {
+        
         page_path = curr_page->GetNextPage();
-        curr_page = GetPage(page_path);
+        curr_page.reset(GetPage(page_path));
     }
 }
 

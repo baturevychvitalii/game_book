@@ -18,8 +18,11 @@ bool Story::Play()
     int unique_option;
     while ((unique_option = DefaultPageHandling()) >= 0)
     {
-        
+        if (unique_option == 10)
+            break;
     }
+    if (unique_option < 0 || crossroads.empty())
+        return false;
 
-    return unique_option < 0 ? false : true;
+    return true;
 }
