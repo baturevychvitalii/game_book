@@ -16,8 +16,7 @@ class Creature : ISerializable
         Creature();
         Creature(const Creature & other) = delete;
         Creature & operator=(const Creature & other) = delete;
-        
-        ~Creature();
+        ~Creature() = default;
 
         xml::Tag Serialize() const override;
 };

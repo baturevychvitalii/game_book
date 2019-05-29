@@ -5,6 +5,14 @@ Creature::Creature()
 {
 }
 
+Creature::Creature(const xml::Tag & tag)
+    : name(tag.Prop("name")),
+    health(std::stoi(tag.Child("health").Text())),
+    cash(std::stoi(tag.Child("cash").Text())),
+    inventory(tag.Child("inventory"))
+{
+}
+
 xml::Tag Creature::Serialize() const
 {
     auto tag = xml::Tag("player");

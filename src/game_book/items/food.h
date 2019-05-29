@@ -3,13 +3,12 @@
 
 #include "../item.h"
 
-class Food : Item
+class Food : public Item
 {
     private:
         int heal_value;
     public:
         Food(const xml::Tag & t);
-        ~Food();
         xml::Tag Serialize() const override;
 };
 

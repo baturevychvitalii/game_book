@@ -19,6 +19,13 @@ size_t Game::MainMenu() const
     );
 }
 
+std::string Game::Load()
+{
+    auto doc = xml::Parser::GetDoc(save_path);
+    player = std::move(std::make_unique<Creature>(doc.Root().Child("player")));
+    return doc.Root().Child("page").Text();
+}
+
 std::unique_ptr<Page> Game::GetPage(const std::string & filename)
 {
     auto doc = xmp.GetDoc(filename);
@@ -65,12 +72,15 @@ void Game::StartFromMainMenu()
         {
             try
             {
-                Play(Load());
+                page_path = Load();
             }
             catch(const xml::XmlException & e)
             {
                 RaiseErrorWindow(e);
+                continue;
             }
+
+            Play(page_path);
         }
         else if (option == 2)
         {

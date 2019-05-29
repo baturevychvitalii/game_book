@@ -20,4 +20,6 @@ bool Story::Play()
     {
         
     }
+
+    return unique_option < 0 ? false : true;
 }

@@ -6,6 +6,7 @@ FLAGS=-g -Wall -pedantic -l ncurses $(shell xml2-config --cflags) -l xml2
 
 
 executable: all
+	$(CXX) -o $@ $(FLAGS) $(OBJFILES)
 
 all: $(OBJFILES)
 
@@ -15,3 +16,5 @@ obj/%.o: src/%.cpp
 
 clean:
 	rm -r obj
+
+rebuild: clean executable

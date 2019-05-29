@@ -1,7 +1,8 @@
 #include "food.h"
 
 Food::Food(const xml::Tag & t)
-    : Item(t), heal_value(std::stoi(t.Prop("value")))
+    : Item(t),
+    heal_value(std::stoi(t.Prop("value")))
 {
 }
 

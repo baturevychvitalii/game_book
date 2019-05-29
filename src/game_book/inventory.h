@@ -16,7 +16,7 @@ class Inventory : ISerializable
         Inventory();
         Inventory(const Inventory & other) = delete;
         Inventory & operator=(const Inventory & other) = delete;
-        ~Inventory();
+        ~Inventory() = default;
 
         void GetItemFrom(size_t idx, Inventory & other);
         void RemoveItem(size_t idx);

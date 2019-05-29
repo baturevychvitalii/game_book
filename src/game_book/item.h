@@ -14,11 +14,11 @@ class Item : ISerializable
         Item(const xml::Tag & t);
         Item(const Item & other) = delete;
         Item & operator=(const Item & other) = delete;
-        virtual ~Item();
+        virtual ~Item() = default;
         
-        bool HasCharges() const;
-        virtual void Use(size_t charges);
-        unsigned Price() const;
+        // bool HasCharges() const;
+        // virtual void Use(size_t charges);
+        // unsigned Price() const;
         xml::Tag Serialize() const override;
 };
 
