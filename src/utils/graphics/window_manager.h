@@ -26,6 +26,7 @@ namespace graphics
             ~WindowManager();
             Screen & AddScreen(const std::string & name);
             Screen & SelectScreen(const std::string & name);
+            Screen & SelectScreen(Screen & scr);
             void RemoveScreen(const std::string & name);
 
             void Draw();

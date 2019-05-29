@@ -9,17 +9,19 @@ class Inventory : ISerializable
 {
     private:
         unsigned max_items;
-        std::vector<Item *> items;
+        std::vector<std::unique_ptr<Item>> items;
     public:
         static const unsigned size_limit;
         Inventory(const xml::Tag & t);
+        Inventory();
         Inventory(const Inventory & other) = delete;
         Inventory & operator=(const Inventory & other) = delete;
         ~Inventory();
 
+        void GetItemFrom(size_t idx, Inventory & other);
+        void RemoveItem(size_t idx);
+
         xml::Tag Serialize() const override;
 };
-
-const unsigned Inventory::size_limit = 16;
 
 #endif

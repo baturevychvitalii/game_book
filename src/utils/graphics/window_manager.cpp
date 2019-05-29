@@ -32,6 +32,9 @@ graphics::Screen & graphics::WindowManager::AddScreen(const std::string & name)
 
 void graphics::WindowManager::RemoveScreen(const std::string & name)
 {
+    if (selected_screen == screens[name].get())
+        selected_screen = nullptr;
+
     screens.erase(name);
 }
 
@@ -41,6 +44,12 @@ graphics::Screen & graphics::WindowManager::SelectScreen(const std::string & nam
         (screens[name] = std::make_unique<Screen>()).get() :
         screens[name].get();
 
+    return *selected_screen;
+}
+
+graphics::Screen & graphics::WindowManager::SelectScreen(graphics::Screen & scr)
+{
+    selected_screen = &scr;
     return *selected_screen;
 }
 

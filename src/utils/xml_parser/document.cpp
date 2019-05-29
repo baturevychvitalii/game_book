@@ -19,11 +19,12 @@ xml::Document::Document(const std::string & filename, const std::string & root_n
     xmlDocSetRootElement(doc_ptr, root);
 }
 
-xml::Document::Document(const std::string & filename, xml::Tag & root)
+xml::Document::Document(const std::string & filename, xml::Tag & root_tag)
     : file(filename)
 {
     doc_ptr = xmlNewDoc(BAD_CAST "1.0");
-    xmlDocSetRootElement(doc_ptr, root.node);
+    root = root_tag.node;
+    xmlDocSetRootElement(doc_ptr, root);
 }
 
 xml::Document::~Document()

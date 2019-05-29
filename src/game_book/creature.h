@@ -13,11 +13,13 @@ class Creature : ISerializable
         Inventory inventory;
     public:
         Creature(const xml::Tag & tag);
-        Creature() = delete;
+        Creature();
         Creature(const Creature & other) = delete;
         Creature & operator=(const Creature & other) = delete;
+        
         ~Creature();
 
+        xml::Tag Serialize() const override;
 };
 
 #endif

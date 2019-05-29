@@ -1,25 +1,36 @@
 #ifndef __GAMEBOOK_PAGE__
 #define __GAMEBOOK_PAGE__
 
-#include "../utils/graphics_features.h"
+#include "graphics_common.h"
 #include "creature.h"
 
-class Page
+class Page : ISerializable
 {
     protected:
-        const std::string header;
+        const std::string filename;
         std::vector<std::pair<std::string, std::string>> crossroads;
+        Creature & player;
+        graphics::Screen & screen;
 
-        Creature * player;
+        void Bookmark() const;
+        size_t PauseMenu() const;
 
-        std::string ShowCrossroad() const;
+        // returns -1 if chosen "Quit to main menu in Pause window"
+        int DefaultPageHandling();
     public:
-        Page(const xml::Tag & t);
         Page(const Page & p) = delete;
         Page & operator=(const Page & p) = delete;
         virtual ~Page();
 
-        virtual std::string Play(Creature & pleya) = 0;
+        Page(const std::string & filename, const xml::Tag & root, Creature & pleya);
+
+        /*
+        returns true - ok, can go to next page
+                false - main menu (player died, book end, main menu requested)
+        */
+        virtual bool Play() = 0;
+        std::string GetNextPage() const;
+        xml::Tag Serialize() const override;
 };
 
 #endif

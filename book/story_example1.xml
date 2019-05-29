@@ -1,0 +1,14 @@
+<page type="story">
+    <header>
+        example 1
+    </header>
+
+    <body>
+        turum burum tururum
+    </body>
+
+    <crossroad>
+        <path to="begin.xml">Shall i go to other direction</path>
+        <path to="story_example2.xml">Or to jonny</path>
+    </crossroad>
+</page>
