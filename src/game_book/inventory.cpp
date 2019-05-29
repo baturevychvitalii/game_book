@@ -10,11 +10,11 @@ Inventory::Inventory(const xml::Tag & t)
     : max_items(std::stoi(t.Child("max_items").Text()))
 {
     std::string type;
-    for (const auto & tag : t.GetVector("item"))
+    for (const auto & item : t.GetVector("item"))
     {
-        type = t.Prop("type");
+        type = item.Prop("type");
         if (type == "food")
-            items.emplace_back(new Food(tag));
+            items.emplace_back(new Food(item));
     }
 }
 

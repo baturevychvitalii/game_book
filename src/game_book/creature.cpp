@@ -16,6 +16,7 @@ Creature::Creature(const xml::Tag & tag)
 xml::Tag Creature::Serialize() const
 {
     auto tag = xml::Tag("player");
+    tag.AddProp("name", name);
     tag.AddChild("health").AddText(std::to_string(health));
     tag.AddChild("cash").AddText(std::to_string(cash));
     tag.AddChild(inventory.Serialize());

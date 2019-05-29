@@ -39,7 +39,7 @@ std::string xml::Tag::Prop(const std::string & prop_name) const
 
 xml::Tag & xml::Tag::AddProp(const std::string & prop_name, const std::string & value)
 {
-    xmlNewProp(node, BAD_CAST prop_name.c_str(), BAD_CAST value.c_str());
+    xmlSetProp(node, BAD_CAST prop_name.c_str(), BAD_CAST value.c_str());
     return *this;
 }
 
@@ -70,7 +70,7 @@ xml::Tag xml::Tag::Next() const
 std::vector<xml::Tag> xml::Tag::GetVector(const std::string & tag_name) const
 {
     std::vector<Tag> tags;
-    Tag found = Child(tag_name);
+    Tag found = FindNodeStartingFrom(node->children, tag_name);
     while (found.Real())
     {
         tags.push_back(found);
