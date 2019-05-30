@@ -28,7 +28,6 @@ namespace graphics
             static size_t XPercent(size_t percents) noexcept;
             static size_t YPercent(size_t percents) noexcept;
 
-
             Window(IChangeable * parent, size_t width, short y, short x, short color);
             Window(const Window & other) = delete;
             Window & operator=(const Window & other) = delete;

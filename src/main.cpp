@@ -1,7 +1,9 @@
-#include "game_book/game.h"
+#include "utils/xml_parser/xml_parser.h"
+
 
 int main()
 {
-    Game g;
-    g.StartFromMainMenu();
+    xml::Parser xmp;
+    
 }
+

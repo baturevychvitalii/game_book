@@ -28,6 +28,7 @@ namespace graphics
             Screen & SelectScreen(const std::string & name);
             Screen & SelectScreen(Screen & scr);
             void RemoveScreen(const std::string & name);
+            void RemoveScreen(Screen & scr);
 
             void Draw();
             void Move(Direction direction, unsigned multiplier = 1);

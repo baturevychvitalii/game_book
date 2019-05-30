@@ -13,7 +13,10 @@ namespace graphics
     {
         std::map<std::string, std::unique_ptr<Window>> windows;
         public:
-            Screen() = default;
+            const std::string Name;
+
+            Screen(std::string name);
+            Screen() = delete;
             Screen(const Screen & sc) = delete;
             Screen & operator=(const Screen & sc) = delete;
             ~Screen() = default;

@@ -56,22 +56,24 @@ void graphics::Menu::ApplyChange()
         SetHeight(Textbox::MinHeight() + buttons.MinHeight() + 1);
 }
 
-void graphics::Menu::AddOption(const std::string & text)
+size_t graphics::Menu::AddOption(const std::string & text)
 {
     if (FindButton(text) != -1)
         throw std::invalid_argument("requested option already exists");
 
     buttons.EmplaceBack(active_c, inactive_c).AppendText(text);
     buttons[current].Select();
+    return buttons.Size() - 1;
 }
 
-void graphics::Menu::RemoveOption(const std::string & to_remove)
+size_t graphics::Menu::RemoveOption(const std::string & to_remove)
 {
     int idx = FindButton(to_remove);
     if (idx == -1)
         throw std::invalid_argument("trying to remove unexisting button");
     
     buttons.Erase(idx);
+    return idx;
 }
 
 

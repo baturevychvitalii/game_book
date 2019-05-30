@@ -3,6 +3,10 @@
 short graphics::Window::max_x = -1;
 short graphics::Window::max_y = -1;
 
+graphics::Screen::Screen(std::string name)
+    : Name(std::move(name))
+{
+}
 
 void graphics::Screen::Commit()
 {

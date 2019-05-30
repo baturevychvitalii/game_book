@@ -27,28 +27,41 @@ graphics::Screen & graphics::WindowManager::AddScreen(const std::string & name)
     if (screens.find(name) != screens.end())
         throw std::invalid_argument("screen with this name already exists");
 
-    return *(screens[name] = std::make_unique<Screen>());
+    return *(screens[name] = std::make_unique<Screen>(name));
 }
 
 void graphics::WindowManager::RemoveScreen(const std::string & name)
 {
+    if (screens.find(name) == screens.end())
+        throw std::invalid_argument("requested screen doesn't exist in database");
+
     if (selected_screen == screens[name].get())
         selected_screen = nullptr;
 
     screens.erase(name);
 }
 
+void graphics::WindowManager::RemoveScreen(graphics::Screen & scr)
+{
+    RemoveScreen(scr.Name);
+}
+
 graphics::Screen & graphics::WindowManager::SelectScreen(const std::string & name)
 {
-    selected_screen = screens.find(name) == screens.end() ?
-        (screens[name] = std::make_unique<Screen>()).get() :
-        screens[name].get();
 
+    if (screens.find(name) == screens.end())
+        throw std::invalid_argument("requested screen doesn't exist in database");
+
+    selected_screen = screens[name].get();
     return *selected_screen;
 }
 
 graphics::Screen & graphics::WindowManager::SelectScreen(graphics::Screen & scr)
 {
+    // check if screen belongs to this window manager
+    if (screens.find(scr.Name) == screens.end())
+        throw std::invalid_argument("requested screen doesn't exist in database");
+
     selected_screen = &scr;
     return *selected_screen;
 }

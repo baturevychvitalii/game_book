@@ -1,11 +1,9 @@
 #ifndef __GAMEBOOK_GAME__
 #define __GAMEBOOK_GAME__
-#include "creature.h"
-#include "page.h"
 
 
 
-class Game
+class Game :
 {
     std::unique_ptr<Creature> player;
 
@@ -19,7 +17,6 @@ class Game
         Game(const Game & other) = delete;
         Game & operator=(const Game & other) = delete;
         ~Game() = default;
-        void StartFromMainMenu();
 };
 
 #endif

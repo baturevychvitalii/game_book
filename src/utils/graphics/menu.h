@@ -33,8 +33,8 @@ namespace graphics
             size_t MinHeight() const override;
             void Draw() override;
 
-            void AddOption(const std::string & new_option);
-            void RemoveOption(const std::string & to_remove);
+            size_t AddOption(const std::string & new_option);
+            size_t RemoveOption(const std::string & to_remove);
 
             size_t operator++(int);
             size_t operator--(int);
