@@ -35,11 +35,16 @@ Page::Page(const xml::Tag & root, GameStateManager * g)
         graphics::XPercent(5),
         page_crossroad_bg_color,
         page_crossroad_active_color,
-        page_crossroad_inactive_color
+        page_crossroad_inactive_color,
+        2
     );
 
     if (crossroads.empty())
+    {
         cross.AppendText("Finito");
+        cross.NewLine();
+        cross.AppendText("press 'Enter to quit to main menu'");
+    }
     else
     {
         cross.AppendText("Where now, Lorry?");
@@ -79,7 +84,7 @@ void Page::GetNotification(Notify notification)
             break;
         case Notify::New:
             gsm->player.reset(new Creature());
-            gsm->TurnPage("book/begin.xml");
+            gsm->TurnPage(std::string("book/begin.xml"));
             break;
         case Notify::Continue:
             break;
@@ -109,33 +114,36 @@ xml::Tag Page::Serialize() const
     return xml::Tag("page").AddText(filename);
 }
 
+void Page::StandardManuHandlerProcess(graphics::Menu * crossroads_menu)
+{
+    // works only with crossroads menu
+    if (crossroads_menu != BotWindow())
+        throw std::invalid_argument("given menu, which should have been handled on the upper level");
+    
+    gsm->TurnPage(crossroads[crossroads_menu->GetChoice()].first);
+}
+
 bool Page::Reacted(int input)
 {
-    graphics::Menu * cross = static_cast<graphics::Menu *>(&BotWindow());
-    switch (input)
-    {
-        case KEY_UP:
-            if (cross->ChoicesAreVisible())
-                (*cross)--;
-            break;
-        case KEY_DOWN:
-            if (cross->ChoicesAreVisible())
-                (*cross)++;
-            break;
-        case 10: // Return pressed
-            if (cross->ChoicesAreVisible())
-            {
-                // if this is last page -> go to main menu
-                if (crossroads.empty())
-                    gsm->SwitchState(menu_state);
-                // else turn to next page
-                else
-                    gsm->TurnPage(crossroads[cross->GetChoice()].first);                
-            }
-            break;
-        default:
-            return IGameState::Reacted(input);
-    }
+    graphics::Menu * cross = static_cast<graphics::Menu *>(BotWindow());
 
-    return true;
+    // if this is a last page
+    if (crossroads.empty())
+    {
+        if (cross->IsVisible() && input == 10)
+        {
+            gsm->SwitchState(menu_state);
+            return true;
+        }
+    }
+    else if (StandardMenuHandlerReacted(cross, input))
+        return true;
+
+    if (input == 'p')
+    {
+        gsm->SwitchState(pause_state);
+        return true;
+    }
+    
+    return IGameState::Reacted(input);
 }

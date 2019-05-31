@@ -35,6 +35,7 @@ namespace graphics
 
             size_t AddOption(const std::string & new_option);
             size_t RemoveOption(const std::string & to_remove);
+            size_t OptionsSize() const;
 
             size_t operator++(int);
             size_t operator--(int);

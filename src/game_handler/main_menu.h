@@ -1,11 +1,13 @@
 #ifndef __MAIN_MENU__
 #define __MAIN_MENU__
 
-#include "menu_state.h"
+#include "IGameState.h"
 
-class MainMenu : public MenuState
+class MainMenu : public IGameState
 {
-    void ProcessSelection(size_t selection) override;
+    void StandardManuHandlerProcess(graphics::Menu * to_test) override;
+    void GetNotification(Notify notification) override;
+    bool Reacted(int input) override;
     public:
         MainMenu() = delete;
         MainMenu(const MainMenu & other) = delete;

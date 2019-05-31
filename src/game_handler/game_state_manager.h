@@ -26,7 +26,7 @@ class GameStateManager final
         GameStateManager();
         GameStateManager(const GameStateManager & other) = delete;
         GameStateManager & operator=(const GameStateManager & other) = delete;
-        ~GameStateManager() = default;
+        ~GameStateManager();
 
         void TurnPage(const std::string & filename);
         void SwitchState(size_t state_code, Notify notification = Notify::Empty);

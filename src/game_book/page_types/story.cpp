@@ -8,11 +8,12 @@ Story::Story(const xml::Tag & root, GameStateManager * g)
     auto & body = AddWindow<graphics::Textbox>(
         "body",
         graphics::max_x - 4,
-        TopWindow().LowestPoint() + 4,
+        TopWindow()->LowestPoint() + 4,
         2,
         page_story_body_color
     ).AppendText(root.Child("body").Text());
 
-    BotWindow().MoveTo(body.LowestPoint() + 2, BotWindow().LeftPoint());
     Commit();
+    
+    BotWindow()->MoveTo(body.LowestPoint() + 2, BotWindow()->LeftPoint());
 }

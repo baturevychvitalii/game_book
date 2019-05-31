@@ -75,8 +75,17 @@ size_t graphics::Menu::RemoveOption(const std::string & to_remove)
     return idx;
 }
 
+size_t graphics::Menu::OptionsSize() const
+{
+    return buttons.Size();
+}
+
 size_t graphics::Menu::operator++(int)
 {
+    if (buttons.Size() == 0)    
+        throw GraphicsException("there are no buttons");
+    
+
     if (current != buttons.Size() - 1)
     {
         buttons[current++].Unselect();
@@ -88,6 +97,9 @@ size_t graphics::Menu::operator++(int)
 
 size_t graphics::Menu::operator--(int)
 {
+    if (buttons.Size() == 0)    
+        throw GraphicsException("there are no buttons");
+
     if (current != 0)
     {
         buttons[current--].Unselect();
@@ -99,30 +111,32 @@ size_t graphics::Menu::operator--(int)
 
 size_t graphics::Menu::GetChoice() const
 {
+    if (buttons.Size() == 0)
+        throw GraphicsException("there are no buttons");
+
     return current;
 }
 
 std::string graphics::Menu::GetChoiceText() const
 {
+    if (buttons.Size() == 0)
+        throw GraphicsException("there are no buttons");
+
     return std::move(buttons[current].GetText());
 }
 
 bool graphics::Menu::ChoicesAreVisible() const
 {
-    if (buttons.Size() > 0)
-    {
-        if (!buttons[current].IsVisible())
-            return false;
-        if (current > 0 && !buttons[current - 1].IsVisible())
-            return false;
-        if (current < buttons.Size() - 1 && !buttons[current + 1].IsVisible())
-            return false;
-        
-        return true;
-    }
-    else
-    {
-        return IsVisible();
-    }    
+    if (buttons.Size() == 0)
+        throw GraphicsException("there are no choices");
+
+    if (!buttons[current].IsVisible())
+        return false;
+    if (current > 0 && !buttons[current - 1].IsVisible())
+        return false;
+    if (current < buttons.Size() - 1 && !buttons[current + 1].IsVisible())
+        return false;
+    
+    return true;
 }
 

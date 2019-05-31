@@ -2,10 +2,15 @@
 #include "colors.h"
 #include "game_exception.h"
 #include "../utils/xml_parser/xml_parser.h"
+#include "../utils/graphics/textbox.h"
 
 #include "main_menu.h"
 #include "pause_state.h"
 #include "../game_book/page_types/story.h"
+
+size_t  menu_state = 0,
+        pause_state = 1,
+        game_state = 2;
 
 GameStateManager::GameStateManager()
     : current_state(0), shall_run(true), player(nullptr)
@@ -13,12 +18,9 @@ GameStateManager::GameStateManager()
     InitColors();
 
     // create states
-    menu_state = 0;
-    states[menu_state] = std::make_unique<MainMenu>(this);
-    pause_state = 1;
-    states[pause_state] = std::make_unique<PauseState>(this);
-    game_state = 2;
-    states[game_state] = std::make_unique<Page>(this);
+    states[menu_state].reset(new MainMenu(this));
+    states[pause_state] = std::move(std::make_unique<PauseState>(this));
+    states[game_state] = std::move(std::make_unique<Page>(this));
 
     // add cross available helper screens
     {
@@ -62,7 +64,11 @@ GameStateManager::GameStateManager()
     );
 }
 
-inline void GameStateManager::SwitchState(size_t state_code, Notify notification)
+GameStateManager::~GameStateManager()
+{
+}
+
+void GameStateManager::SwitchState(size_t state_code, Notify notification)
 {
     current_state = state_code;
     states[current_state]->GetNotification(notification);
@@ -82,7 +88,7 @@ void GameStateManager::Launch()
     }  
 }
 
-inline void GameStateManager::Stop()
+void GameStateManager::Stop()
 {
     shall_run = false;
 }
@@ -111,7 +117,7 @@ void GameStateManager::TurnPage(const std::string & filename)
         throw GameException("root tag of a file must be <page type=\"page_tyepe\">");
 
     std::string type = root.Prop("type");
-    
+
     game_state = game_state == 2 ? 3 : 2;
     current_state = game_state;
 

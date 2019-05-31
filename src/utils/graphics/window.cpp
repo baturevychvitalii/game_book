@@ -2,6 +2,9 @@
 #include "../helpers.h"
 
 
+short graphics::max_x = -1;
+short graphics::max_y = -1;
+
 graphics::Window::Window(IChangeable * parent, size_t width, short y, short x, short color)
     : IChangeable(parent),
       sticky(false),
