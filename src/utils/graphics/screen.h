@@ -23,13 +23,13 @@ namespace graphics
 
 
 
-            void RemoveWindow(const std::string & id);
-            void Clear();
+            Screen & RemoveWindow(const std::string & id);
+            Screen & Clear();
             bool Empty() const;
             bool HasWindow(const std::string & id);
-            void Commit();
+            Screen & Commit();
             void Draw();
-            void Move(short dy, short dx);
+            Screen & Move(short dy, short dx);
 
             template <typename Win, typename ... UniqueArgs>
             Win & AddWindow(const std::string & id, size_t width, short y, short x, short bg_color, UniqueArgs && ... args)

@@ -13,7 +13,8 @@ graphics::WindowManager::WindowManager()
     curs_set(0);
     
     start_color();
-    Window::SetMaxes(getmaxy(stdscr), getmaxx(stdscr));
+    graphics::max_y = getmaxy(stdscr);
+    graphics::max_x = getmaxx(stdscr);
     screens.reserve(5);
 }
 

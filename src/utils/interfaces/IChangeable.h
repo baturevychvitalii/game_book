@@ -16,7 +16,7 @@ class IChangeable
         {
         }
 
-        ~IChangeable() = default;
+        virtual ~IChangeable() = default;
 
         void Commit()
         {

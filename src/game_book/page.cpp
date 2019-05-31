@@ -1,8 +1,10 @@
 #include "page.h"
+#include "../game_handler/game.h"
+#include "../utils/graphics/menu.h"
+#include "../game_handler/colors.h"
 
-Page::Page(const std::string & file, const xml::Tag & root, Creature & pleya)
-    : filename(file), player(pleya), 
-    screen(wm.SelectScreen("page"))
+Page::Page(const xml::Tag & root, Game * g)
+    : game(g)
 {
     crossroads.reserve(5);
     for (const xml::Tag & tag : root.Child("crossroad").GetVector("path"))
@@ -10,30 +12,42 @@ Page::Page(const std::string & file, const xml::Tag & root, Creature & pleya)
         crossroads.emplace_back(tag.Prop("to"), tag.Text());
     }
 
-    screen.AddWindow<graphics::Textbox>(
+    game->Clear();
+    auto & head = game->AddWindow<graphics::Textbox>(
         "header",
-        graphics::Window::XPercent(100),
+        graphics::XPercent(100),
         0,
         0,
-        hacker
-    ).AppendText(root.Child("header").Text());
+        page_header_color
+    );
+    head.AppendText(root.Child("header").Text()).
+    Commit();
+    top = &head;
 
-    screen.Commit();
+    auto & cross = game->AddWindow<graphics::Menu>(
+        "crossroads",
+        graphics::XPercent(90),
+        0,
+        graphics::XPercent(5),
+        page_crossroad_bg_color,
+        page_crossroad_active_color,
+        page_crossroad_inactive_color
+    );
+
+    if (crossroads.empty())
+        cross.AppendText("Finito");
+    else
+    {
+        cross.AppendText("Where now, Lorry?");
+        for (auto & pair : crossroads)
+            cross.AddOption(pair.second);
+    }
+    
+    cross.Commit();
+    bot = &cross;
 }
 
-void Page::Bookmark() const
-{
-    auto root = xml::Tag("save");
-    root.AddChild(Serialize());
-    root.AddChild(player.Serialize());
-    auto doc = xml::Parser::NewDoc(save_path, root);
-    doc.Save();
-}
-
-Page::~Page()
-{
-    screen.Clear();
-}
+graphics::Window & Page::
 
 std::string Page::GetNextPage() const
 {
@@ -43,9 +57,9 @@ std::string Page::GetNextPage() const
     auto & screen = wm.SelectScreen("crossroad");
     auto & menu = screen.AddWindow<graphics::Menu>(
         "menu",
-        graphics::Window::XPercent(90),
+        graphics::XPercent(90),
         0,
-        graphics::Window::XPercent(5),
+        graphics::XPercent(5),
         magneta_on_black,
         hacker,
         cyan_on_black,
@@ -62,78 +76,5 @@ std::string Page::GetNextPage() const
 
 xml::Tag Page::Serialize() const
 {
-    auto t = xml::Tag("page");
-    t.AddText(filename);
-    return t;
+    return xml::Tag("page").AddText(filename);
 }
-
-size_t Page::PauseMenu() const
-{
-    return GetMenuSelection(
-        wm.SelectScreen("pause").
-        GetWindow<graphics::Menu>("pause menu")
-    );
-}
-
-int Page::DefaultPageHandling()
-{
-    wm.Draw();
-    auto & footer = screen.GetWindow("footer");
-    auto & header = screen.GetWindow("header");
-
-    int input;
-    while (true) // not pause exit
-    {
-        input = getch();
-        switch (input)
-        {
-            case KEY_UP:
-                if (footer.LowestPoint() > graphics::Window::max_y)
-                    wm.Move(graphics::Direction::Up, 3);
-                break;
-            case KEY_DOWN:
-                if (header.HighestPoint() < 0)
-                    wm.Move(graphics::Direction::Down, 3);
-                break;
-            case 'p':
-                input = PauseMenu();
-                if (input == 0) // continue
-                {
-                }
-                else if (input == 1) // save
-                {
-                    try
-                    {
-                        Bookmark();
-                    }
-                    catch(const std::exception & e)
-                    {
-                        RaiseErrorWindow(e);
-                    }
-                }
-                else if (input == 2) // controls
-                {
-                    wm.SelectScreen("controls");
-                    wm.Draw();
-                    getch();
-                }
-                else if (input == 3) // to main menu
-                {
-                    return -1;
-                }
-                else
-                {
-                    throw "pause menu returned unsupported value";
-                }
-
-                wm.SelectScreen(screen);
-                break;
-            default: // unknown inputs are passed to caller and handled by them
-                return input;
-        }
-        
-        wm.Draw();
-    }
-    
-}
-

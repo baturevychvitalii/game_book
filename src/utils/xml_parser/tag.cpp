@@ -71,7 +71,7 @@ std::vector<xml::Tag> xml::Tag::GetVector(const std::string & tag_name) const
 {
     std::vector<Tag> tags;
     Tag found = FindNodeStartingFrom(node->children, tag_name);
-    while (found.Real())
+    while (!found.IsNull())
     {
         tags.push_back(found);
         found = found.Next();
@@ -80,9 +80,9 @@ std::vector<xml::Tag> xml::Tag::GetVector(const std::string & tag_name) const
     return tags;
 }
 
-bool xml::Tag::Real() const
+bool xml::Tag::IsNull() const
 {
-    return node != nullptr;
+    return node == nullptr;
 }
 
 std::string xml::Tag::Name() const
@@ -95,7 +95,16 @@ std::string xml::Tag::Text() const
     return GetContent(node);
 }
 
-void xml::Tag::AddText(const std::string & text)
+xml::Tag & xml::Tag::AddText(const std::string & text)
 {
     xmlAddChild(node, xmlNewText(BAD_CAST text.c_str()));
+    return *this;
+}
+
+std::string xml::Tag::GetFilename() const
+{
+    if (IsNull() || node->doc == NULL || node->doc->URL == NULL)
+        throw XmlException("not parsed from a file");
+        
+    return XCharToNorm(node->doc->URL);
 }

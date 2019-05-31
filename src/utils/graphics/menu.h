@@ -17,6 +17,7 @@ namespace graphics
 
         void ApplyChange() override;
         size_t TopIndent() const override;
+        void MoveChildren(short dy, short dx) override;
         public:
             Menu(IChangeable * parent,
                 size_t width,
@@ -29,7 +30,6 @@ namespace graphics
             Menu(const Menu & menu) = delete;
             Menu & operator=(const Menu & menu) = delete;
 
-            void Move(short dy, short dx) override;
             size_t MinHeight() const override;
             void Draw() override;
 

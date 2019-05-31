@@ -5,7 +5,7 @@ Story::Story(const std::string & filename, const xml::Tag & root, Creature & ple
 {
     screen.AddWindow<graphics::Textbox>(
         "footer",
-        graphics::Window::max_x - 4,
+        graphics::max_x - 4,
         screen.GetWindow("header").LowestPoint() + 4,
         2,
         white_on_red

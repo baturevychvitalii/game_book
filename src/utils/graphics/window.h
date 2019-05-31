@@ -8,8 +8,18 @@
 
 namespace graphics
 {
+    extern short max_x, max_y;
+
+    size_t XPercent(size_t percents) noexcept;
+    size_t YPercent(size_t percents) noexcept;
+
     class Window : public IChangeable
     {
+        bool sticky;
+        virtual void MoveChildren(short dy, short dx)
+        {
+        }
+
         protected:
             size_t act_h, act_w, on_screen_h, on_screen_w;
             short act_y, act_x, on_screen_y, on_screen_x;
@@ -23,19 +33,15 @@ namespace graphics
             void UpdateOnScreenHeight() noexcept;
             void UpdateOnScreenPositin() noexcept;
         public:
-            static short max_y, max_x;
-            static void SetMaxes(short maxy, short maxx) noexcept;
-            static size_t XPercent(size_t percents) noexcept;
-            static size_t YPercent(size_t percents) noexcept;
-
             Window(IChangeable * parent, size_t width, short y, short x, short color);
             Window(const Window & other) = delete;
             Window & operator=(const Window & other) = delete;
             virtual ~Window() = default;
             
             virtual size_t MinHeight() const = 0;
-            void SetHeight(size_t new_height);
-            
+            Window & SetHeight(size_t new_height);
+            Window & SetColor(short new_color);
+            Window & SetSticky(bool value = true);
 
             short HighestPoint() const;
             short LowestPoint() const;
@@ -45,9 +51,8 @@ namespace graphics
             size_t Width() const;
             size_t ActualSpace() const;
 
-
-            virtual void Move(short dy, short dx);
-            void MoveTo(short y, short x);
+            Window & Move(short dy, short dx);
+            Window & MoveTo(short y, short x);
             virtual void Draw();
     };
 }

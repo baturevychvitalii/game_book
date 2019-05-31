@@ -1,21 +1,17 @@
 #ifndef __PAUSE_STATE__
 #define __PAUSE_STATE__
 
-#include "IGameState.h"
-#include "../utils/graphics/menu.h"
+#include "menu_state.h"
 
-class PauseState : public IGameState
+class PauseState : public MenuState
 {
-    void Select(size_t arg) override;
-    bool Reacted(int input) override;
-    void ProcessSelection(size_t selection);
-    graphics::Menu & menu;
+    void ProcessSelection(size_t selection) override;
     public:
         PauseState() = delete;
         PauseState(const PauseState & other) = delete;
         PauseState & operator=(const PauseState & other) = delete;
 
-        PauseState(GameStateManager * gsm);
+        PauseState(GameStateManager * manager);
 };
 
 #endif

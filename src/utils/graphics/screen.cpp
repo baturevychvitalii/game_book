@@ -1,17 +1,16 @@
 #include "screen.h"
 
-short graphics::Window::max_x = -1;
-short graphics::Window::max_y = -1;
-
 graphics::Screen::Screen(std::string name)
     : Name(std::move(name))
 {
 }
 
-void graphics::Screen::Commit()
+graphics::Screen & graphics::Screen::Commit()
 {
     for (auto & id_win : windows)
         id_win.second->Commit();
+    
+    return *this;
 }
 
 bool graphics::Screen::Empty() const
@@ -24,11 +23,13 @@ bool graphics::Screen::HasWindow(const std::string & id)
     return windows.find(id) != windows.end();
 }
 
-void graphics::Screen::Move(short dy, short dx)
+graphics::Screen & graphics::Screen::Move(short dy, short dx)
 {
     Commit();
     for (auto & id_win : windows)
         id_win.second->Move(dy,dx);
+    
+    return *this;
 }
 
 void graphics::Screen::Draw()
@@ -42,17 +43,19 @@ void graphics::Screen::Draw()
     refresh();
 }
 
-void graphics::Screen::Clear()
+graphics::Screen & graphics::Screen::Clear()
 {
     windows.clear();
+    return *this;
 }
 
-void graphics::Screen::RemoveWindow(const std::string & id)
+graphics::Screen & graphics::Screen::RemoveWindow(const std::string & id)
 {
     if (!HasWindow(id))
         throw std::invalid_argument("window with such id doesn't exist");
 
     windows.erase(id);
+    return *this;
 }
 
 graphics::Window & graphics::Screen::GetWindow(const std::string & id)

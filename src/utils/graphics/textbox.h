@@ -21,13 +21,13 @@ namespace graphics
             void Draw() override;
             
             size_t SizeLines() const;
-            void InsertText(size_t idx, const std::string & text, short color = -1);
-            void AppendText(const std::string & text, short color = -1);
+            Textbox & InsertText(size_t idx, const std::string & text, short color = -1);
+            Textbox & AppendText(const std::string & text, short color = -1);
             size_t NewLine(const std::string & text = "", short color = -1);
-            void AlterText(size_t idx, const std::string & new_text);
-            void AlterColor(size_t idx, short color);
-            void EraseLines(size_t idx, size_t n = 1);
-            void Clear();
+            Textbox & AlterText(size_t idx, const std::string & new_text);
+            Textbox & AlterColor(size_t idx, short color);
+            Textbox & EraseLines(size_t idx, size_t n = 1);
+            Textbox & Clear();
             const std::string & LineAt(size_t idx) const;
             std::string GetText(char delim_lines = ' ') const;        
     };

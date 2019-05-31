@@ -1,106 +1,101 @@
 #include "game.h"
-#include "graphics_common.h"
-#include "page_types/story.h"
+#include "../game_book/page_types/story.h"
+#include "../utils/xml_parser/xml_parser.h"
+#include "game_state_manager.h"
+#include "game_exception.h"
 
-Game::Game()
+Game::Game(GameStateManager * manager)
+    : IGameState(manager),
+      player(nullptr),
+      current(0)
 {
-    InitColors();
-    CreateMainMenu();
-    CreatePauseMenu();
-    CreateControlsWindow();
-    CreateAuthorWindow();
 }
 
-size_t Game::MainMenu() const
+void Game::Load()
 {
-    return GetMenuSelection(
-        wm.SelectScreen("main").
-        GetWindow<graphics::Menu>("main menu")
-    );
+    auto doc = xml::Parser::GetDoc("save.xml");
+    player.reset(new Creature(doc.Root().Child("player")));
+    TurnTo(doc.Root().Child("page").Text());
 }
 
-std::string Game::Load()
+void Game::Save() const
 {
-    auto doc = xml::Parser::GetDoc(save_path);
-    player = std::move(std::make_unique<Creature>(doc.Root().Child("player")));
-    return doc.Root().Child("page").Text();
+    if (page[current].get() == nullptr)
+        throw GameException("saving game, but we are not in it");
+
+    auto root = xml::Tag("save");
+    root.AddChild(page[current]->Serialize());
+    root.AddChild(player->Serialize());
+    auto doc = xml::Parser::NewDoc("save.xml", root);
+    doc.Save();
+
 }
 
-Page * Game::GetPage(const std::string & filename)
+void Game::TurnTo(const std::string & filename)
 {
-    auto doc = xmp.GetDoc(filename);
+    auto doc = xml::Parser::GetDoc(filename);
     auto root = doc.Root();
     if (root.Name() != "page")
-        throw xml::XmlException("not a page file");
+        throw GameException("root tag of a file must be <page type=\"page_tyepe\">");
 
     std::string type = root.Prop("type");
-    
+    current = current == 0 ? 1 : 0;
     if (type == "story")
-    {
-        return new Story(filename, root, *player);
-    }
+        page[current].reset(new Story(root, this));
     else
-    {
-        throw std::invalid_argument("file is not in correct format. Page must have a type");
-    }
+        throw GameException("file is not in correct format. Page must have a type");
 }
 
-void Game::Play(std::string page_path)
+
+bool Game::Reacted(int input)
 {
-    std::unique_ptr<Page> curr_page(GetPage(page_path));
-    while (curr_page->Play())
+    if (page[current]->Reacted(input))
+        return true;
+    else if (input == 'p')
     {
-        
-        page_path = curr_page->GetNextPage();
-        curr_page.reset(GetPage(page_path));
+        gsm->SwitchState(pause_state);
+        return true;
     }
+    
+    return gsm->DefaultReactedToInput(input, page[current]->BottomWindow(), page[current]->TopWindow()); 
 }
 
-void Game::StartFromMainMenu()
+void Game::GetNotification(Notify notification)
 {
-    size_t option = 0;
-    std::string page_path;
-    while (option != 4)
+    switch (notification)
     {
-        option = MainMenu();
-
-        if (option == 0)
-        {
-            player = std::make_unique<Creature>();
-            Play(first_page);
-        }
-        else if (option == 1)
-        {
+        case Notify::Save:
             try
             {
-                page_path = Load();
+                Save();
             }
-            catch(const xml::XmlException & e)
+            catch(const std::exception& e)
             {
-                RaiseErrorWindow(e);
-                continue;
+                gsm->DisplayException(e);
+                gsm->SwitchState(pause_state);            
             }
-
-            Play(page_path);
-        }
-        else if (option == 2)
-        {
-            wm.SelectScreen("controls");
-            wm.Draw();
-            getch();
-        }
-        else if (option == 3)
-        {
-            wm.SelectScreen("author");
-            wm.Draw();
-            getch();
-        }
-        else if (option == 4)
-        {
-        }
-        else
-        {
-            throw graphics::GraphicsException("menu returned unexisting option");
-        }
-    } 
+            break;
+        case Notify::Load:
+            try
+            {
+                Load();
+            }
+            catch(const std::exception& e)
+            {
+                gsm->DisplayException(e);
+                gsm->SwitchState(menu_state);
+            }
+            break;
+        case Notify::New:
+            player.reset(new Creature());
+            TurnTo("book/begin.xml");
+            break;
+        case Notify::Continue:
+            if (!page[current].get() || !player.get())
+                throw GameException("nothing to continue");
+            break;
+            
+        default:
+            throw std::invalid_argument("game got wrong notification");
+    }
 }

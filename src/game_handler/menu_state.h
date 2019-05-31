@@ -6,7 +6,6 @@
 
 class MenuState : public IGameState
 {
-    void Select(size_t arg) override;
     bool Reacted(int input) override;
     virtual void ProcessSelection(size_t selection) = 0;
     protected:

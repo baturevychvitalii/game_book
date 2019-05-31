@@ -25,9 +25,8 @@ void graphics::Menu::Draw()
     buttons.Draw();
 }
 
-void graphics::Menu::Move(short dy, short dx)
+void graphics::Menu::MoveChildren(short dy, short dx)
 {
-    Textbox::Move(dy,dx);
     buttons.Move(dy,dx);
 }
 

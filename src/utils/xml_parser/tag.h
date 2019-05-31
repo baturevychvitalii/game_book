@@ -21,23 +21,20 @@ namespace xml
 
         xmlNodePtr node;
 
+        std::string GetFilename() const;
         std::string Prop(const std::string & prop_name) const;
-        Tag & AddProp(const std::string & prop_name, const std::string & value);
         Tag Child(const std::string & child_name) const;
-        Tag AddChild(const std::string & child_name);
-        Tag AddChild(const Tag & other);
         Tag Next() const;
         std::vector<Tag> GetVector(const std::string & tag_name) const;
         std::string Name() const;
         std::string Text() const;
-        void AddText(const std::string & text);
-        bool Real() const;
+        bool IsNull() const;
+        
+        Tag & AddProp(const std::string & prop_name, const std::string & value);
+        Tag & AddText(const std::string & text);
+        Tag AddChild(const Tag & other);
+        Tag AddChild(const std::string & child_name);
 
-        template<typename T>
-        static T Deserialize(const Tag & tag)
-        {
-            return T(tag);
-        }
 
         private:
             static const char * textContentTagName;

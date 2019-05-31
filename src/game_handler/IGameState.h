@@ -1,23 +1,37 @@
 #ifndef __INTERFACE_GAME_STATE__
 #define __INTERFACE_GAME_STATE__
 
-#include "../utils/graphics/window_manager.h"
+#include "../utils/graphics/screen.h"
 
 class GameStateManager;
 
-class IGameState
+enum Notify
+{
+    New,
+    Save,
+    Load,
+    Continue,
+    Quit,
+    Empty
+};
+
+class IGameState : public graphics::Screen
 {
     protected:
         GameStateManager * gsm;
-        graphics::WindowManager & wm;
-        graphics::Screen & screen;
     public:
-        IGameState(GameStateManager * game_state_manager, const std::string & screen_id);
-        virtual void Select(size_t arg) = 0;
-        virtual bool Reacted(int input) = 0;
-        void Draw();
+        IGameState(GameStateManager * manager)
+            : Screen("detetched"), gsm(manager)
+        {
+        }
 
-        virtual ~IGameState();
+        virtual void GetNotification(Notify notification)
+        {
+        }
+
+        virtual bool Reacted(int input) = 0;
+
+        virtual ~IGameState() = default;
 };
 
 #endif

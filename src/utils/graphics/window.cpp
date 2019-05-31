@@ -4,6 +4,7 @@
 
 graphics::Window::Window(IChangeable * parent, size_t width, short y, short x, short color)
     : IChangeable(parent),
+      sticky(false),
       act_h(0),
       act_w(width),
       act_y(y),
@@ -36,30 +37,49 @@ void graphics::Window::Draw()
     attroff(COLOR_PAIR(window_color));
 }
 
-void graphics::Window::SetHeight(size_t new_height)
+graphics::Window & graphics::Window::SetHeight(size_t new_height)
 {
     if (new_height < MinHeight())
         throw std::invalid_argument("height is smaller then minimal");
 
     act_h = new_height;
     UpdateOnScreenHeight();
+    return *this;
 }
 
-void graphics::Window::Move(short dy, short dx)
+graphics::Window & graphics::Window::SetColor(short new_color)
+{
+    window_color = new_color;
+    return *this;
+}
+
+graphics::Window & graphics::Window::SetSticky(bool value)
+{
+    sticky = value;
+    return *this;
+}
+
+graphics::Window & graphics::Window::Move(short dy, short dx)
 {
     if (!UpToDate())
         throw GraphicsException("not up to date");
 
-    act_x += dx;
-    act_y += dy;
-    UpdateOnScreenHeight();
-    UpdateOnScreenWidth();
-    UpdateOnScreenPositin();
+    if (!sticky)
+    {
+        act_x += dx;
+        act_y += dy;
+        UpdateOnScreenHeight();
+        UpdateOnScreenWidth();
+        UpdateOnScreenPositin();
+        MoveChildren(dy, dx);
+    }
+
+    return *this;
 }
 
-void graphics::Window::MoveTo(short y, short x)
+graphics::Window & graphics::Window::MoveTo(short y, short x)
 {
-    Move(y - act_y, x - act_x);
+    return Move(y - act_y, x - act_x);
 }
 
 
@@ -138,18 +158,12 @@ size_t graphics::Window::Width() const
     return act_w;
 }
 
-size_t graphics::Window::XPercent(size_t percents) noexcept
+size_t graphics::XPercent(size_t percents) noexcept
 {
     return (max_x * percents) / 100;
 }
 
-size_t graphics::Window::YPercent(size_t percents) noexcept
+size_t graphics::YPercent(size_t percents) noexcept
 {
     return (max_y * percents) / 100;
-}
-
-void graphics::Window::SetMaxes(short maxy, short maxx) noexcept
-{
-    max_y = maxy;
-    max_x = maxx;
 }

@@ -6,13 +6,13 @@
 
 class Story : public Page
 {
+    bool Reacted(int input) override;
     public:
         Story() = delete;
         Story(const Story & other) = delete;
         Story & operator=(const Story & other) = delete;
         
-        Story(const std::string & filename, const xml::Tag & root, Creature & pleya);
-        bool Play() override;
+        Story(const xml::Tag & root, Game * g);
 };
 
 #endif

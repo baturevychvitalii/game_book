@@ -68,6 +68,12 @@ namespace graphics
             }
         }
 
+        void MoveChildren(short dy, short dx) override
+        {
+            for (auto & window : windows)
+                window->Move(dy, dx);
+        }
+
         public:
             Group(IChangeable * parent, size_t width, short y, short x, short color, size_t colomns, size_t y_indent, size_t x_indent)
                 : Window(parent, width, y, x, color),
@@ -84,14 +90,6 @@ namespace graphics
 
             Group(const Group & gr) = delete;
             Group & operator=(const Group & gr) = delete;
-
-            void Move(short dy, short dx) override
-            {
-                Window::Move(dy, dx);
-                
-                for (auto & window : windows)
-                    window->Move(dy, dx);
-            }
 
             size_t MinHeight() const override
             {
@@ -128,13 +126,14 @@ namespace graphics
                 return Emplace(windows.size(), std::forward<Args>(args) ...);
             }
 
-            void Erase(size_t idx)
+            Group & Erase(size_t idx)
             {
                 if (idx >= windows.size())
                     throw std::invalid_argument("idx");
 
                 windows.erase(windows.begin() + idx);
                 NotifyChange();
+                return *this;
             }
 
             Win & operator[] (size_t idx)

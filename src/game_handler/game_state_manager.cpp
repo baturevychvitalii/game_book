@@ -1,6 +1,8 @@
 #include "game_state_manager.h"
 #include "colors.h"
-#include "main_menu_state.h"
+#include "main_menu.h"
+#include "pause_state.h"
+#include "game.h"
 
 GameStateManager::GameStateManager()
     : current_state(0), shall_run(true)
@@ -10,17 +12,18 @@ GameStateManager::GameStateManager()
 
     // create states
     menu_state = 0;
-    states.emplace_back(MainMenuState(this));
+    states.emplace_back(std::make_unique<MainMenu>(this));
     pause_state = 1;
-
+    states.emplace_back(std::make_unique<PauseState>(this));
     game_state = 2;
+    states.emplace_back(std::make_unique<Game>(this));
 
     // add cross available helper screens
     {
         auto & text = wm.AddScreen("controls").
                       AddWindow<graphics::Textbox>(
             "controls info",
-            graphics::Window::max_x,
+            graphics::max_x,
             0,
             0,
             controls_color
@@ -39,9 +42,9 @@ GameStateManager::GameStateManager()
         auto & text = wm.AddScreen("about").
                       AddWindow<graphics::Textbox>(
             "about info",
-            graphics::Window::XPercent(77),
+            graphics::XPercent(77),
             3,
-            graphics::Window::XPercent(33) / 2,
+            graphics::XPercent(33) / 2,
             about_color
         );
         text.AppendText("By Vitalii Baturevych");
@@ -50,17 +53,17 @@ GameStateManager::GameStateManager()
     wm.AddScreen("exception").
     AddWindow<graphics::Textbox>(
         "err",
-        graphics::Window::XPercent(80),
-        graphics::Window::YPercent(10),
-        graphics::Window::XPercent(10),
+        graphics::XPercent(80),
+        graphics::YPercent(10),
+        graphics::XPercent(10),
         error_color
     );
 }
 
-inline void GameStateManager::SwitchState(size_t state_code, size_t arg)
+inline void GameStateManager::SwitchState(size_t state_code, Notify notification)
 {
     current_state = state_code;
-    states[current_state]->Select(arg);
+    states[current_state]->GetNotification(notification);
 }
 
 void GameStateManager::Launch()
@@ -103,7 +106,7 @@ bool GameStateManager::DefaultReactedToInput(int input, graphics::Window & bot, 
     switch (input)
     {
         case 'k':
-            if (bot.LowestPoint() > graphics::Window::max_y)
+            if (bot.LowestPoint() > graphics::max_y)
                 wm.Move(graphics::Direction::Up, 3);
             break;
         case 'j':

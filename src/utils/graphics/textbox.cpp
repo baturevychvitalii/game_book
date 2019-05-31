@@ -46,7 +46,7 @@ size_t graphics::Textbox::SizeLines() const
     return lines.size();
 }
 
-void graphics::Textbox::InsertText(size_t idx, const std::string & text, short color)
+graphics::Textbox & graphics::Textbox::InsertText(size_t idx, const std::string & text, short color)
 {
     if (idx > lines.size())
         throw std::invalid_argument("idx");
@@ -60,11 +60,12 @@ void graphics::Textbox::InsertText(size_t idx, const std::string & text, short c
     }
 
     NotifyChange();
+    return *this;
 }
 
-void graphics::Textbox::AppendText(const std::string & text, short color)
+graphics::Textbox & graphics::Textbox::AppendText(const std::string & text, short color)
 {
-    InsertText(lines.size(), text, color);
+    return InsertText(lines.size(), text, color);
 }
 
 size_t graphics::Textbox::NewLine(const std::string & text, short color)
@@ -78,21 +79,22 @@ size_t graphics::Textbox::NewLine(const std::string & text, short color)
     return lines.size() - 1;
 }
 
-void graphics::Textbox::EraseLines(size_t idx, size_t n)
+graphics::Textbox & graphics::Textbox::EraseLines(size_t idx, size_t n)
 {
     if (idx >= lines.size())
         throw std::invalid_argument("idx");
     
     lines.erase(lines.begin() + idx, lines.begin() + idx + n);
     NotifyChange();
+    return *this;
 }
 
-void graphics::Textbox::Clear()
+graphics::Textbox & graphics::Textbox::Clear()
 {
-    EraseLines(0, lines.size());
+    return EraseLines(0, lines.size());
 }
 
-void graphics::Textbox::AlterText(size_t idx, const std::string & new_text)
+graphics::Textbox & graphics::Textbox::AlterText(size_t idx, const std::string & new_text)
 {
     if (idx >= lines.size())
         throw std::invalid_argument("idx");
@@ -101,11 +103,13 @@ void graphics::Textbox::AlterText(size_t idx, const std::string & new_text)
         throw std::invalid_argument("new_text");
 
     lines[idx].first = new_text;
+    return *this;
 }
 
-void graphics::Textbox::AlterColor(size_t idx, short color)
+graphics::Textbox & graphics::Textbox::AlterColor(size_t idx, short color)
 {
     lines[idx].second = color;
+    return *this;
 }
 
 const std::string & graphics::Textbox::LineAt(size_t idx) const

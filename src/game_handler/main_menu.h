@@ -11,7 +11,7 @@ class MainMenu : public MenuState
         MainMenu(const MainMenu & other) = delete;
         MainMenu & operator=(const MainMenu & other) = delete;
 
-        MainMenu(GameStateManager * gsm);
+        MainMenu(GameStateManager * manager);
 };
 
 #endif
