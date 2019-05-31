@@ -7,14 +7,6 @@
 
 namespace graphics
 {
-    enum Direction
-    {
-        Up,
-        Down,
-        Left,
-        Right
-    };
-
     class WindowManager
     {
         Screen * selected_screen;

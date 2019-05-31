@@ -27,7 +27,7 @@ class GameStateManager
         void Stop();
         void PopUp(const std::string & screen);
         void DisplayException(const std::exception & e);
-        bool DefaultReactedToInput(int input, graphics::Window & bot, graphics::Window & top);
+        bool Reacted(int input);
 };
 
 #endif

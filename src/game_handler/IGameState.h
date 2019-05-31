@@ -17,19 +17,18 @@ enum Notify
 
 class IGameState : public graphics::Screen
 {
+    graphics::Window * top;
+    graphics::Window * bot;
     protected:
         GameStateManager * gsm;
+        void SetTopAndBottom(graphics::Window & t, graphics::Window & b);
     public:
-        IGameState(GameStateManager * manager)
-            : Screen("detetched"), gsm(manager)
-        {
-        }
-
-        virtual void GetNotification(Notify notification)
-        {
-        }
-
+        IGameState(GameStateManager * manager);
+        virtual void GetNotification(Notify notification) = 0;
         virtual bool Reacted(int input) = 0;
+
+        graphics::Window & TopWindow();
+        graphics::Window & BotWindow();
 
         virtual ~IGameState() = default;
 };

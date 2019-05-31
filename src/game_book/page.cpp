@@ -1,10 +1,11 @@
 #include "page.h"
 #include "../game_handler/game.h"
+#include "../game_handler/game_state_manager.h"
 #include "../utils/graphics/menu.h"
 #include "../game_handler/colors.h"
 
 Page::Page(const xml::Tag & root, Game * g)
-    : game(g)
+    : game(g), filename(root.GetFilename())
 {
     crossroads.reserve(5);
     for (const xml::Tag & tag : root.Child("crossroad").GetVector("path"))
@@ -22,7 +23,6 @@ Page::Page(const xml::Tag & root, Game * g)
     );
     head.AppendText(root.Child("header").Text()).
     Commit();
-    top = &head;
 
     auto & cross = game->AddWindow<graphics::Menu>(
         "crossroads",
@@ -44,37 +44,41 @@ Page::Page(const xml::Tag & root, Game * g)
     }
     
     cross.Commit();
-    bot = &cross;
-}
-
-graphics::Window & Page::
-
-std::string Page::GetNextPage() const
-{
-    if (crossroads.empty())
-        throw "shouldn't have come to this point, Play() should have returned 1";
-        
-    auto & screen = wm.SelectScreen("crossroad");
-    auto & menu = screen.AddWindow<graphics::Menu>(
-        "menu",
-        graphics::XPercent(90),
-        0,
-        graphics::XPercent(5),
-        magneta_on_black,
-        hacker,
-        cyan_on_black,
-        2
-    );
-    menu.AppendText("Where now, Lorry?");
-    for (auto & pair: crossroads)
-        menu.AddOption(pair.second);
-
-    size_t choice = GetMenuSelection(menu);
-    screen.Clear();
-    return crossroads[choice].first;
+    game->SetTopAndBottom(head, cross);
 }
 
 xml::Tag Page::Serialize() const
 {
     return xml::Tag("page").AddText(filename);
+}
+
+bool Page::Reacted(int input)
+{
+    graphics::Menu * cross = static_cast<graphics::Menu *>(&game->BotWindow());
+    switch (input)
+    {
+        case KEY_UP:
+            if (cross->ChoicesAreVisible())
+                (*cross)--;
+            break;
+        case KEY_DOWN:
+            if (cross->ChoicesAreVisible())
+                (*cross)++;
+            break;
+        case 10: // Return pressed
+            if (cross->ChoicesAreVisible())
+            {
+                // if this is last page -> go to main menu
+                if (crossroads.empty())
+                    game->gsm->SwitchState(menu_state);
+                // else turn to next page
+                else
+                    game->TurnTo(crossroads[cross->GetChoice()].first);                
+            }
+            break;
+        default:
+            return false;
+    }
+
+    return true;
 }

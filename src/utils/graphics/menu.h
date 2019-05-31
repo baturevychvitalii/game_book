@@ -40,6 +40,7 @@ namespace graphics
             size_t operator--(int);
             size_t GetChoice() const;
             std::string GetChoiceText() const;
+            bool ChoicesAreVisible() const;
     };
 }
 

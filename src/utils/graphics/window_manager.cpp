@@ -80,20 +80,8 @@ void graphics::WindowManager::Move(Direction direction, unsigned multiplier)
     if (!selected_screen)
         throw GraphicsException("no screen is selected");
 
-    switch (direction)
-    {
-        case Direction::Down:
-            selected_screen->Move(multiplier, 0);
-            break;
-        case Direction::Up:
-            selected_screen->Move(-1 * multiplier, 0);
-            break;
-        case Direction::Left:
-            selected_screen->Move(0, -1 * multiplier);
-            break;
-        case Direction::Right:
-            selected_screen->Move(0, multiplier);
-            break;
-    }
+    short dy, dx;
+    graphics::CastDirection(direction, multiplier, dy, dx);
+    selected_screen->Move(dy, dx);
 }
 

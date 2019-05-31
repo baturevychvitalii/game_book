@@ -5,15 +5,14 @@
 
 class Game;
 
-namespace graphics{class Window;}
+namespace graphics{class Menu;}
 
-class Page : ISerializable
+class Page : public ISerializable
 {
-    protected:
-        const std::string filename;
-        std::vector<std::pair<std::string, std::string>> crossroads;
-        graphics::Window * top, * bot;
-        Game * game;
+    Game * game;
+    const std::string filename;
+    std::vector<std::pair<std::string, std::string>> crossroads;
+
     public:
         Page() = delete;
         Page(const Page & p) = delete;
@@ -22,11 +21,8 @@ class Page : ISerializable
 
         Page(const xml::Tag & root, Game * g);
 
-        virtual bool Reacted(int input) = 0;
-        std::string GetNextPage() const;
+        virtual bool Reacted(int input);
         xml::Tag Serialize() const override;
-        graphics::Window & TopWindow();
-        graphics::Window & BottomWindow();
 };
 
 #endif

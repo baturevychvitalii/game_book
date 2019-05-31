@@ -57,7 +57,7 @@ bool Game::Reacted(int input)
         return true;
     }
     
-    return gsm->DefaultReactedToInput(input, page[current]->BottomWindow(), page[current]->TopWindow()); 
+    return gsm->Reacted(input); 
 }
 
 void Game::GetNotification(Notify notification)

@@ -21,10 +21,10 @@ void graphics::Window::Draw()
         throw GraphicsException("trying to display uncommited changes");
     
 
-    if (on_screen_h * on_screen_w == 0)
+    if (OnScreenSpace() == 0)
         return;
     
-    
+    // Draw background
     attron(COLOR_PAIR(window_color));
     for (size_t i = 0; i < on_screen_h; i++)
     {
@@ -82,6 +82,16 @@ graphics::Window & graphics::Window::MoveTo(short y, short x)
     return Move(y - act_y, x - act_x);
 }
 
+graphics::Window & graphics::Window::Move(graphics::Direction direction, unsigned multiplier)
+{
+    if (!sticky)
+    {
+        short dy, dx;
+        graphics::CastDirection(direction, multiplier, dy, dx);
+        Move(dy, dx);
+    }
+    return *this;
+}
 
 void graphics::Window::UpdateOnScreenWidth() noexcept
 {
@@ -142,6 +152,23 @@ size_t graphics::Window::ActualSpace() const
     return Height() * Width();
 }
 
+size_t graphics::Window::OnScreenSpace() const
+{
+    return on_screen_h * on_screen_w;
+}
+
+size_t graphics::Window::VisiblePercent() const
+{
+    return OnScreenSpace() * 100 / ActualSpace();
+}
+
+size_t graphics::Window::visible_consiederation = 100;
+
+bool graphics::Window::IsVisible() const
+{
+    return VisiblePercent() >= visible_consiederation;
+}
+
 size_t graphics::Window::Height() const
 {
     if (!UpToDate())
@@ -160,10 +187,32 @@ size_t graphics::Window::Width() const
 
 size_t graphics::XPercent(size_t percents) noexcept
 {
-    return (max_x * percents) / 100;
+    return max_x * percents / 100;
 }
 
 size_t graphics::YPercent(size_t percents) noexcept
 {
-    return (max_y * percents) / 100;
+    return max_y * percents / 100;
+}
+
+void graphics::CastDirection(graphics::Direction direction, unsigned multiplier, short & dy, short & dx)
+{
+    dy = 0, dx = 0;
+    switch (direction)
+    {
+        case Direction::Down:
+            dy = multiplier;
+            break;
+        case Direction::Up:
+            dy = -1 * multiplier;
+            break;
+        case Direction::Left:
+            dx = -1 * multiplier;
+            break;
+        case Direction::Right:
+            dx = multiplier;
+            break;
+        default:
+            throw GraphicsException("unsupported direction");
+    }
 }

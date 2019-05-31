@@ -1,7 +1,7 @@
 #include "story.h"
 
-Story::Story(const std::string & filename, const xml::Tag & root, Creature & pleya)
-    : Page(filename, root, pleya)
+Story::Story(const xml::Tag & root, Game * g)
+    : Page(root, g)
 {
     screen.AddWindow<graphics::Textbox>(
         "footer",

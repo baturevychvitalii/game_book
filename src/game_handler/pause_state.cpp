@@ -22,6 +22,8 @@ PauseState::PauseState(GameStateManager * manager)
     menu.AddOption("Save");
     menu.AddOption("Controls");
     menu.AddOption("Quit to main menu (unsaved progress will be lost FOREVER!!)");
+
+    SetTopAndBottom(menu, menu);
 }
 
 void PauseState::ProcessSelection(size_t selection)

@@ -32,6 +32,13 @@ graphics::Screen & graphics::Screen::Move(short dy, short dx)
     return *this;
 }
 
+graphics::Screen & graphics::Screen::Move(graphics::Direction direction, unsigned multiplier)
+{
+    short dy, dx;
+    graphics::CastDirection(direction, multiplier, dy, dx);
+    return Move(dy, dx);
+}
+
 void graphics::Screen::Draw()
 {
     Commit();

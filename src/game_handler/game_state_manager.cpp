@@ -101,17 +101,17 @@ void GameStateManager::DisplayException(const std::exception & e){
     PopUp("exception");
 }
 
-bool GameStateManager::DefaultReactedToInput(int input, graphics::Window & bot, graphics::Window & top)
+bool GameStateManager::Reacted(int input)
 {
     switch (input)
     {
         case 'k':
-            if (bot.LowestPoint() > graphics::max_y)
-                wm.Move(graphics::Direction::Up, 3);
+            if (states[current_state]->BotWindow().LowestPoint() > graphics::max_y)
+                states[current_state]->Move(graphics::Direction::Down, 3);
             break;
         case 'j':
-            if (top.HighestPoint() < 0)
-                wm.Move(graphics::Direction::Down, 3);
+            if (states[current_state]->TopWindow().HighestPoint() < 0)
+                states[current_state]->Move(graphics::Direction::Up, 3);
             break;
         default:
             return false;

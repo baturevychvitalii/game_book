@@ -25,6 +25,8 @@ MainMenu::MainMenu(GameStateManager * manager)
     menu.AddOption("About");
     menu.AddOption("Quit");
     menu.Commit();
+    
+    SetTopAndBottom(menu, menu);
 }
 
 void MainMenu::ProcessSelection(size_t selection)

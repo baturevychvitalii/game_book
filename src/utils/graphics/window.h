@@ -8,10 +8,20 @@
 
 namespace graphics
 {
+    enum Direction
+    {
+        Up,
+        Down,
+        Left,
+        Right
+    };
+
     extern short max_x, max_y;
 
     size_t XPercent(size_t percents) noexcept;
     size_t YPercent(size_t percents) noexcept;
+
+    void CastDirection(Direction direction, unsigned multiplier, short & dy, short & dx);
 
     class Window : public IChangeable
     {
@@ -23,6 +33,8 @@ namespace graphics
         protected:
             size_t act_h, act_w, on_screen_h, on_screen_w;
             short act_y, act_x, on_screen_y, on_screen_x;
+
+            size_t OnScreenSpace() const;
 
             short window_color;
 
@@ -50,7 +62,12 @@ namespace graphics
             size_t Height() const;
             size_t Width() const;
             size_t ActualSpace() const;
+            size_t VisiblePercent() const;
 
+            static size_t visible_consiederation;
+            bool IsVisible() const;
+
+            Window & Move(Direction direction, unsigned multiplier = 1);
             Window & Move(short dy, short dx);
             Window & MoveTo(short y, short x);
             virtual void Draw();

@@ -20,7 +20,7 @@ bool MenuState::Reacted(int input)
             menu--;
             break;
         default:
-            return gsm->DefaultReactedToInput(input, menu, menu);
+            return gsm->Reacted(input);
     }
 
     return true;

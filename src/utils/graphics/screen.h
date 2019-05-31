@@ -30,6 +30,7 @@ namespace graphics
             Screen & Commit();
             void Draw();
             Screen & Move(short dy, short dx);
+            Screen & Move(graphics::Direction direction, unsigned multiplier);
 
             template <typename Win, typename ... UniqueArgs>
             Win & AddWindow(const std::string & id, size_t width, short y, short x, short bg_color, UniqueArgs && ... args)
