@@ -20,7 +20,7 @@ bool MenuState::Reacted(int input)
             menu--;
             break;
         default:
-            return gsm->Reacted(input);
+            return IGameState::Reacted(input);
     }
 
     return true;

@@ -3,7 +3,6 @@
 
 #include "../utils/graphics/screen.h"
 
-class GameStateManager;
 
 enum Notify
 {
@@ -15,6 +14,8 @@ enum Notify
     Empty
 };
 
+class GameStateManager;
+
 class IGameState : public graphics::Screen
 {
     graphics::Window * top;
@@ -25,7 +26,7 @@ class IGameState : public graphics::Screen
     public:
         IGameState(GameStateManager * manager);
         virtual void GetNotification(Notify notification) = 0;
-        virtual bool Reacted(int input) = 0;
+        virtual bool Reacted(int input);
 
         graphics::Window & TopWindow();
         graphics::Window & BotWindow();

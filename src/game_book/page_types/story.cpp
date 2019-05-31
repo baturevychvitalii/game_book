@@ -1,28 +1,18 @@
 #include "story.h"
+#include "../../utils/graphics/textbox.h"
+#include "../../game_handler/colors.h"
 
-Story::Story(const xml::Tag & root, Game * g)
+Story::Story(const xml::Tag & root, GameStateManager * g)
     : Page(root, g)
 {
-    screen.AddWindow<graphics::Textbox>(
-        "footer",
+    auto & body = AddWindow<graphics::Textbox>(
+        "body",
         graphics::max_x - 4,
-        screen.GetWindow("header").LowestPoint() + 4,
+        TopWindow().LowestPoint() + 4,
         2,
-        white_on_red
+        page_story_body_color
     ).AppendText(root.Child("body").Text());
-}
 
-bool Story::Play()
-{
-    wm.SelectScreen(screen);
-    int unique_option;
-    while ((unique_option = DefaultPageHandling()) >= 0)
-    {
-        if (unique_option == 10)
-            break;
-    }
-    if (unique_option < 0 || crossroads.empty())
-        return false;
-
-    return true;
+    BotWindow().MoveTo(body.LowestPoint() + 2, BotWindow().LeftPoint());
+    Commit();
 }

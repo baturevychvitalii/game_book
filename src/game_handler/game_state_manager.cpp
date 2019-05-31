@@ -1,22 +1,24 @@
 #include "game_state_manager.h"
 #include "colors.h"
+#include "game_exception.h"
+#include "../utils/xml_parser/xml_parser.h"
+
 #include "main_menu.h"
 #include "pause_state.h"
-#include "game.h"
+#include "../game_book/page_types/story.h"
 
 GameStateManager::GameStateManager()
-    : current_state(0), shall_run(true)
+    : current_state(0), shall_run(true), player(nullptr)
 {
-    states.reserve(7);
     InitColors();
 
     // create states
     menu_state = 0;
-    states.emplace_back(std::make_unique<MainMenu>(this));
+    states[menu_state] = std::make_unique<MainMenu>(this);
     pause_state = 1;
-    states.emplace_back(std::make_unique<PauseState>(this));
+    states[pause_state] = std::make_unique<PauseState>(this);
     game_state = 2;
-    states.emplace_back(std::make_unique<Game>(this));
+    states[game_state] = std::make_unique<Page>(this);
 
     // add cross available helper screens
     {
@@ -101,22 +103,21 @@ void GameStateManager::DisplayException(const std::exception & e){
     PopUp("exception");
 }
 
-bool GameStateManager::Reacted(int input)
+void GameStateManager::TurnPage(const std::string & filename)
 {
-    switch (input)
-    {
-        case 'k':
-            if (states[current_state]->BotWindow().LowestPoint() > graphics::max_y)
-                states[current_state]->Move(graphics::Direction::Down, 3);
-            break;
-        case 'j':
-            if (states[current_state]->TopWindow().HighestPoint() < 0)
-                states[current_state]->Move(graphics::Direction::Up, 3);
-            break;
-        default:
-            return false;
-    }
+    auto doc = xml::Parser::GetDoc(filename);
+    auto root = doc.Root();
+    if (root.Name() != "page")
+        throw GameException("root tag of a file must be <page type=\"page_tyepe\">");
 
-    return true;
+    std::string type = root.Prop("type");
+    
+    game_state = game_state == 2 ? 3 : 2;
+    current_state = game_state;
+
+    if (type == "story")
+        states[game_state].reset(new Story(root, this));
+    else
+        throw GameException("file is not in correct format. Page must have a type");
+
 }
-

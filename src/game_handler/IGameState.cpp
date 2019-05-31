@@ -26,3 +26,22 @@ graphics::Window & IGameState::BotWindow()
     return bot ? *bot : throw GameException("bot window not set");
 }
 
+bool IGameState::Reacted(int input)
+{
+    switch (input)
+    {
+        case 'k':
+            if (bot->LowestPoint() > graphics::max_y)
+                Move(graphics::Direction::Down, 3);
+            break;
+        case 'j':
+            if (top->HighestPoint() < 0)
+                Move(graphics::Direction::Up, 3);
+            break;
+        default:
+            return false;
+    }
+
+    return true;
+}
+

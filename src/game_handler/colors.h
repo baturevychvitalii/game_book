@@ -28,6 +28,8 @@ extern size_t red_on_white,
               page_crossroad_active_color,
               page_crossroad_inactive_color,
 
+              page_story_body_color,
+
               error_color,
               hacker;
 
