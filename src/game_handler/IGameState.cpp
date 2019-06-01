@@ -53,7 +53,7 @@ bool IGameState::StandardMenuHandlerReacted(graphics::Menu * to_test, int input)
     // standard handler doesn't know what to do with this menu, may be
     // it'is normal, who knows better than derived class itself
     if (to_test->OptionsSize() == 0)
-        throw GameException("can't work with empty menu");
+        return false;
     
     switch (input)
     {

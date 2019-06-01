@@ -26,7 +26,8 @@ MainMenu::MainMenu(GameStateManager * manager)
     menu.AddOption("Quit");
     menu.Commit();
 
-    menu.SetHeight(graphics::max_y);
+    if (menu.Height() < graphics::max_y)
+      menu.SetHeight(graphics::max_y);
     
     
     SetTopAndBottom(menu, menu);

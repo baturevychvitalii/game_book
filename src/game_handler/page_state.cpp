@@ -127,16 +127,7 @@ bool Page::Reacted(int input)
 {
     graphics::Menu * cross = static_cast<graphics::Menu *>(BotWindow());
 
-    // if this is a last page
-    if (crossroads.empty())
-    {
-        if (cross->IsVisible() && input == K_ENTER)
-        {
-            gsm->SwitchState(menu_state);
-            return true;
-        }
-    }
-    else if (StandardMenuHandlerReacted(cross, input))
+    if (StandardMenuHandlerReacted(cross, input))
         return true;
 
     if (input == 'p')

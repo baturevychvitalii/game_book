@@ -1,6 +1,6 @@
 #include "helpers.h"
 
-static char empty_chars[] = {' ', '\t', '\n'};
+static char empty_chars[] = {' ', '\t', '\n', '\r'};
 
 static bool IsEmptyChar(const char & ch)
 {
@@ -84,14 +84,18 @@ std::vector<std::string> BreakIntoLines(const std::string & text, unsigned max_w
 std::vector<std::string> BreakIntoWords(const std::string & text)
 {
     std::vector<std::string> words;
-    words.reserve(30);
+    words.reserve(333);
     std::string word;
     for (const char & ch : text)
     {
-        if (IsEmptyChar(ch) && word.length() > 0)
+        if (IsEmptyChar(ch))
         {
-            words.push_back(word);
-            word = "";
+            if (word.length() > 0)
+            {
+                words.push_back(word);
+                word = "";
+            }
+
             continue;
         }
 
