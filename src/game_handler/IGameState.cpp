@@ -31,12 +31,14 @@ bool IGameState::Reacted(int input)
 {
     switch (input)
     {
+        case 'K':
         case 'k':
             if (top->HighestPoint() < 0)
                 Move(graphics::Direction::Down, 3);
             break;
+        case 'J':
         case 'j':
-            if (bot->LowestPoint() > graphics::max_y)
+            if (bot->LowestPoint() > static_cast<short>(graphics::max_y))
                 Move(graphics::Direction::Up, 3);
             break;
         default:
@@ -56,15 +58,15 @@ bool IGameState::StandardMenuHandlerReacted(graphics::Menu * to_test, int input)
     switch (input)
     {
         case KEY_UP:
-            if (to_test->ChoicesAreVisible())
-                (*to_test)--;
+            if (to_test->PrevIsVisible())
+                to_test->Prev();
             break;
         case KEY_DOWN:
-            if (to_test->ChoicesAreVisible())
-                (*to_test)++;
+            if (to_test->NextIsVisible())
+                to_test->Next();
             break;
-        case 10: // Return pressed
-            if (to_test->ChoicesAreVisible())
+        case K_ENTER: // Return pressed
+            if (to_test->CurrIsVisible())
                 StandardManuHandlerProcess(to_test);
             break;
         default:

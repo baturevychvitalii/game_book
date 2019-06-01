@@ -37,11 +37,16 @@ namespace graphics
             size_t RemoveOption(const std::string & to_remove);
             size_t OptionsSize() const;
 
-            size_t operator++(int);
-            size_t operator--(int);
+            size_t operator++();
+            size_t Next();
+            size_t operator--();
+            size_t Prev();
             size_t GetChoice() const;
             std::string GetChoiceText() const;
             bool ChoicesAreVisible() const;
+            bool NextIsVisible() const;
+            bool PrevIsVisible() const;
+            bool CurrIsVisible() const;
     };
 }
 

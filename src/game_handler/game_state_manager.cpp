@@ -18,7 +18,7 @@ GameStateManager::GameStateManager()
     InitColors();
 
     // create states
-    states[menu_state].reset(new MainMenu(this));
+    states[menu_state] = std::move(std::make_unique<MainMenu>(this));
     states[pause_state] = std::move(std::make_unique<PauseState>(this));
     states[game_state] = std::move(std::make_unique<Page>(this));
 
@@ -93,7 +93,8 @@ void GameStateManager::Stop()
     shall_run = false;
 }
 
-void GameStateManager::PopUp(const std::string & screen){
+void GameStateManager::PopUp(const std::string & screen)
+{
     wm.SelectScreen(screen);
     wm.Draw();
     getch();

@@ -13,6 +13,8 @@ extern short    red_on_white,
                 cyan_on_black,
                 black_on_white,
                 white_on_black,
+                white_on_magneta,
+                magneta_on_white,
 // cross states
                 menu_bg_color,
                 menu_active_color,

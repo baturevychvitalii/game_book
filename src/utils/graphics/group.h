@@ -166,6 +166,11 @@ namespace graphics
             {
                 return windows.size();
             }
+
+            bool Empty() const
+            {
+                return windows.empty();
+            }
     };
 }
 

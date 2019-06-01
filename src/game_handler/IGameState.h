@@ -3,6 +3,8 @@
 
 #include "../utils/graphics/screen.h"
 
+#define K_ENTER 10
+
 
 enum Notify
 {

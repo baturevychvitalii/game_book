@@ -16,7 +16,7 @@ namespace graphics
         Right
     };
 
-    extern short max_x, max_y;
+    extern size_t max_x, max_y;
 
     size_t XPercent(size_t percents) noexcept;
     size_t YPercent(size_t percents) noexcept;

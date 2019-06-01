@@ -8,7 +8,6 @@
     </body>
 
     <crossroad>
-        <path to="book/begin.xml">Shall i go to other direction</path>
         <path to="book/story_example2.xml">Or to jonny</path>
     </crossroad>
 </page>

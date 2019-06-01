@@ -80,9 +80,9 @@ size_t graphics::Menu::OptionsSize() const
     return buttons.Size();
 }
 
-size_t graphics::Menu::operator++(int)
+size_t graphics::Menu::operator++()
 {
-    if (buttons.Size() == 0)    
+    if (buttons.Empty())    
         throw GraphicsException("there are no buttons");
     
 
@@ -95,9 +95,14 @@ size_t graphics::Menu::operator++(int)
     return current;
 }
 
-size_t graphics::Menu::operator--(int)
+size_t graphics::Menu::Next()
 {
-    if (buttons.Size() == 0)    
+    return operator++();
+}
+
+size_t graphics::Menu::operator--()
+{
+    if (buttons.Empty())    
         throw GraphicsException("there are no buttons");
 
     if (current != 0)
@@ -109,9 +114,14 @@ size_t graphics::Menu::operator--(int)
     return current;
 }
 
+size_t graphics::Menu::Prev()
+{
+    return operator--();
+}
+
 size_t graphics::Menu::GetChoice() const
 {
-    if (buttons.Size() == 0)
+    if (buttons.Empty())
         throw GraphicsException("there are no buttons");
 
     return current;
@@ -119,7 +129,7 @@ size_t graphics::Menu::GetChoice() const
 
 std::string graphics::Menu::GetChoiceText() const
 {
-    if (buttons.Size() == 0)
+    if (buttons.Empty())
         throw GraphicsException("there are no buttons");
 
     return std::move(buttons[current].GetText());
@@ -127,16 +137,35 @@ std::string graphics::Menu::GetChoiceText() const
 
 bool graphics::Menu::ChoicesAreVisible() const
 {
-    if (buttons.Size() == 0)
+    return NextIsVisible() && PrevIsVisible();
+}
+
+bool graphics::Menu::NextIsVisible() const
+{
+    if (buttons.Empty())
         throw GraphicsException("there are no choices");
 
-    if (!buttons[current].IsVisible())
-        return false;
-    if (current > 0 && !buttons[current - 1].IsVisible())
-        return false;
     if (current < buttons.Size() - 1 && !buttons[current + 1].IsVisible())
         return false;
-    
+
     return true;
 }
 
+bool graphics::Menu::PrevIsVisible() const
+{
+    if (buttons.Empty())
+        throw GraphicsException("there are no choices");
+
+    if (current > 0 && !buttons[current - 1].IsVisible())
+        return false;
+
+    return true;
+}
+
+bool graphics::Menu::CurrIsVisible() const
+{
+    if (buttons.Empty())
+        throw GraphicsException("there are no choices");
+
+    return buttons[current].IsVisible();
+}

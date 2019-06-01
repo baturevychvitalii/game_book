@@ -30,9 +30,9 @@ Page::Page(const xml::Tag & root, GameStateManager * g)
 
     auto & cross = AddWindow<graphics::Menu>(
         "crossroads",
-        graphics::XPercent(90),
+        graphics::max_x,
         0,
-        graphics::XPercent(5),
+        0,
         page_crossroad_bg_color,
         page_crossroad_active_color,
         page_crossroad_inactive_color,
@@ -130,7 +130,7 @@ bool Page::Reacted(int input)
     // if this is a last page
     if (crossroads.empty())
     {
-        if (cross->IsVisible() && input == 10)
+        if (cross->IsVisible() && input == K_ENTER)
         {
             gsm->SwitchState(menu_state);
             return true;

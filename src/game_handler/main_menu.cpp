@@ -8,9 +8,9 @@ MainMenu::MainMenu(GameStateManager * manager)
 {
     auto & menu = AddWindow<graphics::Menu>(
       "main menu",
-      graphics::XPercent(50),
-      4,
-      graphics::XPercent(25),
+      graphics::max_x,
+      0,
+      0,
       menu_bg_color, menu_active_color, menu_inactive_color, 1
     );
 
@@ -25,6 +25,9 @@ MainMenu::MainMenu(GameStateManager * manager)
     menu.AddOption("About");
     menu.AddOption("Quit");
     menu.Commit();
+
+    menu.SetHeight(graphics::max_y);
+    
     
     SetTopAndBottom(menu, menu);
 }
