@@ -17,18 +17,18 @@ enum Notify
 };
 
 class GameStateManager;
-namespace graphics{class Menu;}
+namespace graphics{class IMenu;}
 
 class IGameState : public graphics::Screen
 {
     graphics::Window * top;
     graphics::Window * bot;
 
-    virtual void StandardManuHandlerProcess(graphics::Menu * to_test) = 0;
+    virtual void ProcessMenuSelection(graphics::IMenu * to_test) = 0;
     protected:
         GameStateManager * gsm;
         void SetTopAndBottom(graphics::Window & t, graphics::Window & b);
-        bool StandardMenuHandlerReacted(graphics::Menu * to_test, int input);
+        bool StandardMenuHandlerReacted(graphics::IMenu * to_test, int input);
     public:
         IGameState(GameStateManager * manager);
         virtual void GetNotification(Notify notification) = 0;

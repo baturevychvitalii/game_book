@@ -48,11 +48,11 @@ bool IGameState::Reacted(int input)
     return true;
 }
 
-bool IGameState::StandardMenuHandlerReacted(graphics::Menu * to_test, int input)
+bool IGameState::StandardMenuHandlerReacted(graphics::IMenu * to_test, int input)
 {
     // standard handler doesn't know what to do with this menu, may be
     // it'is normal, who knows better than derived class itself
-    if (to_test->OptionsSize() == 0)
+    if (to_test->Size() == 0)
         return false;
     
     switch (input)
@@ -67,7 +67,7 @@ bool IGameState::StandardMenuHandlerReacted(graphics::Menu * to_test, int input)
             break;
         case K_ENTER: // Return pressed
             if (to_test->CurrIsVisible())
-                StandardManuHandlerProcess(to_test);
+                ProcessMenuSelection(to_test);
             break;
         default:
             return false;

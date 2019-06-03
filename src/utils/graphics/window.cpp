@@ -7,27 +7,19 @@ size_t graphics::max_y = 0;
 
 graphics::Window::Window(IChangeable * parent, size_t width, short y, short x, short color)
     : IChangeable(parent),
-      sticky(false),
+      sticky(false),								
       act_h(0),
       act_w(width),
       act_y(y),
       act_x(x),
       window_color(color)
-{
+{	
     UpdateOnScreenWidth();
     UpdateOnScreenPositin();
-}
+}				
 
-void graphics::Window::Draw()
+void graphics::Window::DrawBackground() const
 {
-    if (!UpToDate())
-        throw GraphicsException("trying to display uncommited changes");
-    
-
-    if (OnScreenSpace() == 0)
-        return;
-    
-    // Draw background
     attron(COLOR_PAIR(window_color));
     for (size_t i = 0; i < on_screen_h; i++)
     {
@@ -38,6 +30,17 @@ void graphics::Window::Draw()
     }
 
     attroff(COLOR_PAIR(window_color));
+}
+
+void graphics::Window::Draw() const
+{
+    if (!UpToDate())
+        throw GraphicsException("trying to display uncommited changes");
+
+    if (OnScreenSpace() == 0)
+        return;
+	
+	DrawSpecific();
 }
 
 graphics::Window & graphics::Window::SetHeight(size_t new_height)

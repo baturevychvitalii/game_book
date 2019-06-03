@@ -73,6 +73,12 @@ namespace graphics
             for (auto & window : windows)
                 window->Move(dy, dx);
         }
+		
+		void DrawSpecific() const override
+		{
+			for (auto & window : windows)
+				window->Draw();
+		}
 
         public:
             Group(IChangeable * parent, size_t width, short y, short x, short color, size_t colomns, size_t y_indent, size_t x_indent)
@@ -99,16 +105,6 @@ namespace graphics
                 return minimal_h;
             }
 
-            void Draw() override
-            {
-                if (!UpToDate())
-                    throw GraphicsException("group is not up to date");
-
-                for (auto & window : windows)
-                    window->Draw();
-            }
-
-
             template<typename ... ConsturctorParams>
             Win & Emplace(size_t idx, ConsturctorParams && ... params)
             {
@@ -126,20 +122,47 @@ namespace graphics
                 return Emplace(windows.size(), std::forward<Args>(args) ...);
             }
 
+            Win & Emplace(size_t idx, Win & new_win)
+            {
+                if (idx > windows.size())
+                    throw std::invalid_argument("idx");
+				
+				if (new_win.HasParent())
+					throw GraphicsException("item still has parent");
+
+                new_win.SetParent(this);
+                windows.emplace(windows.begin() + idx, &new_win);
+                return *(windows[idx]);
+            }
+
+            Win & EmplaceBack(Win & new_win)
+            {
+                return Emplace(windows.size(), new_win);
+            }
+
             Group & Erase(size_t idx)
             {
                 if (idx >= windows.size())
-                    throw std::invalid_argument("idx");
+                    throw std::invalid_argument("trying to erase window, which doesn't exist");
 
                 windows.erase(windows.begin() + idx);
                 NotifyChange();
                 return *this;
             }
 
+            Win & Release(size_t idx)
+            {
+                if (idx >= windows.size())
+                    throw std::invalid_argument("trying to erase window, which doesn't exist");
+                
+                windows[idx]->SetParent(nullptr);
+                return *(windows[idx].release());
+            }
+
             Win & operator[] (size_t idx)
             {
                 if (idx >= windows.size() || idx < 0)
-                    throw std::invalid_argument("idx");
+                    throw std::invalid_argument("trying to access window, which doesn't exist");
 
                 return *(windows[idx]);
             }
@@ -147,19 +170,9 @@ namespace graphics
             const Win & operator[] (size_t idx) const
             {
                 if (idx >= windows.size() || idx < 0)
-                    throw std::invalid_argument("idx");
+                    throw std::invalid_argument("trying to access window, which doesn't exist");
 
                 return *(windows[idx]);
-            }
-
-            Win & Last()
-            {
-                return this->operator[](Size() - 1);
-            }
-
-            const Win & Last() const
-            {            
-                return this->operator[](Size() - 1);
             }
 
             size_t Size() const

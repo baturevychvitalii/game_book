@@ -4,22 +4,29 @@
 #include <vector>
 
 #include "item.h"
+#include "../utils/graphics/group.h"
 
-class Inventory : ISerializable
+class Inventory : public ISerializable, public graphics::Menu<Item>
 {
     private:
-        unsigned max_items;
-        std::vector<std::unique_ptr<Item>> items;
+        size_t max_items;
     public:
-        static const unsigned size_limit;
-        Inventory(const xml::Tag & t);
-        Inventory();
+        Inventory() = delete;
         Inventory(const Inventory & other) = delete;
         Inventory & operator=(const Inventory & other) = delete;
+        
+        Inventory(
+			IChangeable * parent,
+			size_t width,
+			short y,
+			short x,
+			short bg_color,
+			
+			const xml::Tag & t);
         ~Inventory() = default;
+        Inventory(size_t max_items);
 
-        void GetItemFrom(size_t idx, Inventory & other);
-        void RemoveItem(size_t idx);
+		void ChangeMax(int dx);
 
         xml::Tag Serialize() const override;
 };

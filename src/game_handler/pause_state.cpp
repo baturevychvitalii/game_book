@@ -6,7 +6,7 @@
 PauseState::PauseState(GameStateManager * manager)
     : IGameState(manager)
 {
-    auto & menu = AddWindow<graphics::Menu>(
+    auto & menu = AddWindow<graphics::Menu<>>(
         "pause",
         graphics::XPercent(50),
         graphics::YPercent(10),
@@ -26,7 +26,7 @@ PauseState::PauseState(GameStateManager * manager)
     SetTopAndBottom(menu, menu);
 }
 
-void PauseState::StandardManuHandlerProcess(graphics::Menu * to_test)
+void PauseState::ProcessMenuSelection(graphics::IMenu * to_test)
 {
     size_t choice = to_test->GetChoice();
 
@@ -51,7 +51,7 @@ void PauseState::StandardManuHandlerProcess(graphics::Menu * to_test)
 
 bool PauseState::Reacted(int input)
 {
-    graphics::Menu * menu = static_cast<graphics::Menu *>(BotWindow());
+    graphics::IMenu * menu = static_cast<graphics::IMenu *>(BotWindow());
 
     if (StandardMenuHandlerReacted(menu, input))
         return true;

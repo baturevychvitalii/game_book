@@ -28,7 +28,7 @@ Page::Page(const xml::Tag & root, GameStateManager * g)
     );
     head.AppendText(root.Child("header").Text());
 
-    auto & cross = AddWindow<graphics::Menu>(
+    auto & cross = AddWindow<graphics::Menu<>>(
         "crossroads",
         graphics::max_x,
         0,
@@ -43,7 +43,7 @@ Page::Page(const xml::Tag & root, GameStateManager * g)
     {
         cross.AppendText("Finito");
         cross.NewLine();
-        cross.AppendText("press 'Enter to quit to main menu'");
+        cross.AppendText("use pause to quit");
     }
     else
     {
@@ -83,7 +83,7 @@ void Page::GetNotification(Notify notification)
             }
             break;
         case Notify::New:
-            gsm->player.reset(new Creature());
+            gsm->player.reset(new Creature("Lorry", 100, 777));
             gsm->TurnPage(std::string("book/begin.xml"));
             break;
         case Notify::Continue:
@@ -114,7 +114,7 @@ xml::Tag Page::Serialize() const
     return xml::Tag("page").AddText(filename);
 }
 
-void Page::StandardManuHandlerProcess(graphics::Menu * crossroads_menu)
+void Page::ProcessMenuSelection(graphics::IMenu * crossroads_menu)
 {
     // works only with crossroads menu
     if (crossroads_menu != BotWindow())
@@ -125,7 +125,7 @@ void Page::StandardManuHandlerProcess(graphics::Menu * crossroads_menu)
 
 bool Page::Reacted(int input)
 {
-    graphics::Menu * cross = static_cast<graphics::Menu *>(BotWindow());
+    graphics::IMenu * cross = static_cast<graphics::IMenu *>(BotWindow());
 
     if (StandardMenuHandlerReacted(cross, input))
         return true;

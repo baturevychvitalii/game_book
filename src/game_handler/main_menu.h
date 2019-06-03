@@ -5,7 +5,7 @@
 
 class MainMenu : public IGameState
 {
-    void StandardManuHandlerProcess(graphics::Menu * to_test) override;
+    void ProcessMenuSelection(graphics::IMenu * to_test) override;
     void GetNotification(Notify notification) override;
     bool Reacted(int input) override;
     public:

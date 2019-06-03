@@ -12,23 +12,22 @@ void graphics::Textbox::ApplyChange()
         SetHeight(MinHeight());
 }
 
-void graphics::Textbox::Draw()
+void graphics::Textbox::DrawSpecific() const
 {
-    Window::Draw();
+	DrawBackground();
+	short starty = act_y + TopIndent();
+	short startx;
+	for (const auto & pair : lines)
+	{
+		startx = MidXStart(pair.first.length());
+		attron(COLOR_PAIR(pair.second));
+		
+		for (size_t i = 0; i < pair.first.length(); i ++)
+			mvaddch(starty, startx + i, pair.first[i]);
 
-    short starty = act_y + TopIndent();
-    short startx;
-    for (const auto & pair : lines)
-    {
-        startx = MidXStart(pair.first.length());
-        attron(COLOR_PAIR(pair.second));
-        
-        for (size_t i = 0; i < pair.first.length(); i ++)
-            mvaddch(starty, startx + i, pair.first[i]);
-
-        attroff(COLOR_PAIR(pair.second));
-        starty++;
-    }
+		attroff(COLOR_PAIR(pair.second));
+		starty++;
+	}
 }
 
 size_t graphics::Textbox::TopIndent() const

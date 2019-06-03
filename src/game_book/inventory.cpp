@@ -1,8 +1,8 @@
 #include "inventory.h"
 #include "items/food.h"
 
-Inventory::Inventory()
-    : max_items(3)
+Inventory::Inventory(size_t max)
+    : graphics::Textbox() max_items(max)
 {
 }
 

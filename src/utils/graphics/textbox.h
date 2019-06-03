@@ -12,13 +12,14 @@ namespace graphics
         std::vector<std::pair<std::string, short>> lines;
         void ApplyChange() override;
         virtual size_t TopIndent() const;
+		protected:
+			void DrawSpecific() const override;
         public:
             Textbox(IChangeable * parent, size_t width, short y, short x, short color);
             Textbox(const Textbox & tb) = delete;
             Textbox & operator=(const Textbox & tb) = delete;
 
             size_t MinHeight() const override;
-            void Draw() override;
             
             size_t SizeLines() const;
             Textbox & InsertText(size_t idx, const std::string & text, short color = -1);

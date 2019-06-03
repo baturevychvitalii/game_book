@@ -38,6 +38,16 @@ class IChangeable
         {
             return up_to_date;
         }
+
+        void SetParent(IChangeable * new_parent)
+        {
+            parent = new_parent;
+        }
+
+		bool HasParent() const
+		{
+			return parent != nullptr;
+		}
 };
 
 

@@ -1,0 +1,13 @@
+<page type="trade">
+    <header>
+        Wanna buy something
+    </header>
+
+    <trader name="aiziken">
+        <inventory>
+            <item type="weapon" name="ukulele" charges="10" ppd="8" damage="10"/>
+            <item type="food" name="apple of Adam" charges="1" ppd="333" heal="111111"/>
+        </inventory>
+    </trader>
+    <crossroad/>
+</page>

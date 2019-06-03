@@ -5,8 +5,8 @@
 
 class Food : public Item
 {
-    private:
-        int heal_value;
+    int heal_value;
+    size_t Use(size_t charges, Creature * creature) override;
     public:
         Food(const xml::Tag & t);
         xml::Tag Serialize() const override;

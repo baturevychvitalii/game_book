@@ -2,23 +2,36 @@
 #define __GAMEBOOK_ITEM__
 
 
-#include "../utils/interfaces/ISerializable.h"
+#include "../utils/xml_parser/ISerializable.h"
+#include "../utils/graphics/button.h"
 
-class Item : ISerializable
+class Creature;
+
+class Item : ISerializable, public graphics::Button
 {
-    private:
-        const std::string name;
-        unsigned durability;
-        unsigned price_per_durability;
+	const std::string name;
+	size_t durability;
+	size_t line_with_durability;
+	const size_t price_per_durability;
+
+	void ApplyChange() override;
+	
     public:
-        Item(const xml::Tag & t);
+        Item(
+            IChangeable * parent,
+            size_t width,
+            short y,
+            short x,
+            short active_color,
+            short inactive_color,
+            const xml::Tag & t);
+        Item() = delete;
         Item(const Item & other) = delete;
         Item & operator=(const Item & other) = delete;
         virtual ~Item() = default;
         
-        // bool HasCharges() const;
-        // virtual void Use(size_t charges);
-        // unsigned Price() const;
+        virtual size_t Use(size_t charges, Creature * creature);
+        size_t Price() const;
         xml::Tag Serialize() const override;
 };
 

@@ -4,7 +4,7 @@
 #include <ncurses.h>
 #include <stdexcept>
 #include "graphics_exception.h"
-#include "../interfaces/IChangeable.h"
+#include "IChangeable.h"
 
 namespace graphics
 {
@@ -30,6 +30,8 @@ namespace graphics
         {
         }
 
+		virtual void DrawSpecific() const = 0;
+
         protected:
             size_t act_h, act_w, on_screen_h, on_screen_w;
             short act_y, act_x, on_screen_y, on_screen_x;
@@ -44,6 +46,7 @@ namespace graphics
             void UpdateOnScreenWidth() noexcept;
             void UpdateOnScreenHeight() noexcept;
             void UpdateOnScreenPositin() noexcept;
+            void DrawBackground() const;
         public:
             Window(IChangeable * parent, size_t width, short y, short x, short color);
             Window(const Window & other) = delete;
@@ -70,7 +73,7 @@ namespace graphics
             Window & Move(Direction direction, unsigned multiplier = 1);
             Window & Move(short dy, short dx);
             Window & MoveTo(short y, short x);
-            virtual void Draw();
+            void Draw() const;
     };
 }
 

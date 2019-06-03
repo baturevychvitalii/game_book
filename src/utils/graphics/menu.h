@@ -2,22 +2,43 @@
 #define __GRAPHICS_MENU__
 
 #include <memory>
-#include "button.h"
 #include "group.h"
+#include "IMenu.h"
 
 namespace graphics
 {
-    class Menu final : public Textbox
+	template <class Butt = Button>
+    class Menu : public IMenu
     {
-        Group<Button> buttons;
+        Group<Butt> buttons;
         size_t current;
         short active_c, inactive_c;
 
-        int FindButton(const std::string & text) const;
+        void ApplyChange() override
+		{
+			buttons.Commit();
+			buttons.MoveTo(act_y + Textbox::MinHeight(), act_x + 1);
+			
+			if (act_h < MinHeight())
+				SetHeight(Textbox::MinHeight() + buttons.MinHeight() + 1);
+		}
 
-        void ApplyChange() override;
-        size_t TopIndent() const override;
-        void MoveChildren(short dy, short dx) override;
+        size_t TopIndent() const override
+		{
+			return 1;
+		}
+
+        void MoveChildren(short dy, short dx) override
+		{
+			buttons.Move(dy,dx);
+		}
+
+
+		void DrawSpecific() const override
+		{
+			Textbox::DrawSpecific();
+			buttons.Draw();
+		}
         public:
             Menu(IChangeable * parent,
                 size_t width,
@@ -26,27 +47,138 @@ namespace graphics
                 short bg_color,
                 short active_color,
                 short inactive_color,
-                size_t colomns);
+                size_t colomns)
+				: Textbox(parent, width, y, x, bg_color),
+				buttons(this, width - 2, 0, 0, bg_color, colomns, 1, 2),
+				current(0),
+				active_c(active_color),
+				inactive_c(inactive_color)
+			{
+			}
+
             Menu(const Menu & menu) = delete;
             Menu & operator=(const Menu & menu) = delete;
 
-            size_t MinHeight() const override;
-            void Draw() override;
+            size_t MinHeight() const override
+			{
+				return Textbox::MinHeight() + buttons.Height() + 1;
+			}
 
-            size_t AddOption(const std::string & new_option);
-            size_t RemoveOption(const std::string & to_remove);
-            size_t OptionsSize() const;
+			template<typename ... Args>
+			Butt & AddOption(Args && ... args)
+			{
+				Butt & new_but = buttons.EmplaceBack(active_c, inactive_c, std::forward<Args>(args) ...);
+				if (buttons.Size() == 1)
+				{
+					current = 0;
+					buttons[current].Select();
+				}
 
-            size_t operator++();
-            size_t Next();
-            size_t operator--();
-            size_t Prev();
-            size_t GetChoice() const;
-            std::string GetChoiceText() const;
-            bool ChoicesAreVisible() const;
-            bool NextIsVisible() const;
-            bool PrevIsVisible() const;
-            bool CurrIsVisible() const;
+				return new_but;
+			}
+
+			Butt & AddOption(Butt & button)
+			{
+				Butt & new_but = buttons.EmplaceBack(button);
+				if (buttons.Size() == 1)
+				{
+					current = 0;
+					buttons[current].Select();
+				}
+
+				return new_but;
+			}
+
+            Menu & EraseOption(size_t idx)
+			{       
+				buttons.Erase(idx);
+
+				// if deleting currently selected element
+				if (idx == current && !buttons.Empty())
+				{
+					current = 0;
+					buttons[current].Select();
+				}
+
+				return *this;
+			}
+
+			But & ReleaseOption(size_t idx)
+			{
+				return buttons.Release(idx);
+			}
+
+            size_t Size() const override
+			{
+				return buttons.Size();
+			}
+
+            size_t Next() override
+			{
+				if (buttons.Empty())    
+					throw GraphicsException("there are no buttons");
+				
+
+				if (current != buttons.Size() - 1)
+				{
+					buttons[current++].Unselect();
+					buttons[current].Select();
+				}
+
+				return current;
+			}
+
+            size_t Prev() override
+			{
+				if (buttons.Empty())    
+					throw GraphicsException("there are no buttons");
+
+				if (current != 0)
+				{
+					buttons[current--].Unselect();
+					buttons[current].Select();
+				}
+
+				return current;
+			}
+
+            size_t GetChoice() const override
+			{
+				if (buttons.Empty())
+					throw GraphicsException("there are no buttons");
+
+				return current;
+			}
+
+            bool NextIsVisible() const override
+			{
+				if (buttons.Empty())
+					throw GraphicsException("there are no choices");
+
+				if (current < buttons.Size() - 1 && !buttons[current + 1].IsVisible())
+					return false;
+
+				return true;
+			}
+
+            bool PrevIsVisible() const override
+			{
+				if (buttons.Empty())
+					throw GraphicsException("there are no choices");
+
+				if (current > 0 && !buttons[current - 1].IsVisible())
+					return false;
+
+				return true;
+			}
+
+            bool CurrIsVisible() const override
+			{
+				if (buttons.Empty())
+					throw GraphicsException("there are no choices");
+
+				return buttons[current].IsVisible();
+			}
     };
 }
 

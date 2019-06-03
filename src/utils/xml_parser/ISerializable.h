@@ -1,7 +1,7 @@
 #ifndef __INTERFACE_SERIALIZABLE__
 #define __INTERFACE_SERIALIZABLE__
 
-#include "../xml_parser/tag.h"
+#include "tag.h"
 
 class ISerializable
 {
