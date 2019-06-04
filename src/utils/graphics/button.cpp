@@ -18,8 +18,7 @@ void graphics::Button::Select()
     is_active = true;
     window_color = active_color;
     
-    for (size_t i = 0; i < SizeLines(); i++)
-        AlterColor(i, active_color);
+	SwitchLinesColor(inactive_color, active_color);
 }
 
 void graphics::Button::Unselect()
@@ -27,8 +26,7 @@ void graphics::Button::Unselect()
     is_active = false;
     window_color = inactive_color;
 
-    for (size_t i = 0; i < SizeLines(); i++)
-        AlterColor(i, inactive_color);
+	SwitchLinesColor(active_color, inactive_color);
 }
 
 bool graphics::Button::IsSelected() const

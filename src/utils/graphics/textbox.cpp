@@ -101,7 +101,7 @@ graphics::Textbox & graphics::Textbox::Clear()
     return EraseLines(0, lines.size());
 }
 
-graphics::Textbox & graphics::Textbox::AlterText(size_t idx, const std::string & new_text)
+graphics::Textbox & graphics::Textbox::AlterLineText(size_t idx, const std::string & new_text)
 {
     if (idx >= lines.size())
         throw std::invalid_argument("idx");
@@ -113,10 +113,21 @@ graphics::Textbox & graphics::Textbox::AlterText(size_t idx, const std::string &
     return *this;
 }
 
-graphics::Textbox & graphics::Textbox::AlterColor(size_t idx, short color)
+graphics::Textbox & graphics::Textbox::AlterLineColor(size_t idx, short color)
 {
     lines[idx].second = color;
     return *this;
+}
+
+graphics::Textbox & graphics::Textbox::SwitchLinesColor(short from, short to)
+{
+	for (auto & line : lines)
+	{
+		if (line.second == from)
+			line.second = to;
+	}
+
+	return *this;
 }
 
 const std::string & graphics::Textbox::LineAt(size_t idx) const

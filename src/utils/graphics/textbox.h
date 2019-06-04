@@ -26,8 +26,9 @@ namespace graphics
             Textbox & InsertText(size_t idx, const std::string & text, short color = -1);
             Textbox & AppendText(const std::string & text, short color = -1);
             size_t NewLine(const std::string & text = "", short color = -1);
-            Textbox & AlterText(size_t idx, const std::string & new_text);
-            Textbox & AlterColor(size_t idx, short color);
+            Textbox & AlterLineText(size_t idx, const std::string & new_text);
+            Textbox & AlterLineColor(size_t idx, short color);
+			Textbox & SwitchLinesColor(short from_this, short to_that);
             Textbox & EraseLines(size_t idx, size_t n = 1);
             Textbox & Clear();
             const std::string & LineAt(size_t idx) const;

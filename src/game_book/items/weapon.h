@@ -8,7 +8,9 @@ class Weapon : public Item
     int damage;
     size_t Use(size_t charges, Creature * creature) override;
     public:
-        Weapon(const xml::Tag & t);
+        Weapon(
+			const xml::Tag & t
+		);
         xml::Tag Serialize() const override;
 };
 

@@ -32,8 +32,8 @@ size_t Item::Use(size_t charges, Creature * c)
 {
     size_t to_use = std::min(durability, charges);
     durability -= to_use;
-	AlterText(line_with_durability, "#" + std::to_string(durability));
-	AlterText(line_with_durability + 1, "$" + std::to_string(Price()));
+	AlterLineText(line_with_durability, "#" + std::to_string(durability));
+	AlterLineText(line_with_durability + 1, "$" + std::to_string(Price()));
     return to_use;
 }
 

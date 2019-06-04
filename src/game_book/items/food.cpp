@@ -1,5 +1,6 @@
 #include "food.h"
 #include "../creature.h"
+#include "../../game_handler/colors.h"
 
 Food::Food(
 		IChangeable * parent,
@@ -13,6 +14,10 @@ Food::Food(
     : Item(parent, width, y, x, active_color, inactive_color, t),
     heal_value(std::stoi(t.Prop("heal")))
 {
+	for (size_t i = 0; i < IdxOfLineAfterName(); i++)
+	{
+		AlterLineColor(i, green_on_black);
+	}
 }
 
 xml::Tag Food::Serialize() const
