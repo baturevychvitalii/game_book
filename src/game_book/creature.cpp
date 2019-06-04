@@ -13,15 +13,14 @@ Creature::Creature(
 	inventory(inv),
 	status(new graphics::Group<graphics::Window>(nullptr, graphics::max_x, 0, 0, status_theme_color, 2, 0, 0))
 {
-	inventory->Commit();
 	status->EmplaceBack<graphics::StatusBar>(
-		status_health_inactive_color,
 		status_health_active_color,
+		status_health_inactive_color,
 		health,
 		max_health
-	);
+	).AppendText("health", status_health_active_color);
 
-	status->EmplaceBack<graphics::Textbox>(status_theme_color).AppendText(name + " " + std::to_string(cash));
+	status->EmplaceBack<graphics::Textbox>(status_theme_color).NewLine(name + " $" + std::to_string(cash));
 	status->Commit();
 }
 Creature::Creature()

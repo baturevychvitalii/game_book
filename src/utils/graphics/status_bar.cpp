@@ -5,12 +5,15 @@ graphics::StatusBar::StatusBar(
     size_t width,
     short y,
     short x,
-    short empty_color,
-    short filled_color,
+    short active_color,
+    short inactive_color,
     size_t actual,
     size_t maximum
 )
-    : Window(parent, width, y, x, empty_color), filled_color(filled_color), act_value(actual), max_value(maximum)
+    : Textbox(parent, width, y, x, inactive_color),
+	active_color(active_color),
+	act_value(actual),
+	max_value(maximum)
 {
 }
 
@@ -32,7 +35,7 @@ void graphics::StatusBar::DrawSpecific() const
 	size_t to_draw = act_value * act_w / max_value;
 	to_draw = std::min(to_draw, on_screen_w);
 
-	attron(filled_color);
+	attron(COLOR_PAIR(active_color));
 	for (size_t r = 0; r < on_screen_h; r ++)
 	{
 		for (size_t c = 0; c < to_draw; c++)
@@ -40,7 +43,9 @@ void graphics::StatusBar::DrawSpecific() const
 			mvaddch(on_screen_y + r, on_screen_x + c, ' ');
 		}
 	}
-	attroff(filled_color);
+	attroff(COLOR_PAIR(active_color));
+
+	DrawLines();
 }
 
 graphics::StatusBar & graphics::StatusBar::SetMax(size_t maximum)

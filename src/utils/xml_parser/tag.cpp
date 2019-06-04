@@ -32,7 +32,7 @@ std::string xml::Tag::Prop(const std::string & prop_name) const
 {
     auto * found_prop = FindNodeStartingFrom(node->properties, prop_name);
     if (!found_prop)
-        throw XmlException("attribute with requested name not found");
+        throw XmlException(this).NoProp(prop_name);
     
     return GetContent(found_prop);
 }
@@ -47,7 +47,7 @@ xml::Tag xml::Tag::Child(const std::string & child_name) const
 {
     auto * found_child = FindNodeStartingFrom(node->children, child_name);
     if (!found_child)
-        throw XmlException("child with requested name not found");
+        throw XmlException(this).NoChild(child_name);
     
     return found_child;
 }
@@ -104,7 +104,7 @@ xml::Tag & xml::Tag::AddText(const std::string & text)
 std::string xml::Tag::GetFilename() const
 {
     if (IsNull() || node->doc == NULL || node->doc->URL == NULL)
-        throw XmlException("not parsed from a file");
+        throw XmlException(this).Messg("not parsed from a file");
         
     return XCharToNorm(node->doc->URL);
 }

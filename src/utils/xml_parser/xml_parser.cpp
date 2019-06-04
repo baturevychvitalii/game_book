@@ -13,14 +13,7 @@ xml::Parser::~Parser()
 
 xml::Document xml::Parser::GetDoc(const std::string & filename)
 {
-    try
-    {
-        return Document(filename);
-    }
-    catch(...)
-    {
-        throw XmlException("couldn't load document");
-    }
+	return Document(filename);
 }
 
 xml::Document xml::Parser::NewDoc(const std::string & filename, const std::string & root)

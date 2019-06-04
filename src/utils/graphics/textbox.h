@@ -14,6 +14,7 @@ namespace graphics
         virtual size_t TopIndent() const;
 		protected:
 			void DrawSpecific() const override;
+			void DrawLines() const;
         public:
             Textbox(IChangeable * parent, size_t width, short y, short x, short color);
             Textbox(const Textbox & tb) = delete;

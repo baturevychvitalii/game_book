@@ -68,7 +68,7 @@ void Page::GetNotification(Notify notification)
             catch(const std::exception& e)
             {
                 gsm->DisplayException(e);
-                gsm->SwitchState(pause_state);            
+                gsm->SwitchState(pause_state);      
             }
             break;
         case Notify::Load:
@@ -129,8 +129,8 @@ bool Page::Reacted(int input)
 {
     graphics::menu_base * cross = static_cast<graphics::menu_base *>(BotWindow());
 
-    if (StandardMenuHandlerReacted(cross, input))
-        return true;
+	if (StandardMenuHandlerReacted(cross, input))
+		return true;
 
 	switch (input)
 	{

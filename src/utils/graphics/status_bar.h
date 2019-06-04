@@ -1,13 +1,13 @@
 #ifndef __GRAPHICS_STATUS_BAR__
 #define __GRAPHICS_STATUS_BAR__
 
-#include "window.h"
+#include "textbox.h"
 
 namespace graphics
 {
-    class StatusBar : public Window
+    class StatusBar : public Textbox
     {
-        short filled_color;
+        short active_color;
         size_t act_value;
         size_t max_value;
         
@@ -19,8 +19,8 @@ namespace graphics
                 size_t width,
                 short y,
                 short x,
-                short empty_color,
-                short filled_color,
+                short active_color,
+                short inactive_color,
                 size_t act_value,
                 size_t max_value);
             

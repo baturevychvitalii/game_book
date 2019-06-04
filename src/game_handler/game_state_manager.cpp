@@ -108,7 +108,7 @@ void GameStateManager::PopUp(const std::string & screen)
     wm.SelectScreen(screen);
     wm.Draw();
     getch();
-    SwitchState(current_state);
+    //SwitchState(current_state);
 }
 
 void GameStateManager::DisplayException(const std::exception & e){

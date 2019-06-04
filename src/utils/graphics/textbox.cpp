@@ -12,9 +12,8 @@ void graphics::Textbox::ApplyChange()
         SetHeight(MinHeight());
 }
 
-void graphics::Textbox::DrawSpecific() const
+void graphics::Textbox::DrawLines() const
 {
-	DrawBackground();
 	short starty = act_y + TopIndent();
 	short startx;
 	for (const auto & pair : lines)
@@ -28,6 +27,12 @@ void graphics::Textbox::DrawSpecific() const
 		attroff(COLOR_PAIR(pair.second));
 		starty++;
 	}
+}
+
+void graphics::Textbox::DrawSpecific() const
+{
+	DrawBackground();
+	DrawLines();
 }
 
 size_t graphics::Textbox::TopIndent() const

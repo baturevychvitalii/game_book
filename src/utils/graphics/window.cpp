@@ -37,10 +37,8 @@ void graphics::Window::Draw() const
     if (!UpToDate())
         throw GraphicsException("trying to display uncommited changes");
 
-    if (OnScreenSpace() == 0)
-        return;
-	
-	DrawSpecific();
+    if (OnScreenSpace() > 0)	
+		DrawSpecific();
 }
 
 graphics::Window & graphics::Window::SetHeight(size_t new_height)

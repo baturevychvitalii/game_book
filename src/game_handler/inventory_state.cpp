@@ -44,7 +44,7 @@ void InventoryState::ProcessMenuSelection(graphics::menu_base * to_test)
 		throw GameException("must be players inventory");
 
 	// TODO
-	size_t choice = to_test->GetChoice();
+	//size_t choice = to_test->GetChoice();
 
 	gsm->SwitchState(game_state, Notify::Continue);
 }
@@ -54,7 +54,7 @@ bool InventoryState::Reacted(int input)
 	graphics::menu_base * items = static_cast<graphics::menu_base *>(BotWindow());
 	if (StandardMenuHandlerReacted(items, input))
 		return true;
-	
+
 	switch (input)
 	{
 		case 'i':
@@ -63,5 +63,5 @@ bool InventoryState::Reacted(int input)
 			return true;	
 		default:
 			return IGameState::Reacted(input);
-	}
+	}	
 }

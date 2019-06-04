@@ -6,7 +6,7 @@ xml::Document::Document(const std::string & filename)
 {
     doc_ptr = xmlParseFile(file.c_str());
     if (doc_ptr == NULL)
-        throw XmlException("couldn't parse doc with libxml2");
+        throw std::invalid_argument("couldn't parse doc with libxml2");
     
     root = xmlDocGetRootElement(doc_ptr);
 }
