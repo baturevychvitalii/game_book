@@ -2,11 +2,12 @@
 #include "game_state_manager.h"
 #include "colors.h"
 #include "../utils/graphics/menu.h"
+#include "../utils/graphics/button.h"
 
 PauseState::PauseState(GameStateManager * manager)
     : IGameState(manager)
 {
-    auto & menu = AddWindow<graphics::Menu<>>(
+    auto & menu = AddWindow<graphics::Menu<graphics::Button>>(
         "pause",
         graphics::XPercent(50),
         graphics::YPercent(10),
@@ -17,16 +18,15 @@ PauseState::PauseState(GameStateManager * manager)
         1
     );
 
-    menu.AppendText("Pause");
-    menu.AddOption("Continue");
-    menu.AddOption("Save");
-    menu.AddOption("Controls");
-    menu.AddOption("Quit to main menu (unsaved progress will be lost FOREVER!!)");
+	menu.AddOption().AppendText("Continue");
+	menu.AddOption().AppendText("Save");
+    menu.AddOption().AppendText("Controls");
+    menu.AddOption().AppendText("Quit to main menu (unsaved progress will be lost FOREVER!!)");
 
     SetTopAndBottom(menu, menu);
 }
 
-void PauseState::ProcessMenuSelection(graphics::IMenu * to_test)
+void PauseState::ProcessMenuSelection(graphics::menu_base * to_test)
 {
     size_t choice = to_test->GetChoice();
 
@@ -51,7 +51,7 @@ void PauseState::ProcessMenuSelection(graphics::IMenu * to_test)
 
 bool PauseState::Reacted(int input)
 {
-    graphics::IMenu * menu = static_cast<graphics::IMenu *>(BotWindow());
+    graphics::menu_base * menu = static_cast<graphics::menu_base *>(BotWindow());
 
     if (StandardMenuHandlerReacted(menu, input))
         return true;

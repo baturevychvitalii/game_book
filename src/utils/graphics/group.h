@@ -105,21 +105,22 @@ namespace graphics
                 return minimal_h;
             }
 
-            template<typename ... ConsturctorParams>
-            Win & Emplace(size_t idx, ConsturctorParams && ... params)
+			// Allows to add derived classes to group
+            template<typename Window_type = Win, typename ... ConsturctorParams>
+            Window_type & Emplace(size_t idx, ConsturctorParams && ... params)
             {
                 if (idx > windows.size())
                     throw std::invalid_argument("idx");
 
-                windows.emplace(windows.begin() + idx, new Win(this, window_width, 0, 0, std::forward<ConsturctorParams>(params) ...));
+                windows.emplace(windows.begin() + idx, new Window_type(this, window_width, 0, 0, std::forward<ConsturctorParams>(params) ...));
                 NotifyChange();
-                return *(windows[idx]);
+                return static_cast<Window_type &>(*(windows[idx]));
             }
 
-            template<typename ... Args>
-            Win & EmplaceBack(Args && ... args)
+            template<typename Window_type = Win, typename ... Args>
+            Window_type & EmplaceBack(Args && ... args)
             {
-                return Emplace(windows.size(), std::forward<Args>(args) ...);
+                return Emplace<Window_type>(windows.size(), std::forward<Args>(args) ...);
             }
 
             Win & Emplace(size_t idx, Win & new_win)
@@ -184,6 +185,11 @@ namespace graphics
             {
                 return windows.empty();
             }
+
+			size_t WidthShallBe() const
+			{
+				return window_width;
+			}
     };
 }
 

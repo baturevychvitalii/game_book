@@ -90,6 +90,9 @@ graphics::Textbox & graphics::Textbox::EraseLines(size_t idx, size_t n)
 
 graphics::Textbox & graphics::Textbox::Clear()
 {
+	if (lines.empty())
+		return *this;
+		
     return EraseLines(0, lines.size());
 }
 

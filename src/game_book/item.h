@@ -14,7 +14,7 @@ class Item : ISerializable, public graphics::Button
 	size_t line_with_durability;
 	const size_t price_per_durability;
 
-	void ApplyChange() override;
+	//void ApplyChange() override;
 	
     public:
         Item(
@@ -28,7 +28,6 @@ class Item : ISerializable, public graphics::Button
         Item() = delete;
         Item(const Item & other) = delete;
         Item & operator=(const Item & other) = delete;
-        virtual ~Item() = default;
         
         virtual size_t Use(size_t charges, Creature * creature);
         size_t Price() const;

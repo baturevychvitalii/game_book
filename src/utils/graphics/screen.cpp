@@ -56,6 +56,18 @@ graphics::Screen & graphics::Screen::Clear()
     return *this;
 }
 
+graphics::Window & graphics::Screen::AddWindow(const std::string & id, graphics::Window & new_win)
+{
+	if (new_win.HasParent())
+		throw GraphicsException("trying to add window, which has a parent");
+
+	if (HasWindow(id))
+		throw GraphicsException("window already exists");
+
+	windows.emplace(id, &new_win);
+	return *(windows[id]);
+}
+
 graphics::Screen & graphics::Screen::RemoveWindow(const std::string & id)
 {
     if (!HasWindow(id))
@@ -63,6 +75,16 @@ graphics::Screen & graphics::Screen::RemoveWindow(const std::string & id)
 
     windows.erase(id);
     return *this;
+}
+
+graphics::Window & graphics::Screen::ReleaseWindow(const std::string & id)
+{
+	if (!HasWindow(id))
+        throw std::invalid_argument("window with such id doesn't exist");
+
+	Window * released = windows[id].release();
+	windows.erase(id);
+	return *released;
 }
 
 graphics::Window & graphics::Screen::GetWindow(const std::string & id)

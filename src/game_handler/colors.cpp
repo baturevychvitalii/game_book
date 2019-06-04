@@ -31,6 +31,14 @@ short   red_on_white = 1,
 
         page_story_body_color = black_on_white,
 
+		item_selected_color = white_on_magneta,
+		item_unselected_color = magneta_on_white,
+		inventory_bg_color = magneta_on_white,
+		status_theme_color = inventory_bg_color,
+		status_health_active_color = white_on_red,
+		status_health_inactive_color = green_on_black,
+
+
 
         error_color = red_on_black,
         hacker = green_on_black;

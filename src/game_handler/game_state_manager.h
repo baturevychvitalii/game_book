@@ -6,7 +6,8 @@
 
 extern size_t menu_state,
               pause_state,
-              game_state;
+              game_state,
+			  inventory_state;
 
 
 class Creature;
@@ -15,7 +16,7 @@ class GameStateManager final
 {
     graphics::WindowManager wm;
     // four states: Menu, Pause, Current page, Temp page
-    std::array<std::unique_ptr<IGameState>, 4> states;
+    std::array<std::unique_ptr<IGameState>, 5> states;
     size_t current_state;
     bool shall_run;
 
@@ -30,6 +31,7 @@ class GameStateManager final
 
         void TurnPage(const std::string & filename);
         void SwitchState(size_t state_code, Notify notification = Notify::Empty);
+		void SendNotification(size_t state_code, Notify notification);
         
         void Launch();
         void Stop();

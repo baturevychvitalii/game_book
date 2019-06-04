@@ -6,11 +6,14 @@
 
 #include "main_menu.h"
 #include "pause_state.h"
+#include "inventory_state.h"
 #include "../game_book/page_types/story.h"
 
 size_t  menu_state = 0,
         pause_state = 1,
-        game_state = 2;
+        game_state = 2,
+	//  imagine game state 3 here
+		inventory_state = 4;
 
 GameStateManager::GameStateManager()
     : current_state(0), shall_run(true), player(nullptr)
@@ -21,6 +24,8 @@ GameStateManager::GameStateManager()
     states[menu_state] = std::move(std::make_unique<MainMenu>(this));
     states[pause_state] = std::move(std::make_unique<PauseState>(this));
     states[game_state] = std::move(std::make_unique<Page>(this));
+	states[inventory_state] = std::move(std::make_unique<InventoryState>(this));
+	
 
     // add cross available helper screens
     {
@@ -72,6 +77,11 @@ void GameStateManager::SwitchState(size_t state_code, Notify notification)
 {
     current_state = state_code;
     states[current_state]->GetNotification(notification);
+}
+
+void GameStateManager::SendNotification(size_t state_code, Notify notification)
+{
+	states[state_code]->GetNotification(notification);
 }
 
 void GameStateManager::Launch()

@@ -1,6 +1,6 @@
 #include "IGameState.h"
 #include "game_exception.h"
-#include "../utils/graphics/menu.h"
+#include "../utils/graphics/menu_base.h"
 
 IGameState::IGameState(GameStateManager * manager)
     : Screen("detetched"), top(nullptr), bot(nullptr), gsm(manager)
@@ -48,7 +48,7 @@ bool IGameState::Reacted(int input)
     return true;
 }
 
-bool IGameState::StandardMenuHandlerReacted(graphics::IMenu * to_test, int input)
+bool IGameState::StandardMenuHandlerReacted(graphics::menu_base * to_test, int input)
 {
     // standard handler doesn't know what to do with this menu, may be
     // it'is normal, who knows better than derived class itself

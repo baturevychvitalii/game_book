@@ -4,24 +4,33 @@
 
 #include "inventory.h"
 
-class Creature : ISerializable, public graphics::Textbox
+class Creature : ISerializable
 {
     private:
+		Creature(
+			const std::string & name,
+			size_t heal,
+			size_t max_heal,
+			size_t cash,
+			Inventory * inv
+		);
+
         const std::string name;
-        unsigned health, max_health;
-        unsigned cash;
-        Inventory inventory;
+        size_t health, max_health;
+        size_t cash;
+        Inventory * inventory;
+		graphics::Group<graphics::Window> * status;
     public:
-        Creature() = delete;
         Creature(const Creature & other) = delete;
         Creature & operator=(const Creature & other) = delete;
         ~Creature() = default;
 
+        Creature();
         Creature(const xml::Tag & tag);
-        Creature(const std::string & name, unsigned max_health, unsigned cash);
         xml::Tag Serialize() const override;
 
-        Inventory & Inventory();
+        Inventory & GetInventory();
+		graphics::Group<graphics::Window> & GetStatusBar();
 };
 
 #endif

@@ -8,7 +8,15 @@ class Food : public Item
     int heal_value;
     size_t Use(size_t charges, Creature * creature) override;
     public:
-        Food(const xml::Tag & t);
+        Food(
+			IChangeable * parent,
+			size_t width,
+			short y,
+			short x,
+			short active_color,
+			short inactive_color,
+			const xml::Tag & t
+		);
         xml::Tag Serialize() const override;
 };
 

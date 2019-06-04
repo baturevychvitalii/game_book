@@ -2,11 +2,12 @@
 #include "colors.h"
 #include "game_state_manager.h"
 #include "../utils/graphics/menu.h"
+#include "../utils/graphics/button.h"
 
 MainMenu::MainMenu(GameStateManager * manager)
 	: IGameState(manager)
 {
-	auto & menu = AddWindow<graphics::Menu<>>(
+	auto & menu = AddWindow<graphics::Menu<graphics::Button>>(
 		"main menu",
 		graphics::max_x,
 		0,
@@ -17,16 +18,17 @@ MainMenu::MainMenu(GameStateManager * manager)
 		1
 	);
 
+
 	menu.AppendText("Story of Lory");
 	menu.NewLine();
 	menu.AppendText("<  or  > to select different options").
 	AppendText("^  or  v to scroll");
 
-	menu.AddOption("New");
-	menu.AddOption("Load");
-	menu.AddOption("Controls");
-	menu.AddOption("About");
-	menu.AddOption("Quit");
+	menu.AddOption().AppendText("New");
+	menu.AddOption().AppendText("Load");
+	menu.AddOption().AppendText("Controls");
+	menu.AddOption().AppendText("About");
+	menu.AddOption().AppendText("Quit");
 	menu.Commit();
 
 	if (menu.Height() < graphics::max_y)
@@ -35,7 +37,7 @@ MainMenu::MainMenu(GameStateManager * manager)
 	SetTopAndBottom(menu, menu);
 }
 
-void MainMenu::ProcessMenuSelection(graphics::IMenu * to_test)
+void MainMenu::ProcessMenuSelection(graphics::menu_base * to_test)
 {
 	size_t selection = to_test->GetChoice();
 	switch (selection)
@@ -62,7 +64,7 @@ void MainMenu::ProcessMenuSelection(graphics::IMenu * to_test)
 
 bool MainMenu::Reacted(int input)
 {
-	graphics::IMenu * menu = static_cast<graphics::IMenu *>(BotWindow());
+	graphics::menu_base * menu = static_cast<graphics::menu_base *>(BotWindow());
 
 	if (StandardMenuHandlerReacted(menu, input))
 		return true;

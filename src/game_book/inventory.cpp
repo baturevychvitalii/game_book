@@ -1,30 +1,38 @@
 #include "inventory.h"
 #include "items/food.h"
+#include "../game_handler/colors.h"
 
-Inventory::Inventory(size_t max)
-    : graphics::Textbox() max_items(max)
-{
-}
-
-Inventory::Inventory(const xml::Tag & t)
-    : max_items(std::stoi(t.Child("max_items").Text()))
+Inventory::Inventory(
+	const xml::Tag & t
+)
+    : graphics::Menu<Item>(nullptr, graphics::max_x, 0, 0, inventory_bg_color, item_selected_color, item_unselected_color, 4),
+	max_items(std::stoi(t.Child("max_items").Text()))
 {
     std::string type;
     for (const auto & item : t.GetVector("item"))
     {
         type = item.Prop("type");
         if (type == "food")
-            items.emplace_back(new Food(item));
+        {
+			AddOption<Food>(t);
+		}
     }
+}
+
+Inventory::Inventory()
+	: graphics::Menu<Item>(nullptr, graphics::max_x, 0, 0, inventory_bg_color, item_selected_color, item_unselected_color, 4),
+	max_items(3)
+{
 }
 
 xml::Tag Inventory::Serialize() const
 {
     auto tag = xml::Tag("inventory");
     tag.AddChild("max_items").AddText(std::to_string(max_items));
-    for (auto & item : items)
-    {
-        tag.AddChild(item->Serialize());
-    }
+	for (int i = 0; i < Size(); i++)
+	{
+		tag.AddChild((*this)[i].Serialize());
+	}
+
     return tag;
 }

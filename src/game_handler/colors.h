@@ -34,6 +34,15 @@ extern short    red_on_white,
 
                 page_story_body_color,
 
+/// creature
+				item_selected_color,
+				item_unselected_color,
+				inventory_bg_color,
+				status_health_active_color,
+				status_health_inactive_color,
+				status_theme_color,
+
+
                 error_color,
                 hacker;
 

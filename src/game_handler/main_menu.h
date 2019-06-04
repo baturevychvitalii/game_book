@@ -3,9 +3,11 @@
 
 #include "IGameState.h"
 
+namespace graphics{class menu_base;}
+
 class MainMenu : public IGameState
 {
-    void ProcessMenuSelection(graphics::IMenu * to_test) override;
+    void ProcessMenuSelection(graphics::menu_base * to_test) override;
     void GetNotification(Notify notification) override;
     bool Reacted(int input) override;
     public:

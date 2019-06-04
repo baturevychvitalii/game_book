@@ -5,9 +5,11 @@
 
 class InventoryState : public IGameState
 {
-
+	void ProcessMenuSelection(graphics::menu_base * to_test) override;
+	void GetNotification(Notify notification) override;
+	bool Reacted(int input) override;
     public:
-		static problematic programatic
+		InventoryState(GameStateManager * manager);
 };
 
 #endif

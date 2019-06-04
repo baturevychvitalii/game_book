@@ -3,12 +3,12 @@
 
 #include <memory>
 #include "group.h"
-#include "IMenu.h"
+#include "menu_base.h"
 
 namespace graphics
 {
-	template <class Butt = Button>
-    class Menu : public IMenu
+	template<class Butt>
+    class Menu : public menu_base
     {
         Group<Butt> buttons;
         size_t current;
@@ -48,7 +48,7 @@ namespace graphics
                 short active_color,
                 short inactive_color,
                 size_t colomns)
-				: Textbox(parent, width, y, x, bg_color),
+				: menu_base(parent, width, y, x, bg_color),
 				buttons(this, width - 2, 0, 0, bg_color, colomns, 1, 2),
 				current(0),
 				active_c(active_color),
@@ -64,17 +64,17 @@ namespace graphics
 				return Textbox::MinHeight() + buttons.Height() + 1;
 			}
 
-			template<typename ... Args>
-			Butt & AddOption(Args && ... args)
+			template<typename Derived_butt = Butt, typename ... Args>
+			Derived_butt & AddOption(Args && ... args)
 			{
-				Butt & new_but = buttons.EmplaceBack(active_c, inactive_c, std::forward<Args>(args) ...);
+				Derived_butt & new_butt = buttons.template EmplaceBack<Derived_butt>(active_c, inactive_c, std::forward<Args>(args) ...);
 				if (buttons.Size() == 1)
 				{
 					current = 0;
 					buttons[current].Select();
 				}
 
-				return new_but;
+				return new_butt;
 			}
 
 			Butt & AddOption(Butt & button)
@@ -103,17 +103,28 @@ namespace graphics
 				return *this;
 			}
 
-			But & ReleaseOption(size_t idx)
+			Butt & ReleaseOption(size_t idx)
 			{
 				return buttons.Release(idx);
 			}
 
-            size_t Size() const override
+
+			Butt & operator[](size_t idx)
+			{
+				return buttons[idx];
+			}
+
+			const Butt & operator[](size_t idx) const
+			{
+				return buttons[idx];
+			}
+
+            size_t Size() const
 			{
 				return buttons.Size();
 			}
 
-            size_t Next() override
+            size_t Next()
 			{
 				if (buttons.Empty())    
 					throw GraphicsException("there are no buttons");
@@ -128,7 +139,7 @@ namespace graphics
 				return current;
 			}
 
-            size_t Prev() override
+            size_t Prev()
 			{
 				if (buttons.Empty())    
 					throw GraphicsException("there are no buttons");
@@ -142,15 +153,20 @@ namespace graphics
 				return current;
 			}
 
-            size_t GetChoice() const override
+			size_t GetChoice() const
 			{
 				if (buttons.Empty())
 					throw GraphicsException("there are no buttons");
-
+				
 				return current;
 			}
 
-            bool NextIsVisible() const override
+            bool Empty() const
+			{
+				return buttons.Empty();
+			}
+
+            bool NextIsVisible() const
 			{
 				if (buttons.Empty())
 					throw GraphicsException("there are no choices");
@@ -161,7 +177,7 @@ namespace graphics
 				return true;
 			}
 
-            bool PrevIsVisible() const override
+            bool PrevIsVisible() const
 			{
 				if (buttons.Empty())
 					throw GraphicsException("there are no choices");
@@ -172,12 +188,17 @@ namespace graphics
 				return true;
 			}
 
-            bool CurrIsVisible() const override
+            bool CurrIsVisible() const
 			{
 				if (buttons.Empty())
 					throw GraphicsException("there are no choices");
 
 				return buttons[current].IsVisible();
+			}
+
+			size_t WidthShallBe() const
+			{
+				return buttons.WidthShallBe();
 			}
     };
 }

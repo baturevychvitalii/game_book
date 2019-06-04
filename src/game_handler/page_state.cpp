@@ -28,7 +28,7 @@ Page::Page(const xml::Tag & root, GameStateManager * g)
     );
     head.AppendText(root.Child("header").Text());
 
-    auto & cross = AddWindow<graphics::Menu<>>(
+    auto & cross = AddWindow<graphics::Menu<graphics::Button>>(
         "crossroads",
         graphics::max_x,
         0,
@@ -49,7 +49,7 @@ Page::Page(const xml::Tag & root, GameStateManager * g)
     {
         cross.AppendText("Where now, Lorry?");
         for (auto & pair : crossroads)
-            cross.AddOption(pair.second);
+            cross.AddOption().AppendText(pair.second);
     }
     
     SetTopAndBottom(head, cross);
@@ -75,6 +75,7 @@ void Page::GetNotification(Notify notification)
             try
             {
                 Load();
+				gsm->SendNotification(inventory_state, Notify::New);
             }
             catch(const std::exception& e)
             {
@@ -83,8 +84,9 @@ void Page::GetNotification(Notify notification)
             }
             break;
         case Notify::New:
-            gsm->player.reset(new Creature("Lorry", 100, 777));
+            gsm->player.reset(new Creature());
             gsm->TurnPage(std::string("book/begin.xml"));
+			gsm->SendNotification(inventory_state, Notify::New);
             break;
         case Notify::Continue:
             break;
@@ -114,7 +116,7 @@ xml::Tag Page::Serialize() const
     return xml::Tag("page").AddText(filename);
 }
 
-void Page::ProcessMenuSelection(graphics::IMenu * crossroads_menu)
+void Page::ProcessMenuSelection(graphics::menu_base * crossroads_menu)
 {
     // works only with crossroads menu
     if (crossroads_menu != BotWindow())
@@ -125,16 +127,20 @@ void Page::ProcessMenuSelection(graphics::IMenu * crossroads_menu)
 
 bool Page::Reacted(int input)
 {
-    graphics::IMenu * cross = static_cast<graphics::IMenu *>(BotWindow());
+    graphics::menu_base * cross = static_cast<graphics::menu_base *>(BotWindow());
 
     if (StandardMenuHandlerReacted(cross, input))
         return true;
 
-    if (input == 'p')
-    {
-        gsm->SwitchState(pause_state);
-        return true;
-    }
-    
-    return IGameState::Reacted(input);
+	switch (input)
+	{
+		case 'p':
+			gsm->SwitchState(pause_state);
+			return true;
+		case 'i':
+			gsm->SwitchState(inventory_state, Notify::Continue);
+			return true;
+		default:
+			return IGameState::Reacted(input);
+	}
 }

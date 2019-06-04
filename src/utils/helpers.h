@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include <stdexcept>
-
+#include "graphics/button.h"
 
 size_t Distance(int a, int b) noexcept;
 unsigned MaxLength(const std::vector<std::string> & lines);

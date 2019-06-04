@@ -24,6 +24,7 @@ namespace graphics
 
 
             Screen & RemoveWindow(const std::string & id);
+			Window & ReleaseWindow(const std::string & id);
             Screen & Clear();
             bool Empty() const;
             bool HasWindow(const std::string & id);
@@ -31,6 +32,7 @@ namespace graphics
             void Draw();
             Screen & Move(short dy, short dx);
             Screen & Move(graphics::Direction direction, unsigned multiplier);
+			Window & AddWindow(const std::string & id, Window & new_win);
 
             template <typename Win, typename ... UniqueArgs>
             Win & AddWindow(const std::string & id, size_t width, short y, short x, short bg_color, UniqueArgs && ... args)

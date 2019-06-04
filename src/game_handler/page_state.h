@@ -13,7 +13,7 @@ class Page : public ISerializable, public IGameState
 
     void GetNotification(Notify notification) override;
     bool Reacted(int input) override;
-    void ProcessMenuSelection(graphics::IMenu * to_test) override;
+    void ProcessMenuSelection(graphics::menu_base * to_test) override;
 
     void Save() const;
     void Load();
