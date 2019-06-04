@@ -2,6 +2,8 @@
 #include "game_exception.h"
 #include "../utils/graphics/menu_base.h"
 
+static const unsigned scroll_speed = 1; 
+
 IGameState::IGameState(GameStateManager * manager)
     : Screen("detetched"), top(nullptr), bot(nullptr), gsm(manager)
 {
@@ -34,12 +36,12 @@ bool IGameState::Reacted(int input)
         case 'K':
         case 'k':
             if (top->HighestPoint() < 0)
-                Move(graphics::Direction::Down, 3);
+                Move(graphics::Direction::Down, scroll_speed);
             break;
         case 'J':
         case 'j':
             if (bot->LowestPoint() > static_cast<short>(graphics::max_y))
-                Move(graphics::Direction::Up, 3);
+                Move(graphics::Direction::Up, scroll_speed);
             break;
         default:
             return false;

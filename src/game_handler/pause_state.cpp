@@ -2,12 +2,11 @@
 #include "game_state_manager.h"
 #include "colors.h"
 #include "../utils/graphics/menu.h"
-#include "../utils/graphics/button.h"
 
 PauseState::PauseState(GameStateManager * manager)
     : IGameState(manager)
 {
-    auto & menu = AddWindow<graphics::Menu<graphics::Button>>(
+    auto & menu = AddWindow<graphics::Menu<>>(
         "pause",
         graphics::XPercent(50),
         graphics::YPercent(10),

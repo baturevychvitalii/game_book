@@ -20,11 +20,11 @@ class IChangeable
 
         void Commit()
         {
-            if (up_to_date)
-                return;
-            
-            ApplyChange();
-            up_to_date = true;
+            if (!up_to_date)
+			{
+				ApplyChange();
+				up_to_date = true;
+			}
         }
 
         void NotifyChange()

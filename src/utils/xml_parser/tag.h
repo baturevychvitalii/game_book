@@ -35,6 +35,11 @@ namespace xml
         Tag AddChild(const Tag & other);
         Tag AddChild(const std::string & child_name);
 
+		template<typename ToStringable>
+		Tag & AddProp(const std::string & prop_name, const ToStringable & value)
+		{
+			return AddProp(prop_name, std::to_string(value));
+		}
 
         private:
             static const char * textContentTagName;

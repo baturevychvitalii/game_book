@@ -24,8 +24,8 @@ xml::Tag Item::Serialize() const
     return xml::Tag("item").
 	AddProp("type", type).
     AddProp("name", name).
-    AddProp("charges", std::to_string(durability)).
-    AddProp("ppd", std::to_string(price_per_durability));
+    AddProp("charges", durability).
+    AddProp("ppd", price_per_durability);
 }
 
 size_t Item::Use(size_t charges, Creature * c)
@@ -40,4 +40,12 @@ size_t Item::Use(size_t charges, Creature * c)
 size_t Item::Price() const
 {
     return price_per_durability * durability;
+}
+
+void Item::SetNameColor(short color)
+{
+	for (size_t i = 0; i < line_with_durability; i++)
+	{
+		AlterLineColor(i, color);
+	}
 }

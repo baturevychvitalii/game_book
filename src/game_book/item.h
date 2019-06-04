@@ -16,7 +16,7 @@ class Item : ISerializable, public graphics::Button
 	const size_t price_per_durability;
 
 	protected:
-		size_t IdxOfLineAfterName() const {return line_with_durability;}
+		void SetNameColor(short color);
 	
     public:
         Item(

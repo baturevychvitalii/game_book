@@ -13,6 +13,7 @@ namespace graphics
     {
         size_t colomns, window_width, y_indent, x_indent, minimal_h;
         std::vector<std::unique_ptr<Win>> windows;
+		bool draw_background;
 
         void ApplyChange() override
         {
@@ -76,6 +77,9 @@ namespace graphics
 		
 		void DrawSpecific() const override
 		{
+			if (draw_background)
+				DrawBackground();
+
 			for (auto & window : windows)
 				window->Draw();
 		}
@@ -86,7 +90,8 @@ namespace graphics
                 colomns(colomns),
                 window_width((act_w + x_indent) / colomns - x_indent),
                 y_indent(y_indent),
-                x_indent(x_indent)
+                x_indent(x_indent),
+				draw_background(false)
             {
                 if (colomns == 0)
                     throw GraphicsException("colomns must be > 0");
@@ -104,6 +109,12 @@ namespace graphics
                 
                 return minimal_h;
             }
+
+			Group & SetDrawBackground(bool value = true)
+			{
+				draw_background = value;
+				return *this;
+			}
 
 			// Allows to add derived classes to group
             template<typename Window_type = Win, typename ... ConsturctorParams>
@@ -133,6 +144,7 @@ namespace graphics
 
                 new_win.SetParent(this);
                 windows.emplace(windows.begin() + idx, &new_win);
+				NotifyChange();
                 return *(windows[idx]);
             }
 
@@ -157,6 +169,7 @@ namespace graphics
                     throw std::invalid_argument("trying to erase window, which doesn't exist");
                 
                 windows[idx]->SetParent(nullptr);
+				NotifyChange();
                 return *(windows[idx].release());
             }
 
@@ -185,11 +198,6 @@ namespace graphics
             {
                 return windows.empty();
             }
-
-			size_t WidthShallBe() const
-			{
-				return window_width;
-			}
     };
 }
 

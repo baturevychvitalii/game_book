@@ -9,6 +9,12 @@ class Weapon : public Item
     size_t Use(size_t charges, Creature * creature) override;
     public:
         Weapon(
+			IChangeable * parent,
+			size_t width,
+			short y,
+			short x,
+			short active_color,
+			short inactive_color,
 			const xml::Tag & t
 		);
         xml::Tag Serialize() const override;

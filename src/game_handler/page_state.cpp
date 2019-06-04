@@ -28,7 +28,7 @@ Page::Page(const xml::Tag & root, GameStateManager * g)
     );
     head.AppendText(root.Child("header").Text());
 
-    auto & cross = AddWindow<graphics::Menu<graphics::Button>>(
+    auto & cross = AddWindow<graphics::Menu<>>(
         "crossroads",
         graphics::max_x,
         0,

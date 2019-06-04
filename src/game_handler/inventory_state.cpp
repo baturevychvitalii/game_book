@@ -21,7 +21,7 @@ void InventoryState::GetNotification(Notify notification)
 					graphics::max_x,
 					0,
 					0,
-					item_selected_color
+					inventory_bg_color
 				).AppendText("Lorries inventory");
 				head.Commit();
 				auto & status = AddWindow("bar", gsm->player->GetStatusBar());

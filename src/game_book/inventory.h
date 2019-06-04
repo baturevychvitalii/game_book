@@ -8,6 +8,7 @@ class Inventory : public ISerializable, public graphics::Menu<Item>
 {
     private:
         size_t max_items;
+		size_t MinHeight() const override;
     public:
         Inventory(const Inventory & other) = delete;
         Inventory & operator=(const Inventory & other) = delete;

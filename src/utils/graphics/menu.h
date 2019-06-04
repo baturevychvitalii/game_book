@@ -4,24 +4,17 @@
 #include <memory>
 #include "group.h"
 #include "menu_base.h"
+#include "button.h"
 
 namespace graphics
 {
-	template<class Butt>
+	template<class Butt = Button>
     class Menu : public menu_base
     {
         Group<Butt> buttons;
         size_t current;
         short active_c, inactive_c;
 
-        void ApplyChange() override
-		{
-			buttons.Commit();
-			buttons.MoveTo(act_y + Textbox::MinHeight(), act_x + 1);
-			
-			if (act_h < MinHeight())
-				SetHeight(Textbox::MinHeight() + buttons.MinHeight() + 1);
-		}
 
         size_t TopIndent() const override
 		{
@@ -33,12 +26,22 @@ namespace graphics
 			buttons.Move(dy,dx);
 		}
 
+		protected:
+			void ApplyChange() override
+			{
+				buttons.Commit();
+				buttons.MoveTo(act_y + Textbox::MinHeight(), act_x + 1);
+				
+				if (act_h < MinHeight())
+					SetHeight(MinHeight());
+			}
 
-		void DrawSpecific() const override
-		{
-			Textbox::DrawSpecific();
-			buttons.Draw();
-		}
+			void DrawSpecific() const override
+			{
+				Textbox::DrawSpecific();
+				buttons.Draw();
+			}
+
         public:
             Menu(IChangeable * parent,
                 size_t width,
@@ -61,7 +64,7 @@ namespace graphics
 
             size_t MinHeight() const override
 			{
-				return Textbox::MinHeight() + buttons.Height() + 1;
+				return Textbox::MinHeight() + buttons.MinHeight() + 1;
 			}
 
 			template<typename Derived_butt = Butt, typename ... Args>
@@ -194,11 +197,6 @@ namespace graphics
 					throw GraphicsException("there are no choices");
 
 				return buttons[current].IsVisible();
-			}
-
-			size_t WidthShallBe() const
-			{
-				return buttons.WidthShallBe();
 			}
     };
 }

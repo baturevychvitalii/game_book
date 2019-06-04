@@ -3,21 +3,19 @@
 #include "../../game_handler/colors.h"
 
 Food::Food(
-		IChangeable * parent,
-		size_t width,
-		short y,
-		short x,
-		short active_color,
-		short inactive_color,
-		const xml::Tag & t
-	)
+	IChangeable * parent,
+	size_t width,
+	short y,
+	short x,
+	short active_color,
+	short inactive_color,
+	const xml::Tag & t
+)
     : Item(parent, width, y, x, active_color, inactive_color, t),
     heal_value(std::stoi(t.Prop("heal")))
 {
-	for (size_t i = 0; i < IdxOfLineAfterName(); i++)
-	{
-		AlterLineColor(i, green_on_black);
-	}
+	SetNameColor(green_on_black);
+	NewLine("heal: " + std::to_string(heal_value));
 }
 
 xml::Tag Food::Serialize() const

@@ -11,7 +11,7 @@ Creature::Creature(
 )
 	: name(nome), health(heal), max_health(max_heal), cash(cash),
 	inventory(inv),
-	status(new graphics::Group<graphics::Window>(nullptr, graphics::max_x, 0, 0, status_theme_color, 2, 0, 0))
+	status(new graphics::Group<graphics::Window>(nullptr, graphics::max_x, 0, 0, white_on_magneta, 2, 0, 1))
 {
 	status->EmplaceBack<graphics::StatusBar>(
 		status_health_active_color,
@@ -21,6 +21,7 @@ Creature::Creature(
 	).AppendText("health", status_health_active_color);
 
 	status->EmplaceBack<graphics::Textbox>(status_theme_color).NewLine(name + " $" + std::to_string(cash));
+	status->SetDrawBackground();
 	status->Commit();
 }
 

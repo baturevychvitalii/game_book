@@ -2,12 +2,11 @@
 #include "colors.h"
 #include "game_state_manager.h"
 #include "../utils/graphics/menu.h"
-#include "../utils/graphics/button.h"
 
 MainMenu::MainMenu(GameStateManager * manager)
 	: IGameState(manager)
 {
-	auto & menu = AddWindow<graphics::Menu<graphics::Button>>(
+	auto & menu = AddWindow<graphics::Menu<>>(
 		"main menu",
 		graphics::max_x,
 		0,

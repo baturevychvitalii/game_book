@@ -1,9 +1,13 @@
 #include "inventory.h"
-#include "items/food.h"
 #include "../game_handler/colors.h"
+#include "items/food.h"
+#include "items/weapon.h"
+#include "../game_handler/game_exception.h"
+
+static const size_t inventory_colomns = 3;
 
 Inventory::Inventory(const xml::Tag & t)
-    : graphics::Menu<Item>(nullptr, graphics::max_x, 0, 0, inventory_bg_color, item_selected_color, item_unselected_color, 4),
+    : graphics::Menu<Item>(nullptr, graphics::max_x, 0, 0, inventory_bg_color, item_selected_color, item_unselected_color, inventory_colomns),
 	max_items(std::stoi(t.Child("max_items").Text()))
 {
     std::string type;
@@ -11,20 +15,28 @@ Inventory::Inventory(const xml::Tag & t)
     {
         type = item.Prop("type");
         if (type == "food")
-        {
 			AddOption<Food>(item);
-		}
+		else if(type == "weapon")
+			AddOption<Weapon>(item);
+		else
+			throw GameException("unsupported item type");
     }
 
 	Commit();
 }
 
 Inventory::Inventory()
-	: graphics::Menu<Item>(nullptr, graphics::max_x, 0, 0, inventory_bg_color, item_selected_color, item_unselected_color, 4),
+	: graphics::Menu<Item>(nullptr, graphics::max_x, 0, 0, inventory_bg_color, item_selected_color, item_unselected_color, inventory_colomns),
 	max_items(3)
 {
 	Commit();
 }
+
+size_t Inventory::MinHeight() const
+{
+	return std::max(Menu::MinHeight(), graphics::max_y);
+}
+
 
 xml::Tag Inventory::Serialize() const
 {
