@@ -23,6 +23,7 @@ Creature::Creature(
 	status->EmplaceBack<graphics::Textbox>(status_theme_color).NewLine(name + " $" + std::to_string(cash));
 	status->Commit();
 }
+
 Creature::Creature()
 	: Creature("Lorry", 77, 111, 777, new Inventory())
 {

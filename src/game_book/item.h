@@ -9,12 +9,11 @@ class Creature;
 
 class Item : ISerializable, public graphics::Button
 {
+	const std::string type;
 	const std::string name;
 	size_t durability;
 	size_t line_with_durability;
 	const size_t price_per_durability;
-
-	//void ApplyChange() override;
 	
     public:
         Item(
