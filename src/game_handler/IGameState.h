@@ -13,6 +13,7 @@ enum Notify
     Load,
     Continue,
     Quit,
+	Trade,
     Empty
 };
 

@@ -6,11 +6,7 @@
 
 class Story : public Page
 {
-    public:
-        Story() = delete;
-        Story(const Story & other) = delete;
-        Story & operator=(const Story & other) = delete;
-        
+    public:        
         Story(const xml::Tag & root, GameStateManager * manager);
 };
 

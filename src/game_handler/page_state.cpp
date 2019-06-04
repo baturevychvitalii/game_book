@@ -33,9 +33,9 @@ Page::Page(const xml::Tag & root, GameStateManager * g)
         graphics::max_x,
         0,
         0,
-        page_crossroad_bg_color,
-        page_crossroad_active_color,
-        page_crossroad_inactive_color,
+        menu_bg_color,
+        menu_active_color,
+        menu_inactive_color,
         2
     );
 
@@ -138,6 +138,7 @@ bool Page::Reacted(int input)
 			gsm->SwitchState(pause_state);
 			return true;
 		case 'i':
+		case 'I':
 			gsm->SwitchState(inventory_state, Notify::Continue);
 			return true;
 		default:

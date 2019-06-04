@@ -6,9 +6,6 @@
 
 class Inventory : public ISerializable, public graphics::Menu<Item>
 {
-    private:
-        size_t max_items;
-		size_t MinHeight() const override;
     public:
         Inventory(const Inventory & other) = delete;
         Inventory & operator=(const Inventory & other) = delete;
@@ -16,7 +13,6 @@ class Inventory : public ISerializable, public graphics::Menu<Item>
         Inventory(const xml::Tag & t);
 
         Inventory();
-		void ChangeMax(int dx);
 
         xml::Tag Serialize() const override;
 };

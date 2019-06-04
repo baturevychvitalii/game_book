@@ -6,9 +6,14 @@
 
 static const size_t inventory_colomns = 3;
 
+Inventory::Inventory()
+	: graphics::Menu<Item>(nullptr, graphics::max_x, 0, 0, inventory_bg_color, item_selected_color, item_unselected_color, inventory_colomns)
+{
+	Commit();
+}
+
 Inventory::Inventory(const xml::Tag & t)
-    : graphics::Menu<Item>(nullptr, graphics::max_x, 0, 0, inventory_bg_color, item_selected_color, item_unselected_color, inventory_colomns),
-	max_items(std::stoi(t.Child("max_items").Text()))
+    : Inventory()
 {
     std::string type;
     for (const auto & item : t.GetVector("item"))
@@ -25,23 +30,9 @@ Inventory::Inventory(const xml::Tag & t)
 	Commit();
 }
 
-Inventory::Inventory()
-	: graphics::Menu<Item>(nullptr, graphics::max_x, 0, 0, inventory_bg_color, item_selected_color, item_unselected_color, inventory_colomns),
-	max_items(3)
-{
-	Commit();
-}
-
-size_t Inventory::MinHeight() const
-{
-	return std::max(Menu::MinHeight(), graphics::max_y);
-}
-
-
 xml::Tag Inventory::Serialize() const
 {
     auto tag = xml::Tag("inventory");
-    tag.AddChild("max_items").AddText(std::to_string(max_items));
 	for (size_t i = 0; i < Size(); i++)
 	{
 		tag.AddChild((*this)[i].Serialize());

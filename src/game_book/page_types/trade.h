@@ -6,15 +6,13 @@
 class Trade : public Page
 {
     bool Reacted(int input) override;
-    void ProcessMenuSelection(graphics::Menu * menu) override;
+    void ProcessMenuSelection(graphics::menu_base * menu) override;
 
-    const std::string name_trader;
-    Inventory trader_inventory;
-    bool trade_finished;
+    Inventory * trader_inventory;
+	Inventory * player_inventory;
+	graphics::menu_base * crossroads_menu;
+	graphics::menu_base * current_menu;
     public:
-        Trade() = delete;
-        Trade(const Trade & other) = delete;
-        
         Trade(const xml::Tag & root, GameStateManager * manager);
 };
 

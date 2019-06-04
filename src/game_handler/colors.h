@@ -34,6 +34,9 @@ extern short    red_on_white,
 
                 page_story_body_color,
 
+				page_trade_selected_menu_bg_color,
+				page_trade_unselected_menu_bg_color,
+
 /// creature
 				item_selected_color,
 				item_unselected_color,

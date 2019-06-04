@@ -12,12 +12,14 @@ class Page : public ISerializable, public IGameState
     xml::Tag Serialize() const override;
 
     void GetNotification(Notify notification) override;
-    bool Reacted(int input) override;
-    void ProcessMenuSelection(graphics::menu_base * to_test) override;
 
     void Save() const;
     void Load();
     void New();
+	
+	protected:
+		bool Reacted(int input) override;
+    	void ProcessMenuSelection(graphics::menu_base * to_test) override;
 
     public:
         Page() = delete;

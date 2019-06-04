@@ -11,9 +11,9 @@ PauseState::PauseState(GameStateManager * manager)
         graphics::XPercent(50),
         graphics::YPercent(10),
         graphics::XPercent(25),
-        pause_bg_color,
-        pause_active_color,
-        pause_inactive_color,
+        menu_bg_color,
+        menu_active_color,
+        menu_inactive_color,
         1
     );
 
