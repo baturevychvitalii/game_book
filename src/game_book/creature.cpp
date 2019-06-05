@@ -60,3 +60,21 @@ graphics::Group<graphics::Window> & Creature::GetStatusBar()
 {
 	return *status;
 }
+
+size_t Creature::Budget() const
+{
+	return cash;
+}
+
+bool Creature::ChangeBudget(int value)
+{
+	if (cash + value > 0)
+	{
+		cash += value;
+		static_cast<graphics::Textbox &>((*status)[1]).AlterLineText(0, name + " $" + std::to_string(cash));
+	}
+	else
+		return false;
+
+	return true;
+}

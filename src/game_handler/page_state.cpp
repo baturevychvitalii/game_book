@@ -25,8 +25,8 @@ Page::Page(const xml::Tag & root, GameStateManager * g)
         0,
         0,
         page_header_color
-    );
-    head.AppendText(root.Child("header").Text());
+    ).
+    AppendText(root.Child("header").Text());
 
     auto & cross = AddWindow<graphics::Menu<>>(
         "crossroads",
@@ -121,20 +121,25 @@ void Page::ProcessMenuSelection(graphics::menu_base * crossroads_menu)
     // works only with crossroads menu
     if (crossroads_menu != BotWindow())
         throw std::invalid_argument("given menu, which should have been handled on the upper level");
-    
-    gsm->TurnPage(crossroads[crossroads_menu->GetChoice()].first);
+    else
+	{
+		try
+		{    
+			gsm->TurnPage(crossroads[crossroads_menu->GetChoice()].first);
+		}
+		catch (std::exception & e)
+		{
+			gsm->DisplayException(e);
+		}
+	}
 }
 
 bool Page::Reacted(int input)
 {
-    graphics::menu_base * cross = static_cast<graphics::menu_base *>(BotWindow());
-
-	if (StandardMenuHandlerReacted(cross, input))
-		return true;
-
 	switch (input)
 	{
 		case 'p':
+		case 'P':
 			gsm->SwitchState(pause_state);
 			return true;
 		case 'i':

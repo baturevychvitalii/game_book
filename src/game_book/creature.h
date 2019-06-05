@@ -31,6 +31,9 @@ class Creature : ISerializable
 
         Inventory & GetInventory();
 		graphics::Group<graphics::Window> & GetStatusBar();
+		
+		size_t Budget() const;
+		bool ChangeBudget(int value);
 };
 
 #endif

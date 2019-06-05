@@ -5,6 +5,8 @@
 
 class InventoryState : public IGameState
 {
+	bool in_trade;
+
 	void ProcessMenuSelection(graphics::menu_base * to_test) override;
 	void GetNotification(Notify notification) override;
 	bool Reacted(int input) override;

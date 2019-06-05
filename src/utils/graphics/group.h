@@ -168,9 +168,10 @@ namespace graphics
                 if (idx >= windows.size())
                     throw std::invalid_argument("trying to erase window, which doesn't exist");
                 
-                windows[idx]->SetParent(nullptr);
-				NotifyChange();
-                return *(windows[idx].release());
+				auto * to_release = windows[idx].release();
+                to_release->SetParent(nullptr);
+				Erase(idx);
+                return *to_release;
             }
 
             Win & operator[] (size_t idx)

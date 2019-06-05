@@ -21,19 +21,21 @@ void InventoryState::GetNotification(Notify notification)
 					graphics::max_x,
 					0,
 					0,
-					inventory_bg_color
+					menu_bg_color
 				).AppendText("Lorries inventory");
 				head.Commit();
 				auto & status = AddWindow("bar", gsm->player->GetStatusBar());
 				status.MoveTo(head.LowestPoint(), 0);
 				auto & items = AddWindow("inventory", gsm->player->GetInventory());
-				if (items.Height() < graphics::max_y)
-					items.SetHeight(graphics::max_y);
 				items.MoveTo(status.LowestPoint(), 0);
 				SetTopAndBottom(head, items);
 				break;
 			}
+		case Notify::Trade:
+			in_trade = true;
+			break;
 		case Notify::Continue:
+			in_trade = false;
 			break;
 		default:
 			throw std::invalid_argument("wrong notification for inventory state");
@@ -45,10 +47,15 @@ void InventoryState::ProcessMenuSelection(graphics::menu_base * to_test)
 	if (to_test != &(gsm->player->GetInventory()))
 		throw GameException("must be players inventory");
 
-	// TODO
-	//size_t choice = to_test->GetChoice();
 
-	gsm->SwitchState(game_state, Notify::Continue);
+	if (in_trade)
+	{
+		gsm->SendNotification(game_state, Notify::Trade);
+	}
+	else
+	{
+		gsm->SwitchState(game_state, Notify::Continue);
+	}	
 }
 
 bool InventoryState::Reacted(int input)
@@ -60,7 +67,9 @@ bool InventoryState::Reacted(int input)
 	switch (input)
 	{
 		case 'i':
+		case 'I':
 		case 'p':
+		case 'P':
 			gsm->SwitchState(game_state, Notify::Continue);
 			return true;	
 		default:

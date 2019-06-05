@@ -20,17 +20,9 @@ extern short    red_on_white,
                 menu_active_color,
                 menu_inactive_color,
 
-                pause_bg_color,
-                pause_active_color,
-                pause_inactive_color,
 
-                about_color,
-                controls_color,
 /// pages
                 page_header_color,
-                page_crossroad_bg_color,
-                page_crossroad_active_color,
-                page_crossroad_inactive_color,
 
                 page_story_body_color,
 
@@ -38,16 +30,15 @@ extern short    red_on_white,
 				page_trade_unselected_menu_bg_color,
 
 /// creature
-				item_selected_color,
-				item_unselected_color,
-				inventory_bg_color,
 				status_health_active_color,
 				status_health_inactive_color,
 				status_theme_color,
 
 
                 error_color,
-                hacker;
+				no_money_color,
+                about_color,
+                controls_color;
 
 
 void InitColors();

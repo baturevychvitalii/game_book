@@ -11,7 +11,6 @@ class Page : public ISerializable, public IGameState
 
     xml::Tag Serialize() const override;
 
-    void GetNotification(Notify notification) override;
 
     void Save() const;
     void Load();
@@ -20,6 +19,7 @@ class Page : public ISerializable, public IGameState
 	protected:
 		bool Reacted(int input) override;
     	void ProcessMenuSelection(graphics::menu_base * to_test) override;
+    	void GetNotification(Notify notification) override;
 
     public:
         Page() = delete;

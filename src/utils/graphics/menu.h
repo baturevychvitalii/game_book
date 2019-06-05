@@ -108,7 +108,16 @@ namespace graphics
 
 			Butt & ReleaseOption(size_t idx)
 			{
-				return buttons.Release(idx);
+				Butt & result = buttons.Release(idx);
+				result.Unselect();
+
+				if (idx == current && !buttons.Empty())
+				{
+					current = 0;
+					buttons[current].Select();
+				}
+
+				return result;
 			}
 
 

@@ -6,5 +6,7 @@
     <body>
         the end
     </body>
-    <crossroad/>
+    <crossroad>
+		<path to="book/trade_example.xml">wanna trade?</path>
+	</crossroad>
 </page>

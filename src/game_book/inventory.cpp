@@ -7,7 +7,7 @@
 static const size_t inventory_colomns = 3;
 
 Inventory::Inventory()
-	: graphics::Menu<Item>(nullptr, graphics::max_x, 0, 0, inventory_bg_color, item_selected_color, item_unselected_color, inventory_colomns)
+	: graphics::Menu<Item>(nullptr, graphics::max_x, 0, 0, menu_bg_color, menu_active_color, menu_inactive_color, inventory_colomns)
 {
 	Commit();
 }
@@ -28,6 +28,11 @@ Inventory::Inventory(const xml::Tag & t)
     }
 
 	Commit();
+}
+
+size_t Inventory::MinHeight() const
+{
+	return std::max(graphics::max_y, Menu::MinHeight());
 }
 
 xml::Tag Inventory::Serialize() const

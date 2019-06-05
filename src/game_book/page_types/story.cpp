@@ -17,3 +17,11 @@ Story::Story(const xml::Tag & root, GameStateManager * g)
     
     BotWindow()->MoveTo(body.LowestPoint(), BotWindow()->LeftPoint());
 }
+
+bool Story::Reacted(int input)
+{
+	if (StandardMenuHandlerReacted(static_cast<graphics::menu_base *>(BotWindow()), input))
+		return true;
+
+	return Page::Reacted(input);
+}

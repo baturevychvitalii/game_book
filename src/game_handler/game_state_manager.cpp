@@ -1,3 +1,4 @@
+#include <math.h>
 #include "game_state_manager.h"
 #include "colors.h"
 #include "game_exception.h"
@@ -8,6 +9,7 @@
 #include "pause_state.h"
 #include "inventory_state.h"
 #include "../game_book/page_types/story.h"
+#include "../game_book/page_types/trade.h"
 
 size_t  menu_state = 0,
         pause_state = 1,
@@ -28,6 +30,7 @@ GameStateManager::GameStateManager()
 	
 
     // add cross available helper screens
+	// controls
     {
         auto & text = wm.AddScreen("controls").
                       AddWindow<graphics::Textbox>(
@@ -47,6 +50,7 @@ GameStateManager::GameStateManager()
         text.NewLine("  i     inventory (in game)");
     }
 
+	// about
     {
         auto & text = wm.AddScreen("about").
                       AddWindow<graphics::Textbox>(
@@ -59,14 +63,47 @@ GameStateManager::GameStateManager()
         text.AppendText("By Vitalii Baturevych");
     }
 
-    wm.AddScreen("exception").
-    AddWindow<graphics::Textbox>(
-        "err",
-        graphics::XPercent(80),
-        graphics::YPercent(10),
-        graphics::XPercent(10),
-        error_color
-    );
+	// no money
+	{
+        auto & text = wm.AddScreen("no money").
+                      AddWindow<graphics::Textbox>(
+            "no money info",
+            graphics::max_x,
+            0,
+            0,
+            no_money_color
+        ).
+        AppendText("not enough green");
+		text.NewLine();
+		std::string line;
+		for (size_t i = 0; i < graphics::YPercent(33); i++)
+		{
+			if (i % 2)
+				line = " $";
+			else
+				line = "$ ";
+
+			for (int a = 1; a < static_cast<int>(std::log2(graphics::XPercent(77))); a++)
+			{
+				line += line;
+			}
+			text.NewLine(line);
+		}
+		text.Commit();
+		text.SetHeight(graphics::max_y);	
+	}
+
+	// exception
+	{    
+		wm.AddScreen("exception").
+		AddWindow<graphics::Textbox>(
+			"err",
+			graphics::XPercent(80),
+			graphics::YPercent(10),
+			graphics::XPercent(10),
+			error_color
+		);
+	}
 }
 
 GameStateManager::~GameStateManager()
@@ -108,7 +145,6 @@ void GameStateManager::PopUp(const std::string & screen)
     wm.SelectScreen(screen);
     wm.Draw();
     getch();
-    //SwitchState(current_state);
 }
 
 void GameStateManager::DisplayException(const std::exception & e){
@@ -131,9 +167,10 @@ void GameStateManager::TurnPage(const std::string & filename)
 
     game_state = game_state == 2 ? 3 : 2;
     current_state = game_state;
-
     if (type == "story")
         states[game_state].reset(new Story(root, this));
+	else if (type == "trade")
+		states[game_state].reset(new game_states::Trade(root, this));
     else
         throw GameException("file is not in correct format. Page must have a type");
 

@@ -13,20 +13,22 @@ graphics::Button::Button(IChangeable * parent,
 {
 }
 
-void graphics::Button::Select()
+graphics::Button & graphics::Button::Select()
 {
     is_active = true;
     window_color = active_color;
     
 	SwitchLinesColor(inactive_color, active_color);
+	return *this;
 }
 
-void graphics::Button::Unselect()
+graphics::Button & graphics::Button::Unselect()
 {
     is_active = false;
     window_color = inactive_color;
 
 	SwitchLinesColor(active_color, inactive_color);
+	return *this;
 }
 
 bool graphics::Button::IsSelected() const

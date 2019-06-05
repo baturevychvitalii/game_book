@@ -6,7 +6,8 @@
 
 class Story : public Page
 {
-    public:        
+	bool Reacted(int input) override;
+    public:
         Story(const xml::Tag & root, GameStateManager * manager);
 };
 

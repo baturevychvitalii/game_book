@@ -19,8 +19,8 @@ namespace graphics
             Button(const Button & butt) = delete;
             Button & operator=(const Button& other) = delete;
 
-            void Select();
-            void Unselect();
+            Button & Select();
+            Button & Unselect();
             bool IsSelected() const;
     };
 }
