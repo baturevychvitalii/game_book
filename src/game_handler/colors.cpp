@@ -30,8 +30,8 @@ short   red_on_white = 1,
 		page_trade_unselected_menu_bg_color = anti_color,
 
 		status_theme_color = anti_color,
-		status_health_active_color = white_on_red,
-		status_health_inactive_color = green_on_black,
+		status_health_active_color = white_on_green,
+		status_health_inactive_color = white_on_red,
 
         about_color = anti_color,
         controls_color = magneta_on_yelow,

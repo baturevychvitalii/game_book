@@ -14,6 +14,7 @@ namespace game_states
 		Creature * GetOpponent();
 		bool PlayerUsedItem(int input);
 		void FigureOutDeath();
+		void ArtificialInteligence();
 		/*
 		enemy has it's own inventory and status.
 		enemy status will be owned by this screen, and deleted
@@ -25,6 +26,7 @@ namespace game_states
 		RandomNumberGenerator rng;
 		Creature * current_attacker;
 		bool death_figured_out;
+		bool shal_change_player;
 		public:
 			Combat(const xml::Tag & root, GameStateManager * manager);
 			~Combat() override;
