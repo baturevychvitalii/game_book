@@ -13,6 +13,7 @@ short   red_on_white = 1,
         white_on_magneta = 11,
         magneta_on_white = 12,
 		white_on_green = 13,
+		magneta_on_yelow = 14,
 
 		default_theme_color = magneta_on_white,
 		anti_color = white_on_magneta,
@@ -33,7 +34,7 @@ short   red_on_white = 1,
 		status_health_inactive_color = green_on_black,
 
         about_color = anti_color,
-        controls_color = white_on_yelow,
+        controls_color = magneta_on_yelow,
 		no_money_color = white_on_green,
         error_color = red_on_black;
 
@@ -52,5 +53,6 @@ void InitColors()
     init_pair(white_on_magneta, COLOR_WHITE, COLOR_MAGENTA);
     init_pair(magneta_on_white, COLOR_MAGENTA, COLOR_WHITE);
 	init_pair(white_on_green, COLOR_WHITE, COLOR_GREEN);
+	init_pair(magneta_on_yelow, COLOR_MAGENTA, COLOR_YELLOW);
 }
 

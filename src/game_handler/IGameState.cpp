@@ -35,11 +35,13 @@ bool IGameState::Reacted(int input)
     {
         case 'K':
         case 'k':
+		case KEY_PPAGE:
             if (top->HighestPoint() < 0)
                 Move(graphics::Direction::Down, scroll_speed);
             break;
         case 'J':
         case 'j':
+		case KEY_NPAGE:
             if (bot->LowestPoint() > static_cast<short>(graphics::max_y))
                 Move(graphics::Direction::Up, scroll_speed);
             break;

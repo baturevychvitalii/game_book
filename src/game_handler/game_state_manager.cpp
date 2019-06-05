@@ -43,11 +43,13 @@ GameStateManager::GameStateManager()
         text.AppendText("Controls");
         text.AppendText("press any key to continue");
         text.NewLine();
-        text.NewLine("Up Down navigate in menu   ");
-        text.NewLine("j   k   scroll window      ");
-        text.NewLine("Enter   select             ");
-        text.NewLine("  p     pause (in game)    ");
-        text.NewLine("  i     inventory (in game)");
+        text.NewLine("   ^ v      switch button (menu)");
+		text.NewLine("pgup pgdown scroll window  (all)");
+        text.NewLine("   j k      scroll window  (all)");
+        text.NewLine("  Enter     select          all)");
+        text.NewLine("    p       pause         (game)");
+        text.NewLine("    i       inventory     (game)");
+		text.NewLine("    n       switch menu  (trade)");
 		text.Commit();
 		text.SetHeight(graphics::max_y);
     }
@@ -55,14 +57,17 @@ GameStateManager::GameStateManager()
 	// about
     {
         auto & text = wm.AddScreen("about").
-                      AddWindow<graphics::Textbox>(
+        AddWindow<graphics::Textbox>(
             "about info",
             graphics::XPercent(77),
-            3,
+            graphics::YPercent(50),
             graphics::XPercent(33) / 2,
             about_color
-        );
-        text.AppendText("By Vitalii Baturevych");
+        ).
+        AppendText("By Vitalii Baturevych").
+		AppendText("color theme by Olga Zavatskaya");
+		text.Commit();
+		text.ProlongueToBottom();		
     }
 
 	// no money
