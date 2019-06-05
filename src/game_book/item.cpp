@@ -37,6 +37,11 @@ size_t Item::Use(size_t charges, Creature * c)
     return to_use;
 }
 
+const std::string & Item::GetType() const
+{
+	return type;
+}
+
 size_t Item::Price() const
 {
     return price_per_durability * durability;

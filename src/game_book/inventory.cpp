@@ -30,10 +30,24 @@ Inventory::Inventory(const xml::Tag & t)
 	Commit();
 }
 
-// size_t Inventory::MinHeight() const
-// {
-// 	return std::max(graphics::max_y, Menu::MinHeight());
-// }
+Inventory & Inventory::StealItemFrom(Inventory & other, size_t idx)
+{
+	AddOption(
+		other.ReleaseOption(idx)
+	);
+
+	return *this;
+}
+
+Inventory & Inventory::StealWholeInventory(Inventory & other)
+{
+	while (other.Size() > 0)
+	{
+		StealItemFrom(other, 0);
+	}
+	
+	return *this;
+}
 
 xml::Tag Inventory::Serialize() const
 {

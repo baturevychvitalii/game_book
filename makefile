@@ -11,15 +11,15 @@ obj/%.o: src/%.cpp
 
 objects: $(OBJFILES)
 
-executable: objects
-	$(CXX) -o $@ $(FLAGS) $(OBJFILES)
+all: objects
+	$(CXX) -o executable $(FLAGS) $(OBJFILES)
 
 clean:
 	rm -r obj
 
-rebuild: clean executable
+rebuild: clean all
 
-run: executable
+run: all
 	./executable
 
 memcheck: executable

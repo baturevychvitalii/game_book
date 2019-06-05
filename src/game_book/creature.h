@@ -32,6 +32,7 @@ class Creature : ISerializable
         Inventory & GetInventory();
 		graphics::Group<graphics::Textbox> & GetStatusBar();
 		
+		const size_t DefaultDamage;
 		size_t Budget() const;
 		bool ChangeBudget(int value);
 		bool IsAlive() const;

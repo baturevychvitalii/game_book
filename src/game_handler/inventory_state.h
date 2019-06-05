@@ -5,11 +5,13 @@
 
 class InventoryState : public IGameState
 {
-	bool in_trade;
+	Notify current_state;
 
-	void ProcessMenuSelection(graphics::menu_base * to_test) override;
+	void CustomProcessMenuSelection(graphics::menu_base * to_test, int input = -1);
 	void GetNotification(Notify notification) override;
 	bool Reacted(int input) override;
+
+	bool CustomMenuHandlerReacted(int input);
     public:
 		InventoryState(GameStateManager * manager);
 };

@@ -23,5 +23,6 @@
     </trader>
     <crossroad>
 		<path to="book/begin.xml">to start</path>
+		<path to="book/combat_example.xml">or let's fight</path>
 	</crossroad>
 </page>

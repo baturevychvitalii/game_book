@@ -25,5 +25,7 @@ xml::Tag Weapon::Serialize() const
 
 size_t Weapon::Use(size_t charges, Creature * creature)
 {
-	return Item::Use(charges, creature);
+	size_t to_use_charges = Item::Use(charges, creature);
+	creature->ChangeHealth(-1 * to_use_charges * damage);
+	return to_use_charges;
 }

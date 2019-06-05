@@ -7,10 +7,13 @@
 		<max_health>222</max_health>
 		<cash>8888</cash>
 		<inventory>
-			<item type="weapon" name="Guridums sword of horror" charges="777" ppd="10000" damage="100"/>
+			<item type="weapon" name="tester sword" charges="999999" ppd="1" damage="3"/>
+			<item type="food" name="tester heal" charges="999999" ppd="1" heal="3"/>
 		</inventory> 
     </enemy>
+			<item type="weapon" name="Guridums sword of horror" charges="777" ppd="10000" damage="100"/>
 
     <crossroad>
+		<path to="book/begin.xml">shall we start from the beginning</path>
     </crossroad>
 </page>

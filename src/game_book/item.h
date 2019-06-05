@@ -31,6 +31,7 @@ class Item : ISerializable, public graphics::Button
         Item(const Item & other) = delete;
         Item & operator=(const Item & other) = delete;
         
+		const std::string & GetType() const;
         virtual size_t Use(size_t charges, Creature * creature);
         size_t Price() const;
         xml::Tag Serialize() const override;

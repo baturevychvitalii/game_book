@@ -2,8 +2,7 @@
 #define __PAGE_TYPE_COMBAT__
 
 #include "../../game_handler/page_state.h"
-
-class RandomNumberGenerator;
+#include "../../utils/rng.h"
 
 namespace game_states
 {
@@ -13,7 +12,8 @@ namespace game_states
 		void GetNotification(Notify notification) override;
 
 		Creature * GetOpponent();
-		void TimeToUseItem();
+		bool PlayerUsedItem(int input);
+		void FigureOutDeath();
 		/*
 		enemy has it's own inventory and status.
 		enemy status will be owned by this screen, and deleted
@@ -24,6 +24,7 @@ namespace game_states
 		Creature enemy;
 		RandomNumberGenerator rng;
 		Creature * current_attacker;
+		bool death_figured_out;
 		public:
 			Combat(const xml::Tag & root, GameStateManager * manager);
 			~Combat() override;

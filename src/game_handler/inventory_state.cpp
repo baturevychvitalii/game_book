@@ -5,7 +5,8 @@
 #include "colors.h"
 
 InventoryState::InventoryState(GameStateManager * manager)
-	: IGameState(manager)
+	: IGameState(manager),
+	current_state(Notify::Empty)
 {
 }
 
@@ -33,36 +34,71 @@ void InventoryState::GetNotification(Notify notification)
 				break;
 			}
 		case Notify::Trade:
-			in_trade = true;
+			current_state = notification;
+			break;
+		case Notify::Fight:
+			current_state = notification;
 			break;
 		case Notify::Continue:
-			in_trade = false;
+			current_state = notification;
 			break;
 		default:
 			throw std::invalid_argument("wrong notification for inventory state");
 	}
 }
 
-void InventoryState::ProcessMenuSelection(graphics::menu_base * to_test)
+bool InventoryState::CustomMenuHandlerReacted(int input)
 {
-	if (to_test != &(gsm->player->GetInventory()))
-		throw GameException("must be players inventory");
+	graphics::menu_base & menu = GetWindow<graphics::menu_base>("inventory");
 
+	if (menu.Empty())
+		return false;
 
-	if (in_trade)
-	{
-		gsm->SendNotification(game_state, Notify::Trade);
+	// menu navigation is common for all states of inventory
+	switch (input)
+    {
+        case KEY_UP:
+            if (menu.PrevIsVisible())
+                menu.Prev();
+            return true;
+        case KEY_DOWN:
+            if (menu.NextIsVisible())
+                menu.Next();
+            return true;
 	}
-	else
+
+	switch (current_state)
 	{
-		gsm->SwitchState(game_state, Notify::Continue);
-	}	
+		case Notify::Continue:
+		case Notify::Trade:
+			if (input == K_ENTER)
+			{
+				gsm->SwitchState(game_state, current_state);
+				return true;
+			}
+			break;
+		case Notify::Fight:
+			if (input == KEY_LEFT)
+			{
+				gsm->SwitchState(game_state, Notify::UseOnCurrent);
+				return true;
+			}
+			else if (input == KEY_RIGHT)
+			{
+				gsm->SwitchState(game_state, Notify::UseOnOpponent);
+				return true;
+			}
+			break;
+		default:
+			throw GameException("invalid inventory state");
+	}
+
+	return false;
 }
 
 bool InventoryState::Reacted(int input)
 {
-	graphics::menu_base * items = static_cast<graphics::menu_base *>(BotWindow());
-	if (StandardMenuHandlerReacted(items, input))
+	if (CustomMenuHandlerReacted(input))
 		return true;
 
 	switch (input)
@@ -71,8 +107,12 @@ bool InventoryState::Reacted(int input)
 		case 'I':
 		case 'p':
 		case 'P':
-			gsm->SwitchState(game_state, Notify::Continue);
-			return true;	
+			if (current_state != Notify::Fight)
+			{
+				gsm->SwitchState(game_state, Notify::Continue);
+				return true;
+			}
+			return false;
 		default:
 			return IGameState::Reacted(input);
 	}	

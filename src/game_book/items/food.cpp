@@ -25,5 +25,7 @@ xml::Tag Food::Serialize() const
 
 size_t Food::Use(size_t charges, Creature * creature)
 {
-    return Item::Use(charges, creature);
+    size_t charges_to_use = Item::Use(charges, creature);
+	creature->ChangeHealth(charges_to_use * heal_value);
+	return charges_to_use;
 }

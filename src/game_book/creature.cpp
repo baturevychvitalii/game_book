@@ -11,7 +11,8 @@ Creature::Creature(
 )
 	: name(nome), health(heal), max_health(max_heal), cash(cash),
 	inventory(inv),
-	status(new graphics::Group<graphics::Textbox>(nullptr, graphics::max_x, 0, 0, white_on_magneta, 2, 0, 1))
+	status(new graphics::Group<graphics::Textbox>(nullptr, graphics::max_x, 0, 0, white_on_magneta, 2, 0, 1)),
+	DefaultDamage(10)
 {
 	status->EmplaceBack<graphics::StatusBar>(
 		status_health_active_color,
@@ -68,14 +69,12 @@ size_t Creature::Budget() const
 
 bool Creature::ChangeBudget(int value)
 {
-	if (cash + value > 0)
-	{
-		cash += value;
-		(*status)[1].AlterLineText(0, name + " $" + std::to_string(cash));
-		return true;
-	}
+	if (value < 0 && std::abs(value) > cash)
+		return false;
 
-	return false;
+	cash += value;
+	(*status)[1].AlterLineText(0, name + " $" + std::to_string(cash));
+	return true;
 }
 
 bool Creature::IsAlive() const
@@ -86,7 +85,7 @@ bool Creature::IsAlive() const
 Creature & Creature::ChangeHealth(int value)
 {
 	int result = static_cast<int>(health) + value;
-	if (result > max_health)
+	if (result > static_cast<int>(max_health))
 		health = max_health;
 	else if (result < 0)
 		health = 0;

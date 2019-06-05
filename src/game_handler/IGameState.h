@@ -14,6 +14,7 @@ enum Notify
     Continue,
     Quit,
 	Trade,
+	Fight,
     Empty,
 	UseOnCurrent,
 	UseOnOpponent

@@ -10,6 +10,7 @@
 #include "inventory_state.h"
 #include "../game_book/page_types/story.h"
 #include "../game_book/page_types/trade.h"
+#include "../game_book/page_types/combat.h"
 
 size_t  menu_state = 0,
         pause_state = 1,
@@ -100,6 +101,32 @@ GameStateManager::GameStateManager()
 		text.SetHeight(graphics::max_y);	
 	}
 
+	// victory
+	{
+		wm.AddScreen("victory").
+		AddWindow<graphics::Textbox>(
+			"victory message",
+			graphics::max_x,
+			0,
+			0,
+			victory_color
+		).AppendText("Damn, son, you killed him").
+		SetHeight(graphics::max_y);
+	}
+
+	// death
+	{
+		wm.AddScreen("death").
+		AddWindow<graphics::Textbox>(
+			"death message",
+			graphics::max_x,
+			0,
+			0,
+			death_color
+		).AppendText("Oops, man, we deleted your save").
+		SetHeight(graphics::max_y);
+	}
+
 	// exception
 	{    
 		wm.AddScreen("exception").
@@ -154,7 +181,8 @@ void GameStateManager::PopUp(const std::string & screen)
     getch();
 }
 
-void GameStateManager::DisplayException(const std::exception & e){
+void GameStateManager::DisplayException(const std::exception & e)
+{
     auto & err = wm.SelectScreen("exception").
     GetWindow<graphics::Textbox>("err");
     err.Clear();
@@ -178,6 +206,8 @@ void GameStateManager::TurnPage(const std::string & filename)
         states[game_state].reset(new Story(root, this));
 	else if (type == "trade")
 		states[game_state].reset(new game_states::Trade(root, this));
+	else if (type == "combat")
+		states[game_state].reset(new game_states::Combat(root, this));
     else
         throw GameException("file is not in correct format. Page must have a type");
 

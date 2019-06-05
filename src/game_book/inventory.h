@@ -12,9 +12,10 @@ class Inventory : public ISerializable, public graphics::Menu<Item>
         Inventory & operator=(const Inventory & other) = delete;
         
         Inventory(const xml::Tag & t);
-
         Inventory();
 
+		Inventory & StealItemFrom(Inventory & other, size_t idx);
+		Inventory & StealWholeInventory(Inventory & other);
         xml::Tag Serialize() const override;
 };
 

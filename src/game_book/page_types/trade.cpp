@@ -66,9 +66,7 @@ void game_states::Trade::GetNotification(Notify notification)
 		size_t choice = player_inventory->GetChoice();
 		size_t price = (*player_inventory)[choice].Price();
 		if (gsm->player->ChangeBudget(static_cast<int>(price)))
-			trader_inventory->AddOption(
-				player_inventory->ReleaseOption(choice)
-			);
+			trader_inventory->StealItemFrom(*player_inventory, choice);
 
 		trader_inventory->Commit();
 		BotWindow()->MoveTo(trader_inventory->LowestPoint(), BotWindow()->LeftPoint());
@@ -84,9 +82,7 @@ void game_states::Trade::ProcessMenuSelection(graphics::menu_base * menu)
 		size_t choice = menu->GetChoice();
 		size_t price = (*trader_inventory)[choice].Price();
 		if ( gsm->player->ChangeBudget(-1 * static_cast<int>(price)))
-			player_inventory->AddOption(
-				trader_inventory->ReleaseOption(choice)
-			);
+			player_inventory->StealItemFrom(*trader_inventory, choice);
 		else
 			gsm->PopUp("no money");
 	}

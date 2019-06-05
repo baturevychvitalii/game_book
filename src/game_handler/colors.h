@@ -38,6 +38,8 @@ extern short    red_on_white,
                 error_color,
 				no_money_color,
                 about_color,
+				victory_color,
+				death_color,
                 controls_color;
 
 

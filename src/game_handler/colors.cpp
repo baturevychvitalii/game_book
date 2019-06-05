@@ -36,6 +36,8 @@ short   red_on_white = 1,
         about_color = anti_color,
         controls_color = magneta_on_yelow,
 		no_money_color = white_on_green,
+		victory_color = red_on_white,
+		death_color = white_on_red,
         error_color = red_on_black;
 
 void InitColors()

@@ -136,6 +136,17 @@ namespace graphics
 				return buttons.Size();
 			}
 
+			Menu & Choose(size_t idx)
+			{
+				if (idx > buttons.Size())
+					throw std::invalid_argument("idx out of range");
+
+				buttons[current].Unselect();
+				current = idx;
+				buttons[current].Select();
+				return *this;
+			}
+
             size_t Next()
 			{
 				if (buttons.Empty())    
@@ -171,6 +182,14 @@ namespace graphics
 					throw GraphicsException("there are no buttons");
 				
 				return current;
+			}
+
+			Butt & ChosenButton()
+			{
+				if (buttons.Empty())
+					throw GraphicsException("there are no buttons");
+				
+				return buttons[current];
 			}
 
             bool Empty() const
