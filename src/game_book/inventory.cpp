@@ -30,10 +30,10 @@ Inventory::Inventory(const xml::Tag & t)
 	Commit();
 }
 
-size_t Inventory::MinHeight() const
-{
-	return std::max(graphics::max_y, Menu::MinHeight());
-}
+// size_t Inventory::MinHeight() const
+// {
+// 	return std::max(graphics::max_y, Menu::MinHeight());
+// }
 
 xml::Tag Inventory::Serialize() const
 {

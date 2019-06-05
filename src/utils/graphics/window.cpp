@@ -48,7 +48,16 @@ graphics::Window & graphics::Window::SetHeight(size_t new_height)
 
     act_h = new_height;
     UpdateOnScreenHeight();
+	NotifyParent();
     return *this;
+}
+
+graphics::Window & graphics::Window::ProlongueToBottom()
+{
+	if (LowestPoint() < max_y)
+		SetHeight(max_y - HighestPoint());
+	
+	return *this;
 }
 
 graphics::Window & graphics::Window::SetColor(short new_color)
@@ -96,6 +105,30 @@ graphics::Window & graphics::Window::Move(graphics::Direction direction, unsigne
     }
     return *this;
 }
+
+graphics::Window & graphics::Window::MoveToTouch(graphics::Direction direction)
+{
+	switch (direction)
+	{
+		case Direction::Up:
+			MoveTo(0, LeftPoint());
+			break;
+		case Direction::Down:
+			MoveTo(max_y - Height(), LeftPoint());
+			break;
+		case Direction::Left:
+			MoveTo(HighestPoint(), 0);
+			break;
+		case Direction::Right:
+			MoveTo(HighestPoint(), max_x - Width());
+			break;
+		default:
+			throw GraphicsException("unknown direction");
+	}
+	
+	return *this;
+}
+
 
 void graphics::Window::UpdateOnScreenWidth() noexcept
 {

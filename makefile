@@ -1,7 +1,7 @@
 CXX=g++
 CPPFILES=$(shell find src -name '*.cpp')
 OBJFILES=$(patsubst src/%.cpp,obj/%.o,$(CPPFILES))
-FLAGS=-g -Wall -pedantic -std=c++14 -l ncurses $(shell xml2-config --cflags) -l xml2 -lm
+FLAGS=-g -Wall -pedantic -std=c++14 -l ncurses $(shell xml2-config --cflags) -l xml2
 
 
 

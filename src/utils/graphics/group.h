@@ -19,8 +19,7 @@ namespace graphics
         {
             if (windows.empty())
             {
-                act_h = 0;
-                UpdateOnScreenHeight();
+                minimal_h = 0;
                 return;
             }
 

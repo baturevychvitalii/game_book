@@ -21,6 +21,19 @@ game_states::Trade::Trade(const xml::Tag & root, GameStateManager * manager)
 	BotWindow()->MoveTo(trader_inventory->LowestPoint(), BotWindow()->LeftPoint()).
 	SetColor(page_trade_unselected_menu_bg_color).
 	Commit();
+
+	BotWindow()->ProlongueToBottom();
+
+	// z_instruction because screen uses sorted map, and if i want to draw something on top - just alter the key
+	auto & instruct = AddWindow<graphics::Textbox>(
+		"z_instruction",
+		8,
+		0,
+		0,
+		controls_color
+	).AppendText("press 'N' to switch menu");
+	instruct.Commit();
+	instruct.MoveToTouch(graphics::Direction::Down).SetSticky();
 }
 
 bool game_states::Trade::Reacted(int input)
@@ -32,8 +45,10 @@ bool game_states::Trade::Reacted(int input)
 	{
 		case 'n':
 		case 'N':
+			if (HasWindow("z_instruction"))
+				RemoveWindow("z_instruction");
 			current_menu->SetColor(page_trade_unselected_menu_bg_color);
-			current_menu = current_menu == trader_inventory ? player_inventory : trader_inventory;
+			current_menu = current_menu == trader_inventory ? crossroads_menu : trader_inventory;
 			current_menu->SetColor(page_trade_selected_menu_bg_color);
 			return true;
 		case 'i':
@@ -54,7 +69,8 @@ void game_states::Trade::GetNotification(Notify notification)
 		trader_inventory->AddOption(
 			player_inventory->ReleaseOption(choice)
 		);
-
+		trader_inventory->Commit();
+		BotWindow()->MoveTo(trader_inventory->LowestPoint(), BotWindow()->LeftPoint());
 		gsm->player->ChangeBudget(price);
 	}
 	else

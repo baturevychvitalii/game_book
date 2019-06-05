@@ -27,11 +27,16 @@ class IChangeable
 			}
         }
 
+		void NotifyParent()
+		{
+			if (parent)
+				parent->NotifyChange();
+		}
+
         void NotifyChange()
         {
             up_to_date = false;
-            if (parent != nullptr)
-                parent->NotifyChange();
+			NotifyParent();
         }
 
         bool UpToDate() const

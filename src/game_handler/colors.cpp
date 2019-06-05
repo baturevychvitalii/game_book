@@ -25,15 +25,15 @@ short   red_on_white = 1,
 
         page_story_body_color = black_on_white,
 
-		page_trade_selected_menu_bg_color = anti_color,
-		page_trade_unselected_menu_bg_color = default_theme_color,
+		page_trade_selected_menu_bg_color = default_theme_color,
+		page_trade_unselected_menu_bg_color = anti_color,
 
 		status_theme_color = anti_color,
 		status_health_active_color = white_on_red,
 		status_health_inactive_color = green_on_black,
 
         about_color = anti_color,
-        controls_color = anti_color,
+        controls_color = white_on_yelow,
 		no_money_color = white_on_green,
         error_color = red_on_black;
 

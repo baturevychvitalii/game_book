@@ -16,6 +16,7 @@ Story::Story(const xml::Tag & root, GameStateManager * g)
     Commit();
     
     BotWindow()->MoveTo(body.LowestPoint(), BotWindow()->LeftPoint());
+	BotWindow()->ProlongueToBottom();
 }
 
 bool Story::Reacted(int input)

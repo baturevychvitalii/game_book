@@ -48,6 +48,8 @@ GameStateManager::GameStateManager()
         text.NewLine("Enter   select             ");
         text.NewLine("  p     pause (in game)    ");
         text.NewLine("  i     inventory (in game)");
+		text.Commit();
+		text.SetHeight(graphics::max_y);
     }
 
 	// about

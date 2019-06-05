@@ -55,6 +55,7 @@ namespace graphics
             
             virtual size_t MinHeight() const = 0;
             Window & SetHeight(size_t new_height);
+			Window & ProlongueToBottom();
             Window & SetColor(short new_color);
             Window & SetSticky(bool value = true);
 
@@ -73,6 +74,7 @@ namespace graphics
             Window & Move(Direction direction, unsigned multiplier = 1);
             Window & Move(short dy, short dx);
             Window & MoveTo(short y, short x);
+			Window & MoveToTouch(Direction direction);
             void Draw() const;
     };
 }
