@@ -19,7 +19,7 @@ class Creature : ISerializable
         size_t health, max_health;
         size_t cash;
         Inventory * inventory;
-		graphics::Group<graphics::Window> * status;
+		graphics::Group<graphics::Textbox> * status;
     public:
         Creature(const Creature & other) = delete;
         Creature & operator=(const Creature & other) = delete;
@@ -30,10 +30,12 @@ class Creature : ISerializable
         xml::Tag Serialize() const override;
 
         Inventory & GetInventory();
-		graphics::Group<graphics::Window> & GetStatusBar();
+		graphics::Group<graphics::Textbox> & GetStatusBar();
 		
 		size_t Budget() const;
 		bool ChangeBudget(int value);
+		bool IsAlive() const;
+		Creature & ChangeHealth(int value);
 };
 
 #endif

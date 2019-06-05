@@ -14,7 +14,9 @@ enum Notify
     Continue,
     Quit,
 	Trade,
-    Empty
+    Empty,
+	UseOnCurrent,
+	UseOnOpponent
 };
 
 class GameStateManager;

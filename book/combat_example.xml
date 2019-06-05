@@ -2,13 +2,15 @@
     <header>
         Here is GURIDUM
     </header>
-    <enemy>
-        
+    <enemy name="Guridum released">
+		<health>111</health>
+		<max_health>222</max_health>
+		<cash>8888</cash>
+		<inventory>
+			<item type="weapon" name="Guridums sword of horror" charges="777" ppd="10000" damage="100"/>
+		</inventory> 
     </enemy>
 
     <crossroad>
-        <path to="other.xml">Shall i go to other direction</path>
-        <path to="jonny.xml">Or to jonny</path>
-        <path to="some_other_file.xml">Or maybe completely other direction</path>
     </crossroad>
 </page>

@@ -1,9 +1,8 @@
 #include "trade.h"
 #include "../../game_handler/game_state_manager.h"
 #include "../../game_handler/colors.h"
+#include "../../game_handler/game_exception.h"
 #include "../creature.h"
-
-
 
 game_states::Trade::Trade(const xml::Tag & root, GameStateManager * manager)
     : Page(root, manager),
@@ -66,17 +65,16 @@ void game_states::Trade::GetNotification(Notify notification)
 	{
 		size_t choice = player_inventory->GetChoice();
 		size_t price = (*player_inventory)[choice].Price();
-		trader_inventory->AddOption(
-			player_inventory->ReleaseOption(choice)
-		);
+		if (gsm->player->ChangeBudget(static_cast<int>(price)))
+			trader_inventory->AddOption(
+				player_inventory->ReleaseOption(choice)
+			);
+
 		trader_inventory->Commit();
 		BotWindow()->MoveTo(trader_inventory->LowestPoint(), BotWindow()->LeftPoint());
-		gsm->player->ChangeBudget(price);
 	}
 	else
-	{
 		Page::GetNotification(notification);
-	}
 }
 
 void game_states::Trade::ProcessMenuSelection(graphics::menu_base * menu)
@@ -85,18 +83,12 @@ void game_states::Trade::ProcessMenuSelection(graphics::menu_base * menu)
 	{
 		size_t choice = menu->GetChoice();
 		size_t price = (*trader_inventory)[choice].Price();
-		if ( gsm->player->Budget() < price)
-		{
-			gsm->PopUp("no money");
-		}
-		else
-		{
+		if ( gsm->player->ChangeBudget(-1 * static_cast<int>(price)))
 			player_inventory->AddOption(
 				trader_inventory->ReleaseOption(choice)
 			);
-
-			gsm->player->ChangeBudget(-1 * static_cast<int>(price));
-		}
+		else
+			gsm->PopUp("no money");
 	}
 	else
 	{

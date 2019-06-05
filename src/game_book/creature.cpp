@@ -11,7 +11,7 @@ Creature::Creature(
 )
 	: name(nome), health(heal), max_health(max_heal), cash(cash),
 	inventory(inv),
-	status(new graphics::Group<graphics::Window>(nullptr, graphics::max_x, 0, 0, white_on_magneta, 2, 0, 1))
+	status(new graphics::Group<graphics::Textbox>(nullptr, graphics::max_x, 0, 0, white_on_magneta, 2, 0, 1))
 {
 	status->EmplaceBack<graphics::StatusBar>(
 		status_health_active_color,
@@ -56,7 +56,7 @@ Inventory & Creature::GetInventory()
     return *inventory;
 }
 
-graphics::Group<graphics::Window> & Creature::GetStatusBar()
+graphics::Group<graphics::Textbox> & Creature::GetStatusBar()
 {
 	return *status;
 }
@@ -71,10 +71,29 @@ bool Creature::ChangeBudget(int value)
 	if (cash + value > 0)
 	{
 		cash += value;
-		static_cast<graphics::Textbox &>((*status)[1]).AlterLineText(0, name + " $" + std::to_string(cash));
+		(*status)[1].AlterLineText(0, name + " $" + std::to_string(cash));
+		return true;
 	}
-	else
-		return false;
 
-	return true;
+	return false;
+}
+
+bool Creature::IsAlive() const
+{
+	return health > 0;
+}
+
+Creature & Creature::ChangeHealth(int value)
+{
+	int result = static_cast<int>(health) + value;
+	if (result > max_health)
+		health = max_health;
+	else if (result < 0)
+		health = 0;
+	else
+		health = result;
+	
+	static_cast<graphics::StatusBar &>((*status)[0]).SetAct(health);
+
+	return *this;
 }

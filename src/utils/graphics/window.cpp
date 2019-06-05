@@ -54,7 +54,7 @@ graphics::Window & graphics::Window::SetHeight(size_t new_height)
 
 graphics::Window & graphics::Window::ProlongueToBottom()
 {
-	if (LowestPoint() < max_y)
+	if (LowestPoint() < static_cast<short>(max_y))
 		SetHeight(max_y - HighestPoint());
 	
 	return *this;

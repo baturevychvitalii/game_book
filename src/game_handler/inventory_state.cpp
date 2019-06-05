@@ -24,7 +24,7 @@ void InventoryState::GetNotification(Notify notification)
 					menu_bg_color
 				).AppendText("Lorries inventory");
 				head.Commit();
-				auto & status = AddWindow("bar", gsm->player->GetStatusBar());
+				auto & status = AddWindow("status", gsm->player->GetStatusBar());
 				status.MoveTo(head.LowestPoint(), 0);
 				auto & items = AddWindow("inventory", gsm->player->GetInventory());
 				items.MoveTo(status.LowestPoint(), 0);
