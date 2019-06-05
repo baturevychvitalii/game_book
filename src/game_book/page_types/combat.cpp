@@ -9,73 +9,116 @@ game_states::Combat::Combat(const xml::Tag & root, GameStateManager * manager)
 	enemy(root.Child("enemy")),
 	rng(),
 	current_attacker(rng(0, 100) > 20 ? gsm->player.get() : &enemy),
-	death_figured_out(false)
+	death_figured_out(false),
+	shal_change_player(false)
 {
-	auto & pl_bar = AddWindow("player status", gsm->player->GetStatusBar());
-	pl_bar.MoveTo(TopWindow()->LowestPoint(), pl_bar.LeftPoint());
-	auto & en_bar = AddWindow("enemy status", enemy.GetStatusBar());
-	en_bar.MoveTo(pl_bar.LowestPoint(), en_bar.LeftPoint());
-	BotWindow()->MoveTo(en_bar.LowestPoint(), BotWindow()->LeftPoint());
+	auto & status = AddWindow<graphics::Group<graphics::Group<graphics::Textbox>>>(
+		"fight process",
+		graphics::max_x,
+		TopWindow()->LowestPoint(),
+		0,
+		menu_inactive_color,
+		1,
+		2,
+		0
+	);
+	status.EmplaceBack(gsm->player->GetStatusBar());
+	status.EmplaceBack(enemy.GetStatusBar());
+	status.SetDrawBackground().Commit();
+	BotWindow()->MoveTo(status.LowestPoint(), BotWindow()->LeftPoint());
+	BotWindow()->ProlongueToBottom();
+
+
+	//your turn
+	//AI turn
+	auto & tip = AddWindow<graphics::Textbox>(
+		"z_tip",
+		11,
+		0,
+		0,
+		controls_color
+	);
+	tip.NewLine(current_attacker == &enemy ? "AI turn" : "your turn");
+	tip.Commit();
+	tip.MoveToTouch(graphics::Direction::Down);
 	Commit();
 }
 
 game_states::Combat::~Combat()
 {
 	delete &(enemy.GetInventory());
-	ReleaseWindow("player status");
+	auto & status_group = GetWindow<graphics::Group<graphics::Group<graphics::Textbox>>>("fight process");
+	status_group.Release(0);
 }
 
 bool game_states::Combat::PlayerUsedItem(int input)
 {
-	if (!gsm->player->IsAlive() || ! enemy.IsAlive())
-		return false;
+	if (current_attacker != gsm->player.get()) // player makes turn
+		throw GameException("wrong usage of function");
 
-	if (current_attacker == gsm->player.get()) // player makes turn
+	if (input == 'I' || input == 'i')
 	{
-		if (input == 'i' || input == 'I')
-		{
-			if (!(gsm->player->GetInventory().Empty()))
-				gsm->SwitchState(inventory_state, Notify::Fight);
-			else
-				enemy.ChangeHealth(-1 * current_attacker->DefaultDamage);			
-			return true;
-		}
-	}
-	else // artificial inteligence)))
-	{
-		Inventory & inve = current_attacker->GetInventory();
-		// select random item
-		if (!inve.Empty())
-		{
-			inve.Choose(rng(0, inve.Size()));
-			if (inve.ChosenButton().GetType() == "weapon")
-				GetNotification(Notify::UseOnOpponent);
-			else
-				GetNotification(Notify::UseOnCurrent);
-		}
+		if (!(gsm->player->GetInventory().Empty()))
+			gsm->SwitchState(inventory_state, Notify::Fight);
 		else
-			gsm->player->ChangeHealth(-1 * current_attacker->DefaultDamage);
+			GetOpponent()->ChangeHealth(-1 * current_attacker->DefaultDamage);
+
+		return true;
 	}
 
 	return false;
 }
 
+void game_states::Combat::ArtificialInteligence()
+{
+	if (current_attacker != &enemy)
+		throw GameException("wrong usage of function");
+
+	Inventory & inve = current_attacker->GetInventory();
+	// select random item
+	if (!inve.Empty())
+	{
+		inve.Choose(rng(0, inve.Size()));
+		if (inve.ChosenButton().GetType() == "weapon")
+			GetNotification(Notify::UseOnOpponent);
+		else
+			GetNotification(Notify::UseOnCurrent);
+	}
+	else
+	{
+		GetOpponent()->ChangeHealth(-1 * current_attacker->DefaultDamage);
+	}
+	
+}
+
 bool game_states::Combat::Reacted(int input)
 {
+	if (shal_change_player)
+		current_attacker = GetOpponent();
 	// fight continues
 	if (gsm->player->IsAlive() && enemy.IsAlive())
 	{
 		// current attacker makes turn
-		bool reacted1 = PlayerUsedItem(input);
-		current_attacker = GetOpponent();
-		// opponent makes turn
-		bool reacted2 = PlayerUsedItem(input);
-		current_attacker = GetOpponent();
+		if (current_attacker == gsm->player.get())
+		{
+			if (PlayerUsedItem(input))
+			{
+				shal_change_player = true;
+				GetWindow<graphics::Textbox>("z_tip").AlterLineText(0, "AI turn");
+				return true;
+			}
 
-		if (reacted1 || reacted2)
+			shal_change_player = false;
+			GetWindow<graphics::Textbox>("z_tip").AlterLineText(0, "your turn");
+			return false;
+		}
+		else
+		{
+			ArtificialInteligence();
+			shal_change_player = true;
+			GetWindow<graphics::Textbox>("z_tip").AlterLineText(0, "your turn");
 			return true;
-
-		return IGameState::Reacted(input);
+		}
 	}
 	else 
 	{
@@ -102,13 +145,13 @@ void game_states::Combat::GetNotification(Notify notification)
 		case Notify::UseOnCurrent:
 			{
 				size_t choice = current_attacker->GetInventory().GetChoice();
-				current_attacker->GetInventory()[choice].Use(rng(0,4), current_attacker);
+				current_attacker->GetInventory()[choice].Use(1, current_attacker);
 				break;
 			}
 		case Notify::UseOnOpponent:
 			{
 				size_t choice = current_attacker->GetInventory().GetChoice();
-				current_attacker->GetInventory()[choice].Use(rng(0,4), GetOpponent());
+				current_attacker->GetInventory()[choice].Use(1, GetOpponent());
 				break;
 			}
 		default:
@@ -139,5 +182,6 @@ void game_states::Combat::FigureOutDeath()
 		gsm->SwitchState(menu_state);
 	}
 	
+	RemoveWindow("z_tip");
 	death_figured_out = true;
 }
