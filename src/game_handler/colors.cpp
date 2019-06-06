@@ -1,4 +1,5 @@
 #include "colors.h"
+#include <ncurses.h>
 
 short   red_on_white = 1,
         green_on_black = 2,

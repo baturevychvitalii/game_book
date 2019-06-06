@@ -1,4 +1,5 @@
 #include "document.h"
+#include <stdexcept>
 
 
 xml::Document::Document(const std::string & filename)

@@ -12,6 +12,9 @@ extern size_t menu_state,
 
 class Creature;
 
+/**
+This class rules the game. Operates with diferent game states
+*/
 class GameStateManager final
 {
     graphics::WindowManager wm;

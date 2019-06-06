@@ -1,9 +1,9 @@
 #ifndef __GAME_COLORS__
 #define __GAME_COLORS__
 
-#include <ncurses.h>
-
-// raw colors
+/**
+colors which are initialized in InitColors()
+*/
 extern short    red_on_white,
                 green_on_black,
                 magneta_on_blue,
@@ -42,7 +42,9 @@ extern short    red_on_white,
 				death_color,
                 controls_color;
 
-
+/**
+will initialize color pairs for ncurses
+*/
 void InitColors();
 
 

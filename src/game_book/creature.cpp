@@ -70,7 +70,7 @@ size_t Creature::Budget() const
 
 bool Creature::ChangeBudget(int value)
 {
-	if (value < 0 && std::abs(value) > cash)
+	if (value < 0 && std::abs(value) > static_cast<int>(cash))
 		return false;
 
 	cash += value;

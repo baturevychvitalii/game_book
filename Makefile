@@ -28,4 +28,4 @@ memcheck: compile
 	valgrind --leak-check=full ./$(EXECUTABLE)
 
 doc:
-	doxygen $(DOXYGEN_ARGS)
+	doxygen $(DOXYGEN_ARGS); mv html doc;
