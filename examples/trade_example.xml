@@ -8,7 +8,6 @@
             <item type="weapon" name="ukulele" charges="10" ppd="8" damage="10"/>
             <item type="food" name="apple of Adam" charges="3" ppd="333" heal="111111"/>
             <item type="weapon" name="ukulele" charges="10" ppd="8" damage="10"/>
-			<item type="food" name="Svickova na Smetane" charges="1" ppd="228" heal="1111111"/>
         </inventory>
     </trader>
     <crossroad>
