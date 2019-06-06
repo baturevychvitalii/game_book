@@ -50,12 +50,16 @@ void graphics::StatusBar::DrawSpecific() const
 
 graphics::StatusBar & graphics::StatusBar::SetMax(size_t maximum)
 {
+	if (maximum < act_value)
+		throw std::invalid_argument("maximum must be greater than actual");
 	max_value = maximum;
 	return *this;
 }
 
 graphics::StatusBar & graphics::StatusBar::SetAct(size_t actual)
 {
+	if (actual > max_value)
+		throw std::invalid_argument("maximum must be greater than actual");
 	act_value = actual;
 	return *this;
 }

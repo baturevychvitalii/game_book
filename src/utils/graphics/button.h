@@ -5,6 +5,9 @@
 
 namespace graphics
 {
+	/**
+	Textbox with an ability to select and unselect
+	*/
     class Button : public Textbox
     {
         short active_color, inactive_color;         
@@ -19,7 +22,14 @@ namespace graphics
             Button(const Button & butt) = delete;
             Button & operator=(const Button& other) = delete;
 
+			/**
+			updates colors to fit active theme
+			*/
             Button & Select();
+
+			/**
+			updates colors to fit inactive theme
+			*/
             Button & Unselect();
             bool IsSelected() const;
     };

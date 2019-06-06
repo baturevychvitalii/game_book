@@ -7,6 +7,9 @@
 
 namespace graphics
 {
+	/**
+	manages screens
+	*/
     class WindowManager
     {
         Screen * selected_screen;
@@ -22,7 +25,14 @@ namespace graphics
             void RemoveScreen(const std::string & name);
             void RemoveScreen(Screen & scr);
 
+			/**
+			draws currently selected screen
+			*/
             void Draw();
+
+			/**
+			moves currently selected screen
+			*/
             void Move(Direction direction, unsigned multiplier = 1);
     };
 }

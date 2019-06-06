@@ -16,13 +16,29 @@ namespace graphics
         Right
     };
 
+	/**
+	terminal maximum colomns and rows
+	*/
     extern size_t max_x, max_y;
 
+	/**
+	@return width of the element the way it is X percents of max_x
+	*/
     size_t XPercent(size_t percents) noexcept;
+
+	/**
+	@return height of the element the way it is X percents of max_y
+	*/
     size_t YPercent(size_t percents) noexcept;
 
+	/**
+	casts direction direction and multiplier to movement vector
+	*/
     void CastDirection(Direction direction, unsigned multiplier, short & dy, short & dx);
 
+	/**
+	base of all drawable objects
+	*/
     class Window : public IChangeable
     {
         bool sticky;
@@ -55,8 +71,16 @@ namespace graphics
             
             virtual size_t MinHeight() const = 0;
             Window & SetHeight(size_t new_height);
+
+			/**
+			if window is not touching bottom of the screen -> increase it's height to do so
+			*/
 			Window & ProlongueToBottom();
             Window & SetColor(short new_color);
+
+			/**
+			makes window ignore movement
+			*/
             Window & SetSticky(bool value = true);
 
             short HighestPoint() const;
@@ -68,13 +92,24 @@ namespace graphics
             size_t ActualSpace() const;
             size_t VisiblePercent() const;
 
+			/**
+			percent value, after which window is considered visible
+			*/
             static size_t visible_consiederation;
             bool IsVisible() const;
 
             Window & Move(Direction direction, unsigned multiplier = 1);
             Window & Move(short dy, short dx);
             Window & MoveTo(short y, short x);
+
+			/**
+			Move window to touch a wall of the screen
+			*/
 			Window & MoveToTouch(Direction direction);
+
+			/**
+			Draws window to screen
+			*/
             void Draw() const;
     };
 }

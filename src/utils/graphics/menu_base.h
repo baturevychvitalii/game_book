@@ -6,6 +6,11 @@
 
 namespace graphics
 {
+	/**
+	base of a menu.
+	this class exists because i didn't want to mess with templates
+	when passing menues as arguments
+	*/
 	struct menu_base : Textbox
 	{
 		menu_base(

@@ -3,6 +3,9 @@
 
 #include "tag.h"
 
+/**
+can be understood from the name
+*/
 class ISerializable
 {
     public:

@@ -5,6 +5,10 @@
 
 namespace xml
 {
+	/**
+	holds an xml document and handlers to work with it
+	(mainly through it's root tag)
+	*/
     class Document
     {
         xmlDocPtr doc_ptr;

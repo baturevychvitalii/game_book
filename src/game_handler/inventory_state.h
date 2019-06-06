@@ -3,6 +3,13 @@
 
 #include "IGameState.h"
 
+/**
+responsible for correctly showing players status and inventory
+has 3 states:
+	usual when nothing really happens
+	trade when we are on trade page and exchanging our items
+	fight when we are in fight and actually using our items
+*/
 class InventoryState : public IGameState
 {
 	Notify current_state;

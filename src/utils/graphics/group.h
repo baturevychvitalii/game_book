@@ -162,6 +162,9 @@ namespace graphics
                 return *this;
             }
 
+			/**
+			Unlike Erase doesn't free object, contained at idx
+			*/
             Win & Release(size_t idx)
             {
                 if (idx >= windows.size())

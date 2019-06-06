@@ -9,6 +9,9 @@
 
 namespace graphics
 {
+	/**
+	container of windows
+	*/
     class Screen
     {
         std::map<std::string, std::unique_ptr<Window>> windows;

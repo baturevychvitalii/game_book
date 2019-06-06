@@ -8,6 +8,11 @@
 
 namespace graphics
 {
+	/**
+	conteiner of buttons
+	provides tools to navigate between buttons, select them and
+	check what is selected now
+	*/
 	template<class Butt = Button>
     class Menu : public menu_base
     {
@@ -106,6 +111,9 @@ namespace graphics
 				return *this;
 			}
 
+			/**
+			Unlike EraseOption doesn't free object, contained at idx
+			*/
 			Butt & ReleaseOption(size_t idx)
 			{
 				Butt & result = buttons.Release(idx);

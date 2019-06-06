@@ -3,6 +3,10 @@
 
 #include "IGameState.h"
 
+/**
+responsible for pause menu.
+let's user save the game, read controlls or quit
+*/
 class PauseState : public IGameState
 {
     void GetNotification(Notify notification) override;

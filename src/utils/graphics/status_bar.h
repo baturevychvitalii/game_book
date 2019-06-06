@@ -26,6 +26,9 @@ namespace graphics
             
             size_t MinHeight() const override;
 
+			/**
+			updates a new maximum value
+			*/
             StatusBar & SetMax(size_t maximum);
             StatusBar & SetAct(size_t actual);
     };

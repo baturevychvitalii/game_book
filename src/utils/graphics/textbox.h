@@ -7,6 +7,9 @@
 
 namespace graphics
 {
+	/**
+	gives window abilities to hold and work with text
+	*/
     class Textbox : public Window
     {
         std::vector<std::pair<std::string, short>> lines;

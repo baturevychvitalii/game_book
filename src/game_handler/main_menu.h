@@ -5,6 +5,9 @@
 
 namespace graphics{class menu_base;}
 
+/**
+responsible for letting us quit, launch new game, load game or watch some info
+*/
 class MainMenu : public IGameState
 {
     void ProcessMenuSelection(graphics::menu_base * to_test) override;

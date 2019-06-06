@@ -4,6 +4,9 @@
 #include "../game_book/creature.h"
 #include "IGameState.h"
 
+/**
+base of all pages
+*/
 class Page : public ISerializable, public IGameState
 {
     const std::string filename;
@@ -26,10 +29,15 @@ class Page : public ISerializable, public IGameState
         Page(const Page & p) = delete;
         Page & operator=(const Page & p) = delete;
 
-        // start page, created to get notification and load normal page
+        /**
+		called only once, when GSM is being constructed.
+		Will let us to accept notification to go to new game or to load game
+		*/
         Page(GameStateManager * manager);
 
-        // normal page, loaded from file
+        /**
+		regular page, loaded from an xml file
+		*/
         Page(const xml::Tag & root, GameStateManager * manager);
 
 };
