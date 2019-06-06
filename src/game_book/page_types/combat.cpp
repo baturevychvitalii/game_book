@@ -8,7 +8,7 @@ game_states::Combat::Combat(const xml::Tag & root, GameStateManager * manager)
 	: Page(root, manager),
 	enemy(root.Child("enemy")),
 	rng(),
-	current_attacker(rng(0, 100) > 20 ? gsm->player.get() : &enemy),
+	current_attacker(rng(0, 100) > 20 ? &enemy : gsm->player.get()),
 	death_figured_out(false),
 	shal_change_player(false)
 {
@@ -58,9 +58,10 @@ bool game_states::Combat::PlayerUsedItem(int input)
 
 	if (input == 'I' || input == 'i')
 	{
-		GetOpponent()->ChangeHealth(-1 * current_attacker->DefaultDamage);
 		if (!(gsm->player->GetInventory().Empty()))
 			gsm->SwitchState(inventory_state, Notify::Fight);
+		else
+			GetOpponent()->ChangeHealth(-1 * current_attacker->DefaultDamage);		
 
 		return true;
 	}
@@ -73,7 +74,6 @@ void game_states::Combat::ArtificialInteligence()
 	if (current_attacker != &enemy)
 		throw GameException("wrong usage of function");
 
-	GetOpponent()->ChangeHealth(-1 * current_attacker->DefaultDamage);
 	Inventory & inve = current_attacker->GetInventory();
 	// select random item
 	if (!inve.Empty())
@@ -83,7 +83,10 @@ void game_states::Combat::ArtificialInteligence()
 			GetNotification(Notify::UseOnOpponent);
 		else
 			GetNotification(Notify::UseOnCurrent);
-	}	
+	}
+	else
+		GetOpponent()->ChangeHealth(-1 * current_attacker->DefaultDamage);
+	
 }
 
 bool game_states::Combat::Reacted(int input)
@@ -104,7 +107,6 @@ bool game_states::Combat::Reacted(int input)
 			}
 
 			shal_change_player = false;
-			GetWindow<graphics::Textbox>("z_tip").AlterLineText(0, "your turn");
 			return false;
 		}
 		else
@@ -140,13 +142,13 @@ void game_states::Combat::GetNotification(Notify notification)
 		case Notify::UseOnCurrent:
 			{
 				size_t choice = current_attacker->GetInventory().GetChoice();
-				current_attacker->GetInventory()[choice].Use(1, current_attacker);
+				current_attacker->GetInventory()[choice].Use(rng(0, 3), current_attacker);
 				break;
 			}
 		case Notify::UseOnOpponent:
 			{
 				size_t choice = current_attacker->GetInventory().GetChoice();
-				current_attacker->GetInventory()[choice].Use(1, GetOpponent());
+				current_attacker->GetInventory()[choice].Use(rng(0, 3), GetOpponent());
 				break;
 			}
 		default:
