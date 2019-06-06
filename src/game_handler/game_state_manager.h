@@ -19,12 +19,13 @@ class GameStateManager final
     std::array<std::unique_ptr<IGameState>, 5> states;
     size_t current_state;
     bool shall_run;
+	std::string folder;
 
 
     public:
         std::unique_ptr<Creature> player;
         
-        GameStateManager();
+        GameStateManager(char * folder_name);
         GameStateManager(const GameStateManager & other) = delete;
         GameStateManager & operator=(const GameStateManager & other) = delete;
         ~GameStateManager();

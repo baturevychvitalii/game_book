@@ -14,7 +14,7 @@
 			<item type="weapon" name="Guridums sword of horror" charges="777" ppd="10000" damage="100"/>
 
     <crossroad>
-		<path to="book/begin.xml">shall we start from the beginning</path>
-		<path to="book/last.xml">or maybe to an end</path>
+		<path to="begin.xml">shall we start from the beginning</path>
+		<path to="last.xml">or maybe to an end</path>
     </crossroad>
 </page>

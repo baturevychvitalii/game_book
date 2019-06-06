@@ -18,10 +18,14 @@ size_t  menu_state = 0,
 	//  imagine game state 3 here
 		inventory_state = 4;
 
-GameStateManager::GameStateManager()
-    : current_state(0), shall_run(true), player(nullptr)
+GameStateManager::GameStateManager(char * folder_name)
+    : current_state(0), shall_run(true), folder(folder_name), player(nullptr)
 {
     InitColors();
+
+	// if folder name doesn't have slash add it
+	if (folder[folder.length() - 1] != '/')
+		folder += '/';
 
     // create states
     states[menu_state] = std::move(std::make_unique<MainMenu>(this));
@@ -151,6 +155,7 @@ GameStateManager::GameStateManager()
 
 GameStateManager::~GameStateManager()
 {
+	// default but i didn't want to #include creature in header file
 }
 
 void GameStateManager::SwitchState(size_t state_code, Notify notification)
@@ -202,7 +207,7 @@ void GameStateManager::DisplayException(const std::exception & e)
 
 void GameStateManager::TurnPage(const std::string & filename)
 {
-    auto doc = xml::Parser::GetDoc(filename);
+    auto doc = xml::Parser::GetDoc(folder + filename);
     auto root = doc.Root();
     if (root.Name() != "page")
         throw GameException("root tag of a file must be <page type=\"page_tyepe\">");

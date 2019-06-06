@@ -22,8 +22,8 @@
         </inventory>
     </trader>
     <crossroad>
-		<path to="book/begin.xml">to start</path>
-		<path to="book/combat_example.xml">or let's fight</path>
-		<path to="book/last.xml">shall we go to the end</path>
+		<path to="begin.xml">to start</path>
+		<path to="combat_example.xml">or let's fight</path>
+		<path to="last.xml">shall we go to the end</path>
 	</crossroad>
 </page>
