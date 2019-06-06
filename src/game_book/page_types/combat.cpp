@@ -58,10 +58,9 @@ bool game_states::Combat::PlayerUsedItem(int input)
 
 	if (input == 'I' || input == 'i')
 	{
+		GetOpponent()->ChangeHealth(-1 * current_attacker->DefaultDamage);
 		if (!(gsm->player->GetInventory().Empty()))
 			gsm->SwitchState(inventory_state, Notify::Fight);
-		else
-			GetOpponent()->ChangeHealth(-1 * current_attacker->DefaultDamage);
 
 		return true;
 	}
@@ -74,6 +73,7 @@ void game_states::Combat::ArtificialInteligence()
 	if (current_attacker != &enemy)
 		throw GameException("wrong usage of function");
 
+	GetOpponent()->ChangeHealth(-1 * current_attacker->DefaultDamage);
 	Inventory & inve = current_attacker->GetInventory();
 	// select random item
 	if (!inve.Empty())
@@ -83,12 +83,7 @@ void game_states::Combat::ArtificialInteligence()
 			GetNotification(Notify::UseOnOpponent);
 		else
 			GetNotification(Notify::UseOnCurrent);
-	}
-	else
-	{
-		GetOpponent()->ChangeHealth(-1 * current_attacker->DefaultDamage);
-	}
-	
+	}	
 }
 
 bool game_states::Combat::Reacted(int input)

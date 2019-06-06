@@ -1,0 +1,16 @@
+<page type="story">
+    <header>
+        new york
+    </header>
+
+    <body>
+    	imagine here is some masterpiece story, and you are amazed by reading it
+		you are enjoying. You feel free, relaxed.
+		But now you have to choose what do you want to do
+    </body>
+    <crossroad>
+		<path to="trade_example.xml">do you wanna trade?</path>
+		<path to="story_example1.xml">or maybe go toprevious page</path>
+		<path to="combat_example.xml">fight????</path>
+	</crossroad>
+</page>

@@ -4,6 +4,7 @@ HEADFILES=$(shell find src -name '*.h')
 OBJFILES=$(patsubst src/%.cpp,obj/%.o,$(CPPFILES))
 FLAGS=-g -Wall -pedantic -std=c++14 -l ncurses $(shell xml2-config --cflags) -l xml2
 EXECUTABLE=baturvit
+EXAMPLES=examples
 
 
 
@@ -20,7 +21,7 @@ clean:
 	rm -r obj; rm $(EXECUTABLE); rm save.xml
 
 run: compile
-	./$(EXECUTABLE)
+	./$(EXECUTABLE) $(EXAMPLES)
 
 memcheck: compile
 	valgrind --leak-check=full ./$(EXECUTABLE)

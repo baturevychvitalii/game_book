@@ -84,9 +84,18 @@ void Page::GetNotification(Notify notification)
             }
             break;
         case Notify::New:
-            gsm->player.reset(new Creature());
-            gsm->TurnPage(std::string("book/begin.xml"));
-			gsm->SendNotification(inventory_state, Notify::New);
+			try
+			{
+				gsm->player.reset(new Creature());
+				gsm->TurnPage("begin.xml");
+				gsm->SendNotification(inventory_state, Notify::New);
+			}
+			catch(const std::exception& e)
+			{
+				gsm->DisplayException(e);
+				gsm->SwitchState(menu_state);
+			}
+			
             break;
         case Notify::Continue:
             break;
@@ -104,11 +113,22 @@ void Page::Save() const
     doc.Save();
 }
 
+static void RemoveFirstFolderName(std::string & filo)
+{
+	size_t found = filo.find('/');
+	if (found == std::string::npos)
+		throw std::invalid_argument("wrong save.xml format");
+	
+	filo.erase(filo.begin(), filo.begin() + found);
+}
+
 void Page::Load()
 {
     auto doc = xml::Parser::GetDoc("save.xml");
     gsm->player.reset(new Creature(doc.Root().Child("player")));
-    gsm->TurnPage(doc.Root().Child("page").Text());
+	std::string now_will_be_page =doc.Root().Child("page").Text();
+	RemoveFirstFolderName(now_will_be_page);
+    gsm->TurnPage(now_will_be_page);
 }
 
 xml::Tag Page::Serialize() const
