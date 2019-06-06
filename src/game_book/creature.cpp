@@ -2,6 +2,8 @@
 #include "../game_handler/colors.h"
 #include "../utils/graphics/status_bar.h"
 
+const size_t Creature::DefaultDamage = 10;
+
 Creature::Creature(
 	const std::string & nome,
 	size_t heal,
@@ -11,8 +13,7 @@ Creature::Creature(
 )
 	: name(nome), health(heal), max_health(max_heal), cash(cash),
 	inventory(inv),
-	status(new graphics::Group<graphics::Textbox>(nullptr, graphics::max_x, 0, 0, white_on_magneta, 2, 0, 1)),
-	DefaultDamage(10)
+	status(new graphics::Group<graphics::Textbox>(nullptr, graphics::max_x, 0, 0, white_on_magneta, 2, 0, 1))
 {
 	status->EmplaceBack<graphics::StatusBar>(
 		status_health_active_color,

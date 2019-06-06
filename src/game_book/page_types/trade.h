@@ -16,6 +16,9 @@ namespace game_states
 		graphics::menu_base * crossroads_menu;
 		graphics::menu_base * current_menu;
 		public:
+			/**
+			Deserializes page of type Trade from xml tag
+			*/
 			Trade(const xml::Tag & root, GameStateManager * manager);
 	};
 }

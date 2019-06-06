@@ -15,20 +15,25 @@ namespace game_states
 		bool PlayerUsedItem(int input);
 		void FigureOutDeath();
 		void ArtificialInteligence();
-		/*
-		enemy has it's own inventory and status.
-		enemy status will be owned by this screen, and deleted
-		when turning page in GSM.
-		enemy inventory will be deleted in destructor.
-		player's status will be released because it's also owned by inventory_state
-		*/
+
 		Creature enemy;
 		RandomNumberGenerator rng;
 		Creature * current_attacker;
 		bool death_figured_out;
 		bool shal_change_player;
 		public:
+			/**
+			creates page of type Combat
+			*/
 			Combat(const xml::Tag & root, GameStateManager * manager);
+
+			/**
+			enemy has it's own inventory and status.
+			enemy status will be owned by this screen, and deleted
+			when turning page in GSM.
+			enemy inventory will be deleted in here.
+			player's status will be released here because it's also owned by inventory_state
+			*/
 			~Combat() override;
 
 	};
