@@ -1,6 +1,6 @@
 <page type="trade">
     <header>
-        Wanna buy something ???
+        Tavern somewhere near the city
     </header>
 
     <trader name="aiziken">
@@ -11,8 +11,7 @@
         </inventory>
     </trader>
     <crossroad>
-		<path to="begin.xml">to start</path>
-		<path to="combat_example.xml">or let's fight</path>
-		<path to="last.xml">shall we go to the end</path>
+		<path to="begin.xml">back home</path>
+		<path to="new_york.xml">or to city</path>
 	</crossroad>
 </page>
