@@ -9,6 +9,7 @@ namespace game_states
 		bool Reacted(int input) override;
 		void ProcessMenuSelection(graphics::menu_base * menu) override;
 		void GetNotification(Notify notification) override;
+		void ChangeFocusedMenu();
 
 		Inventory * trader_inventory;
 		Inventory * player_inventory;

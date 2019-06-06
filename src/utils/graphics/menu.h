@@ -121,7 +121,7 @@ namespace graphics
 			}
 
 
-			Butt & operator[](size_t idx)
+			Butt & operator[](size_t idx) override
 			{
 				return buttons[idx];
 			}

@@ -51,6 +51,15 @@ GameStateManager::GameStateManager()
         text.NewLine("    p       pause         (game)");
         text.NewLine("    i       inventory     (game)");
 		text.NewLine("    n       switch menu  (trade)");
+		text.NewLine();
+		text.AppendText("TRADE: choose items in trader's inventory to buy them").
+		AppendText("open inventory with 'i' to sell your items.").
+		AppendText("FIGHT: you and your opponent take turns, When it's 'AI turn'").
+		AppendText("press any button to let AI make it's decision. When it's your turn:").
+		AppendText("press 'i' to open inventory. If your inventory is empty - you'll").
+		AppendText("attack with your default damage, if there are items:").
+		AppendText("press LEFT_ARROW to use item on player").
+		AppendText("press RIGHT_ARROW to use on opponent.");
 		text.Commit();
 		text.SetHeight(graphics::max_y);
     }

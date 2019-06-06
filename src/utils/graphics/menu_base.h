@@ -2,7 +2,7 @@
 #define __GRAPHICS_MENU_BASE__
 
 #include <stdlib.h>
-#include "textbox.h"
+#include "button.h"
 
 namespace graphics
 {
@@ -23,6 +23,7 @@ namespace graphics
 		virtual size_t Next() = 0;
 		virtual size_t Prev() = 0;
 		virtual size_t GetChoice() const = 0;
+		virtual graphics::Button & operator[](size_t idx) = 0;
 		virtual bool Empty() const  = 0;
 		virtual bool NextIsVisible() const = 0;
 		virtual bool PrevIsVisible() const = 0;

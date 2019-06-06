@@ -171,6 +171,7 @@ void game_states::Combat::FigureOutDeath()
 		// get inventory of an enemy
 		gsm->player->GetInventory().StealWholeInventory(enemy.GetInventory());
 		gsm->player->ChangeBudget(enemy.Budget());
+		enemy.ChangeBudget(-1 * enemy.Budget());
 		gsm->PopUp("victory");
 	}
 	else

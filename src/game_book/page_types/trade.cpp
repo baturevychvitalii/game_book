@@ -12,14 +12,15 @@ game_states::Trade::Trade(const xml::Tag & root, GameStateManager * manager)
 	current_menu(trader_inventory)
 {
 	AddWindow("trader inventory", *trader_inventory).
-	SetColor(page_trade_selected_menu_bg_color).
 	MoveTo(TopWindow()->LowestPoint(), 0);
 	trader_inventory->AppendText(root.Child("trader").Prop("name") + "'s inventory").
 	Commit();
 
 	BotWindow()->MoveTo(trader_inventory->LowestPoint(), BotWindow()->LeftPoint()).
-	SetColor(page_trade_unselected_menu_bg_color).
 	Commit();
+
+	if (!crossroads_menu->Empty())
+		(*crossroads_menu)[crossroads_menu->GetChoice()].Unselect();
 
 	BotWindow()->ProlongueToBottom();
 
@@ -35,6 +36,17 @@ game_states::Trade::Trade(const xml::Tag & root, GameStateManager * manager)
 	instruct.MoveToTouch(graphics::Direction::Down).SetSticky();
 }
 
+void game_states::Trade::ChangeFocusedMenu()
+{
+	if (!current_menu->Empty())
+		(*current_menu)[current_menu->GetChoice()].Unselect();
+
+	current_menu = current_menu == trader_inventory ? crossroads_menu : trader_inventory;
+
+	if (!current_menu->Empty())
+		(*current_menu)[current_menu->GetChoice()].Select();
+}
+
 bool game_states::Trade::Reacted(int input)
 {
 	if (StandardMenuHandlerReacted(current_menu, input))
@@ -46,9 +58,7 @@ bool game_states::Trade::Reacted(int input)
 		case 'N':
 			if (HasWindow("z_instruction"))
 				RemoveWindow("z_instruction");
-			current_menu->SetColor(page_trade_unselected_menu_bg_color);
-			current_menu = current_menu == trader_inventory ? crossroads_menu : trader_inventory;
-			current_menu->SetColor(page_trade_selected_menu_bg_color);
+			ChangeFocusedMenu();
 			return true;
 		case 'i':
 		case 'I':
