@@ -1,5 +1,6 @@
 CXX=g++
 CPPFILES=$(shell find src -name '*.cpp')
+HEADFILES=$(shell find src -name '*.h')
 OBJFILES=$(patsubst src/%.cpp,obj/%.o,$(CPPFILES))
 FLAGS=-g -Wall -pedantic -std=c++14 -l ncurses $(shell xml2-config --cflags) -l xml2
 EXECUTABLE=baturvit
@@ -18,8 +19,8 @@ compile: all
 clean:
 	rm -r obj; rm $(EXECUTABLE); rm save.xml
 
-run: all
+run: compile
 	./$(EXECUTABLE)
 
-memcheck: executable
+memcheck: compile
 	valgrind --leak-check=full ./$(EXECUTABLE)

@@ -15,5 +15,6 @@
 
     <crossroad>
 		<path to="book/begin.xml">shall we start from the beginning</path>
+		<path to="book/last.xml">or maybe to an end</path>
     </crossroad>
 </page>

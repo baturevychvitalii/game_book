@@ -1,6 +1,6 @@
 <page type="story">
     <header>
-        example 2
+        new york
     </header>
 
     <body>
@@ -8,5 +8,7 @@
     </body>
     <crossroad>
 		<path to="book/trade_example.xml">wanna trade?</path>
+		<path to="book/story_example1.xml">previous page</path>
+		<path to="book/combat_example.xml">or fight</path>
 	</crossroad>
 </page>
