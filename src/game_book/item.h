@@ -47,6 +47,8 @@ class Item : ISerializable, public graphics::Button
 		*/
         virtual size_t Use(size_t charges, Creature * creature);
 
+		void Fix(size_t charges){durability += charges;}
+
 		/**
 		@return price of the item based on ppd 'price per durability' value
 		*/

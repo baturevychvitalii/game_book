@@ -155,33 +155,58 @@ namespace graphics
 				return *this;
 			}
 
-            size_t Next()
+			Menu & UpperSelect(bool visible_check = true)
 			{
-				if (buttons.Empty())    
-					throw GraphicsException("there are no buttons");
-				
+				if (!buttons.Empty() && current - buttons.ColomnsCount() >= 0 &&
+					(!visible_check || buttons[current - buttons.ColomnsCount()].Visible()))
+						Choose(current - buttons.ColomnsCount());
 
-				if (current != buttons.Size() - 1)
-				{
-					buttons[current++].Unselect();
-					buttons[current].Select();
-				}
-
-				return current;
+				return *this;
 			}
 
-            size_t Prev()
+			Menu & RightSelect(bool visible_check = true)
 			{
-				if (buttons.Empty())    
-					throw GraphicsException("there are no buttons");
+				if (!buttons.Empty() && current % buttons.ColomnsCount() < buttons.ColomnsCount() - 1 && current < buttons.Size() - 1 &&
+					(!visible_check || buttons[current + 1].Visible()))
+					Choose(current + 1);
 
-				if (current != 0)
-				{
-					buttons[current--].Unselect();
-					buttons[current].Select();
-				}
+				return *this;
+			}
 
-				return current;
+			Menu & LeftSelect(bool visible_check = true)
+			{
+				if (!buttons.Empty() && current % buttons.ColomnsCount() > 0 &&
+					(!visible_check || buttons[current - 1].Visible()))
+						Choose(current - 1);
+
+				return *this;
+			}
+			
+			Menu & LowerSelect(bool visible_check = true)
+			{
+				if (!buttons.Empty() && current + buttons.ColomnsCount() < buttons.Size() &&
+					(!visible_check || buttons[current + buttons.ColomnsCount()].Visible()))
+						Choose(current + buttons.ColomnsCount());
+
+				return *this;
+			}
+			
+            Menu & NextSelect(bool visible_check = true)
+			{
+				if (!buttons.Empty() && current < buttons.Size() - 1 &&
+					(!visible_check || buttons[current + 1].Visible())) 
+						Choose(current + 1);
+
+				return *this;
+			}
+
+			Menu & PrevSelect(bool visible_check = true)
+			{
+				if (!buttons.Empty() && current > 0 &&
+					(!visible_check || buttons[current - 1].Visible()))
+						Choose(current - 1);	
+
+				return *this;
 			}
 
 			size_t GetChoice() const
@@ -203,36 +228,6 @@ namespace graphics
             bool Empty() const
 			{
 				return buttons.Empty();
-			}
-
-            bool NextIsVisible() const
-			{
-				if (buttons.Empty())
-					throw GraphicsException("there are no choices");
-
-				if (current < buttons.Size() - 1 && !buttons[current + 1].IsVisible())
-					return false;
-
-				return true;
-			}
-
-            bool PrevIsVisible() const
-			{
-				if (buttons.Empty())
-					throw GraphicsException("there are no choices");
-
-				if (current > 0 && !buttons[current - 1].IsVisible())
-					return false;
-
-				return true;
-			}
-
-            bool CurrIsVisible() const
-			{
-				if (buttons.Empty())
-					throw GraphicsException("there are no choices");
-
-				return buttons[current].IsVisible();
 			}
     };
 }

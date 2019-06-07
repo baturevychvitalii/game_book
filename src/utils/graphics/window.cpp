@@ -201,7 +201,7 @@ size_t graphics::Window::VisiblePercent() const
 
 size_t graphics::Window::visible_consiederation = 100;
 
-bool graphics::Window::IsVisible() const
+bool graphics::Window::Visible() const
 {
     return VisiblePercent() >= visible_consiederation;
 }

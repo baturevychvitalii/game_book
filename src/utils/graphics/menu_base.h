@@ -25,14 +25,23 @@ namespace graphics
 		}
 
 		virtual size_t Size() const = 0;
-		virtual size_t Next() = 0;
-		virtual size_t Prev() = 0;
+		virtual menu_base & NextSelect() = 0;
+		virtual menu_base & PrevSelect() = 0;
+		virtual menu_base & LowerSelect() = 0;
+		virtual menu_base & UpperSelect() = 0;
+		virtual menu_base & LeftSelect() = 0;
+		virtual menu_base & RightSelect() = 0;
+
 		virtual size_t GetChoice() const = 0;
-		virtual graphics::Button & operator[](size_t idx) = 0;
+		virtual Button & operator[](size_t idx) = 0;
 		virtual bool Empty() const  = 0;
-		virtual bool NextIsVisible() const = 0;
-		virtual bool PrevIsVisible() const = 0;
-		virtual bool CurrIsVisible() const = 0;
+		virtual bool NextVisible() const = 0;
+		virtual bool PrevVisible() const = 0;
+		virtual bool CurrVisible() const = 0;
+		virtual bool UpperVisible() const = 0;
+		virtual bool LowerVisible() const = 0;
+		virtual bool LeftVisible() const = 0;
+		virtual bool RightVisible() const = 0;
 	};
 	
 }

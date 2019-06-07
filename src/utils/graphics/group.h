@@ -201,6 +201,11 @@ namespace graphics
             {
                 return windows.empty();
             }
+
+			size_t ColomnsCount() const
+			{
+				return colomns;
+			}
     };
 }
 

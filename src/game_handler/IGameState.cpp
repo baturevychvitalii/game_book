@@ -62,7 +62,7 @@ bool IGameState::StandardMenuHandlerReacted(graphics::menu_base * to_test, int i
     switch (input)
     {
         case KEY_UP:
-            if (to_test->PrevIsVisible())
+            if (to_test->UpperVisible())
                 to_test->Prev();
             break;
         case KEY_DOWN:

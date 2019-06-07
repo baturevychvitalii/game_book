@@ -96,7 +96,7 @@ namespace graphics
 			percent value, after which window is considered visible
 			*/
             static size_t visible_consiederation;
-            bool IsVisible() const;
+            bool Visible() const;
 
             Window & Move(Direction direction, unsigned multiplier = 1);
             Window & Move(short dy, short dx);
