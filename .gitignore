@@ -1,4 +1,8 @@
 .vscode
+.syntastic
+.clang_complete
+.vimsession
+cscope.out
 baturvit
 save.xml
 zadani.txt

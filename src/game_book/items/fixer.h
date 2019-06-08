@@ -8,9 +8,9 @@ class Fixer : public Item
     size_t restores;
     size_t Use(size_t charges, Creature * creature) override;
     public:
-		/**
-		constructs item from xml tag
-		*/
+	/**
+	constructs item from xml tag
+	*/
         Fixer(
 			IChangeable * parent,
 			size_t width,
