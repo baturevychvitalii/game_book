@@ -1,7 +1,7 @@
 .vscode
 .syntastic
-.clang_complete
 .vimsession
+compile_commands.json
 cscope.out
 baturvit
 save.xml

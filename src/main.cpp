@@ -1,7 +1,6 @@
 #include "utils/xml_parser/xml_parser.h"
 #include "game_handler/game_state_manager.h"
 #include <iostream>
-#include "game_book/creature.h"
 
 int main(int argc, char * argv[])
 {
@@ -11,7 +10,7 @@ int main(int argc, char * argv[])
 			return 1;
 	}
 
-	//Creature * a =
+	std::cout << "i am the darkest night" << std::endl;
 	xml::Parser xmp;
 	graphics::Window::visible_consiederation = 30;
 	GameStateManager gsm(argv[1]);

@@ -58,12 +58,10 @@ bool InventoryState::CustomMenuHandlerReacted(int input)
 	switch (input)
     {
         case KEY_UP:
-            if (menu.PrevIsVisible())
-                menu.Prev();
-            return true;
+           	menu.PrevSelect(); 
+		return true;
         case KEY_DOWN:
-            if (menu.NextIsVisible())
-                menu.Next();
+		menu.NextSelect();
             return true;
 	}
 
