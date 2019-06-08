@@ -2,13 +2,18 @@ cmake_minimum_required(VERSION 3.0)
 
 project(Gamebook VERSION 1.0 LANGUAGES C CXX)
 
+#find required libraries
 find_package(Curses REQUIRED)
 find_package(LibXml2 REQUIRED)
+
+#include library directories
 include_directories(${CURSES_INCLUDE_DIRS} ${LIBXML2_INCLUDE_DIR})
 
+#set compiling properties
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -O2")
 
+#select sources for game book library
 set(LIBRARY_SOURCE_FILES
         src/game_book/items/food.cpp
         src/game_book/items/fixer.cpp
@@ -39,8 +44,14 @@ set(LIBRARY_SOURCE_FILES
         src/utils/helpers.cpp
         src/utils/rng.cpp)
 
+#create game book library
 add_library(gamebook SHARED ${LIBRARY_SOURCE_FILES})
 
+#link created library with external libraries
 target_link_libraries(gamebook ${CURSES_LIBRARIES} ${LIBXML2_LIBRARIES})
+
+#create executable file
 add_executable(demonstrator src/main.cpp)
+
+#link executable file and game book library
 target_link_libraries(demonstrator gamebook)
