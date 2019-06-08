@@ -1,0 +1,19 @@
+<page type="combat">
+    <header>
+        Suddenly you encountered a Boss of this place
+    </header>
+    <enemy name="Mister Twister">
+		<health>111</health>
+		<max_health>222</max_health>
+		<cash>8888</cash>
+		<inventory>
+			<item type="weapon" name="tester sword" charges="4" ppd="1" damage="11"/>
+			<item type="food" name="tester heal" charges="999999" ppd="1" heal="11"/>
+			<item type="weapon" name="Tear of Mister Twister" charges="0" ppd="10000" damage="1111"/>
+		</inventory> 
+    </enemy>
+    <crossroad>
+		<path to="tavern.xml">let's go back to tavern and buy what we couldn't afford</path>
+		<path to="last.xml">or maybe to an end</path>
+    </crossroad>
+</page>

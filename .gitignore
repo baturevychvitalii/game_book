@@ -9,3 +9,9 @@ Makefile
 executable
 *.cbp
 .idea/
+baturvit
+save.xml
+zadani.txt
+prohlaseni.txt
+obj
+doc

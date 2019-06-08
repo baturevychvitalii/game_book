@@ -3,6 +3,9 @@
 
 #include <random>
 
+/**
+Comfortable (for me) way to use RNG
+*/
 class RandomNumberGenerator
 {
     private:
@@ -10,6 +13,9 @@ class RandomNumberGenerator
     public:
         RandomNumberGenerator() = default;
         RandomNumberGenerator(const RandomNumberGenerator & other) = delete;
+		/**
+		@return random value between from and to
+		*/
         int operator() (int from , int to);
 };
 

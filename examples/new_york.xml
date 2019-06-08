@@ -1,0 +1,14 @@
+<page type="story">
+    <header>
+        City Of New York
+    </header>
+
+    <body>
+		A place of choices, here are so many of them
+    </body>
+    <crossroad>
+		<path to="tavern.xml">To tavern near city</path>
+		<path to="fight_guridum.xml">or maybe let's investigate who is that strange guy in front of me</path>
+		<path to="begin.xml">or let's return back home</path>
+	</crossroad>
+</page>

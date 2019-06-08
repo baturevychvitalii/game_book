@@ -1,0 +1,15 @@
+<page type="story">
+    <header>
+        Night is dark, outside is cold. 
+    </header>
+
+    <body>
+	This is the start of a great adventure of Lorry, who lived near New York;
+	One day he woke up and didn't know weather he shall go to the city, or to a tavern
+    </body>
+
+    <crossroad>
+        <path to="new_york.xml">Go to City</path>
+        <path to="tavern.xml">Or drink some beer</path>
+    </crossroad>
+</page>
