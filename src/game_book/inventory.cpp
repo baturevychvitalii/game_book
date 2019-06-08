@@ -2,6 +2,7 @@
 #include "../game_handler/colors.h"
 #include "items/food.h"
 #include "items/weapon.h"
+#include "items/fixer.h"
 #include "../game_handler/game_exception.h"
 
 static const size_t inventory_colomns = 3;
@@ -23,6 +24,8 @@ Inventory::Inventory(const xml::Tag & t)
 			AddOption<Food>(item);
 		else if(type == "weapon")
 			AddOption<Weapon>(item);
+		else if(type == "fixer")
+			AddOption<Fixer>(item);
 		else
 			throw GameException("unsupported item type");
     }

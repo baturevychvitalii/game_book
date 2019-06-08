@@ -14,49 +14,51 @@ namespace graphics
 	check what is selected now
 	*/
 	template<class Butt = Button>
-    class Menu : public menu_base
-    {
-        Group<Butt> buttons;
-        size_t current;
-        short active_c, inactive_c;
+	class Menu : public menu_base
+	{
+		Group<Butt> buttons;
+		size_t current;
+		short active_c, inactive_c;
 
 
-        size_t TopIndent() const override
+		size_t TopIndent() const override
 		{
 			return 1;
 		}
 
-        void MoveChildren(short dy, short dx) override
+		void MoveChildren(short dy, short dx) override
 		{
 			buttons.Move(dy,dx);
 		}
 
 		protected:
-			void ApplyChange() override
-			{
-				buttons.Commit();
-				buttons.MoveTo(act_y + Textbox::MinHeight(), act_x + 1);
-				
-				if (act_h < MinHeight())
-					SetHeight(MinHeight());
-			}
+		void ApplyChange() override
+		{
+			buttons.Commit();
+			buttons.MoveTo(act_y + Textbox::MinHeight(), act_x + 1);
 
-			void DrawSpecific() const override
-			{
-				Textbox::DrawSpecific();
-				buttons.Draw();
-			}
+			if (act_h < MinHeight())
+				SetHeight(MinHeight());
+		}
 
-        public:
-            Menu(IChangeable * parent,
-                size_t width,
-                short y,
-                short x,
-                short bg_color,
-                short active_color,
-                short inactive_color,
-                size_t colomns)
-				: menu_base(parent, width, y, x, bg_color),
+		void DrawSpecific() const override
+		{
+			Textbox::DrawSpecific();
+			buttons.Draw();
+		}
+
+		public:
+			Menu(
+				IChangeable * parent,
+				size_t width,
+				short y,
+				short x,
+				short bg_color,
+				short active_color,
+				short inactive_color,
+				size_t colomns)
+				:
+				menu_base(parent, width, y, x, bg_color),
 				buttons(this, width - 2, 0, 0, bg_color, colomns, 1, 2),
 				current(0),
 				active_c(active_color),
@@ -64,10 +66,10 @@ namespace graphics
 			{
 			}
 
-            Menu(const Menu & menu) = delete;
-            Menu & operator=(const Menu & menu) = delete;
+			Menu(const Menu & menu) = delete;
+			Menu & operator=(const Menu & menu) = delete;
 
-            size_t MinHeight() const override
+			size_t MinHeight() const override
 			{
 				return Textbox::MinHeight() + buttons.MinHeight() + 1;
 			}
@@ -97,7 +99,7 @@ namespace graphics
 				return new_but;
 			}
 
-            Menu & EraseOption(size_t idx)
+			Menu & EraseOption(size_t idx)
 			{       
 				buttons.Erase(idx);
 
@@ -134,12 +136,12 @@ namespace graphics
 				return buttons[idx];
 			}
 
-			const Butt & operator[](size_t idx) const
+			const Butt & operator[](size_t idx) const override
 			{
 				return buttons[idx];
 			}
 
-            size_t Size() const
+			size_t Size() const override
 			{
 				return buttons.Size();
 			}
@@ -155,86 +157,92 @@ namespace graphics
 				return *this;
 			}
 
-            size_t Next()
+			Menu & UpperSelect(bool visible_check = true) override
 			{
-				if (buttons.Empty())    
-					throw GraphicsException("there are no buttons");
-				
+				if (!buttons.Empty() &&
+					current - buttons.ColomnsCount() >= 0 &&
+					(!visible_check || buttons[current - buttons.ColomnsCount()].Visible()))
+						Choose(current - buttons.ColomnsCount());
 
-				if (current != buttons.Size() - 1)
-				{
-					buttons[current++].Unselect();
-					buttons[current].Select();
-				}
-
-				return current;
+				return *this;
 			}
 
-            size_t Prev()
+			Menu & RightSelect(bool visible_check = true) override
 			{
-				if (buttons.Empty())    
-					throw GraphicsException("there are no buttons");
+				if (!buttons.Empty() &&
+					current % buttons.ColomnsCount() < buttons.ColomnsCount() - 1 && 
+					current < buttons.Size() - 1 &&
+					(!visible_check || buttons[current + 1].Visible()))
+						Choose(current + 1);
 
-				if (current != 0)
-				{
-					buttons[current--].Unselect();
-					buttons[current].Select();
-				}
-
-				return current;
+				return *this;
 			}
 
-			size_t GetChoice() const
+			Menu & LeftSelect(bool visible_check = true) override
+			{
+				if (!buttons.Empty() && current % buttons.ColomnsCount() > 0 &&
+					(!visible_check || buttons[current - 1].Visible()))
+						Choose(current - 1);
+
+				return *this;
+			}
+
+			Menu & LowerSelect(bool visible_check = true) override
+			{
+				if (!buttons.Empty() && current + buttons.ColomnsCount() < buttons.Size() &&
+					(!visible_check || buttons[current + buttons.ColomnsCount()].Visible()))
+						Choose(current + buttons.ColomnsCount());
+
+				return *this;
+			}
+
+			Menu & NextSelect(bool visible_check = true) override
+			{
+				if (!buttons.Empty() && current < buttons.Size() - 1 &&
+					(!visible_check || buttons[current + 1].Visible())) 
+						Choose(current + 1);
+
+				return *this;
+			}
+
+			Menu & PrevSelect(bool visible_check = true) override
+			{
+				if (!buttons.Empty() && current > 0 &&
+					(!visible_check || buttons[current - 1].Visible()))
+						Choose(current - 1);	
+
+				return *this;
+			}
+
+			size_t GetChoice() const override
 			{
 				if (buttons.Empty())
 					throw GraphicsException("there are no buttons");
-				
+
 				return current;
+			}
+
+			bool ChoiceVisible() const override
+			{
+				if (buttons.Empty())
+					throw GraphicsException("there are no buttons");
+
+				return buttons[current].Visible();
 			}
 
 			Butt & ChosenButton()
 			{
 				if (buttons.Empty())
 					throw GraphicsException("there are no buttons");
-				
+
 				return buttons[current];
 			}
 
-            bool Empty() const
+			bool Empty() const override
 			{
 				return buttons.Empty();
 			}
-
-            bool NextIsVisible() const
-			{
-				if (buttons.Empty())
-					throw GraphicsException("there are no choices");
-
-				if (current < buttons.Size() - 1 && !buttons[current + 1].IsVisible())
-					return false;
-
-				return true;
-			}
-
-            bool PrevIsVisible() const
-			{
-				if (buttons.Empty())
-					throw GraphicsException("there are no choices");
-
-				if (current > 0 && !buttons[current - 1].IsVisible())
-					return false;
-
-				return true;
-			}
-
-            bool CurrIsVisible() const
-			{
-				if (buttons.Empty())
-					throw GraphicsException("there are no choices");
-
-				return buttons[current].IsVisible();
-			}
-    };
+	};
 }
 
 #endif

@@ -9,6 +9,10 @@ Makefile
 executable
 *.cbp
 .idea/
+.syntastic
+.vimsession
+compile_commands.json
+cscope.out
 baturvit
 save.xml
 zadani.txt

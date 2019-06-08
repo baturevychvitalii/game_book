@@ -8,6 +8,7 @@
             <item type="weapon" name="ukulele" charges="10" ppd="8" damage="15"/>
             <item type="food" name="apple of Adam" charges="3" ppd="333" heal="111111"/>
             <item type="weapon" name="ukulele" charges="10" ppd="10" damage="20"/>
+			<item type="fixer" name="victorinox" charges="2" ppd="100" fix="30"/>
         </inventory>
     </trader>
     <crossroad>

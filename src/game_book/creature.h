@@ -6,7 +6,7 @@
 
 class Creature : ISerializable
 {
-    private:
+	private:
 		Creature(
 			const std::string & name,
 			size_t heal,
@@ -15,47 +15,46 @@ class Creature : ISerializable
 			Inventory * inv
 		);
 
-        const std::string name;
-        size_t health, max_health;
-        size_t cash;
-        Inventory * inventory;
+		const std::string name;
+		size_t health, max_health;
+		size_t cash;
+		Inventory * inventory;
 		graphics::Group<graphics::Textbox> * status;
-    public:
+	public:
 		/**
 		Why would we want to copy creature? it is nonesense
 		*/
-        Creature(const Creature & other) = delete;
-        Creature & operator=(const Creature & other) = delete;
-        ~Creature() = default;
-
+		Creature(const Creature & other) = delete;
+		Creature & operator=(const Creature & other) = delete;
+		~Creature() = default;
 		/**
 		Creates player when New game is chosen in Main Menu
 		*/
-        Creature();
+		Creature();
 
 		/**
 		Deserializes creature from xml tag.
 		It happens when either we saved our game and want to get a player as he was,
 		or when page is in fight state and we have an enemy
 		*/
-        Creature(const xml::Tag & tag);
+		Creature(const xml::Tag & tag);
 
 		/**
 		Serializes Creature to xml tag
 		*/
-        xml::Tag Serialize() const override;
+		xml::Tag Serialize() const override;
 
 		/**
 		Returns a reference to creatures inventory
 		*/
-        Inventory & GetInventory();
+		Inventory & GetInventory();
 
 		/**
 		Returns a reference to creatures status bar, which displays health of a creature,
 		it's name and $$$
 		*/
 		graphics::Group<graphics::Textbox> & GetStatusBar();
-		
+			
 		/**
 		Damage which is dealt when inventory is empty.
 		*/

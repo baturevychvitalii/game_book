@@ -15,6 +15,7 @@ short   red_on_white = 1,
         magneta_on_white = 12,
 		white_on_green = 13,
 		magneta_on_yelow = 14,
+		yelow_on_black = 15,
 
 		default_theme_color = magneta_on_white,
 		anti_color = white_on_magneta,
@@ -57,5 +58,6 @@ void InitColors()
     init_pair(magneta_on_white, COLOR_MAGENTA, COLOR_WHITE);
 	init_pair(white_on_green, COLOR_WHITE, COLOR_GREEN);
 	init_pair(magneta_on_yelow, COLOR_MAGENTA, COLOR_YELLOW);
+	init_pair(yelow_on_black, COLOR_YELLOW, COLOR_BLACK);
 }
 

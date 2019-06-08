@@ -11,6 +11,7 @@ set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -O2")
 
 set(LIBRARY_SOURCE_FILES
         src/game_book/items/food.cpp
+        src/game_book/items/fixer.cpp
         src/game_book/items/weapon.cpp
         src/game_book/page_types/combat.cpp
         src/game_book/page_types/story.cpp
