@@ -13,7 +13,7 @@ executable
 .vimsession
 compile_commands.json
 cscope.out
-baturvit
+libgamebook.so
 save.xml
 zadani.txt
 prohlaseni.txt

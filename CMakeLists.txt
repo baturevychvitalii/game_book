@@ -11,7 +11,12 @@ include_directories(${CURSES_INCLUDE_DIRS} ${LIBXML2_INCLUDE_DIR})
 
 #set compiling properties
 set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -O2")
+
+#Release
+#set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -O2")
+#Debug
+set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -g -Wall -Wextra -Wpedantic ")
+
 
 #select sources for game book library
 set(LIBRARY_SOURCE_FILES
@@ -55,3 +60,4 @@ add_executable(demonstrator src/main.cpp)
 
 #link executable file and game book library
 target_link_libraries(demonstrator gamebook)
+
