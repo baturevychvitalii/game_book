@@ -6,20 +6,25 @@
 #include "../utils/graphics/button.h"
 
 class Creature;
+class Inventory;
 
-/**
-base of all items. can only be in inventory
-*/
+/*
+ * base of all items. can only be in inventory
+ */
 class Item : ISerializable, public graphics::Button
 {
 	const std::string type;
 	const std::string name;
 	size_t durability;
-	size_t line_with_durability;
+	bool fixible;
 	const size_t price_per_durability;
+	size_t line_with_durability;
+
+	void UpdateDurability();
 
 	protected:
 		void SetNameColor(short color);
+		Inventory * GetInventory() const;
 	
     public:
         Item(
@@ -34,29 +39,47 @@ class Item : ISerializable, public graphics::Button
         Item(const Item & other) = delete;
         Item & operator=(const Item & other) = delete;
         
-		/**
-		@return name of this type in string format
-		*/
+		/*
+		 * @return name of this type in string format
+		 */
 		const std::string & GetType() const;
 
-		/**
-		applies this item to provided creature
-		@param charges how many charges to use.
-		@param creature creature, to which this item will be applied
-		@return how many charges can be used
-		*/
-        virtual size_t Use(size_t charges, Creature * creature);
+		/*
+		 * @return owner of inventory, where this item is stored
+		 */
+		Creature * GetOwner() const;
 
-		void Fix(size_t charges){durability += charges;}
+		/*
+		 * applies this item to proper creature. Derived virtual override of
+		 * this method will decide to whom it shall be applied.
+		 * @param charges how many charges we want to use
+		 * @param potential_opponent will be chosen if an item is for example Weapon
+		 * @return how many charges can be used
+		 */
+        virtual size_t Use(size_t charges = 1, Creature * potential_opponent = nullptr);
 
-		/**
-		@return price of the item based on ppd 'price per durability' value
-		*/
+		void SetFixible(bool value = true);
+
+		/*
+		 * @return true if item is fixable
+		 */
+		bool IsFixable() const;
+
+		/*
+		 * increase durability of this item
+		 */
+		void Fix(size_t charges);
+
+		/*
+		 * @return price of the item based on ppd 'price per durability' value
+		 */
         size_t Price() const;
 
-		/**
-		serializes item base to xml tag
-		*/
+		size_t Durability() const;
+
+		/*
+		 * serializes item base to xml tag
+		 */
         xml::Tag Serialize() const override;
 };
 

@@ -4,7 +4,7 @@
 #include "../utils/graphics/menu.h"
 
 PauseState::PauseState(GameStateManager * manager)
-    : IGameState(manager)
+    : IGameState(manager, "PauseState")
 {
     auto & menu = AddWindow<graphics::Menu<>>(
         "pause",

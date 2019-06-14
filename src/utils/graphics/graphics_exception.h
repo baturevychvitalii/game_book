@@ -1,6 +1,7 @@
 #ifndef __GRAPHICS_EXCEPTION__
 #define __GRAPHICS_EXCEPTION__
 #include <exception>
+#include <string>
 
 namespace graphics
 {
@@ -12,6 +13,11 @@ namespace graphics
                 :message(msg)
             {
             }
+
+			GraphicsException(const std::string & msg)
+				:message(msg.c_str())
+			{
+			}
 
             const char * what() const noexcept override
             {

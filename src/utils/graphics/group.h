@@ -74,7 +74,7 @@ namespace graphics
                 window->Move(dy, dx);
         }
 		
-		void DrawSpecific() const override
+		void DrawSpecific() override
 		{
 			if (draw_background)
 				DrawBackground();
@@ -116,18 +116,18 @@ namespace graphics
 			}
 
 			// Allows to add derived classes to group
-            template<typename Window_type = Win, typename ... ConsturctorParams>
+            template<typename Window_type, typename ... ConsturctorParams>
             Window_type & Emplace(size_t idx, ConsturctorParams && ... params)
             {
                 if (idx > windows.size())
                     throw std::invalid_argument("idx");
 
-                windows.emplace(windows.begin() + idx, new Window_type(this, window_width, 0, 0, std::forward<ConsturctorParams>(params) ...));
-                NotifyChange();
-                return static_cast<Window_type &>(*(windows[idx]));
+				auto * n_w = new Window_type(nullptr, window_width, 0, 0, std::forward<ConsturctorParams>(params) ...);
+				n_w->Commit();
+                return static_cast<Window_type &>(Emplace (idx, *n_w));
             }
 
-            template<typename Window_type = Win, typename ... Args>
+            template<typename Window_type, typename ... Args>
             Window_type & EmplaceBack(Args && ... args)
             {
                 return Emplace<Window_type>(windows.size(), std::forward<Args>(args) ...);
@@ -137,10 +137,10 @@ namespace graphics
             {
                 if (idx > windows.size())
                     throw std::invalid_argument("idx");
-				
-				if (new_win.HasParent())
-					throw GraphicsException("item still has parent");
 
+				if (new_win.Width() != window_width)
+					throw GraphicsException("invalid width of provided window");
+				
                 new_win.SetParent(this);
                 windows.emplace(windows.begin() + idx, &new_win);
 				NotifyChange();
@@ -171,7 +171,7 @@ namespace graphics
                     throw std::invalid_argument("trying to erase window, which doesn't exist");
                 
 				auto * to_release = windows[idx].release();
-                to_release->SetParent(nullptr);
+                to_release->Free();
 				Erase(idx);
                 return *to_release;
             }

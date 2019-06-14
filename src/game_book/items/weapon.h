@@ -12,7 +12,8 @@ value it subtracts it
 class Weapon : public Item
 {
     int damage;
-    size_t Use(size_t charges, Creature * creature) override;
+	size_t Use(size_t charges = 1, Creature *potential_opponent = nullptr) override;
+
     public:
 		/**
 		constructs the weapon, from an xml tag.

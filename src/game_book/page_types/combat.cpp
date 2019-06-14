@@ -1,7 +1,11 @@
 #include "combat.h"
+#include "../../utils/graphics/mirror.h"
 #include "../../game_handler/colors.h"
 #include "../../game_handler/game_exception.h"
 #include "../../game_handler/game_state_manager.h"
+
+
+// to delete file with saved progress in case player died
 #include <cstdio>
 
 game_states::Combat::Combat(const xml::Tag & root, GameStateManager * manager)
@@ -12,25 +16,25 @@ game_states::Combat::Combat(const xml::Tag & root, GameStateManager * manager)
 	death_figured_out(false),
 	shal_change_player(false)
 {
-	auto & status = AddWindow<graphics::Group<graphics::Group<graphics::Textbox>>>(
+	auto & status = AddWindow<graphics::Group<graphics::Window>>(
 		"fight process",
 		graphics::max_x,
 		TopWindow()->LowestPoint(),
 		0,
 		menu_inactive_color,
 		1,
-		2,
-		0
+		2, 0
 	);
-	status.EmplaceBack(gsm->player->GetStatusBar());
+
+	status.EmplaceBack<graphics::Mirror<>>(gsm->player->GetStatusBar());
 	status.EmplaceBack(enemy.GetStatusBar());
 	status.SetDrawBackground().Commit();
+
 	BotWindow()->MoveTo(status.LowestPoint(), BotWindow()->LeftPoint());
 	BotWindow()->ProlongueToBottom();
 
 
-	//your turn
-	//AI turn
+	// tip at bottom left which says whose turn is now
 	auto & tip = AddWindow<graphics::Textbox>(
 		"z_tip",
 		11,
@@ -47,8 +51,6 @@ game_states::Combat::Combat(const xml::Tag & root, GameStateManager * manager)
 game_states::Combat::~Combat()
 {
 	delete &(enemy.GetInventory());
-	auto & status_group = GetWindow<graphics::Group<graphics::Group<graphics::Textbox>>>("fight process");
-	status_group.Release(0);
 }
 
 bool game_states::Combat::PlayerUsedItem(int input)
@@ -61,7 +63,7 @@ bool game_states::Combat::PlayerUsedItem(int input)
 		if (!(gsm->player->GetInventory().Empty()))
 			gsm->SwitchState(inventory_state, Notify::Fight);
 		else
-			GetOpponent()->ChangeHealth(-1 * current_attacker->DefaultDamage);		
+			GetOpponent()->ChangeHealth(-1 * current_attacker->DefaultDamage());
 
 		return true;
 	}
@@ -74,28 +76,32 @@ void game_states::Combat::ArtificialInteligence()
 	if (current_attacker != &enemy)
 		throw GameException("wrong usage of function");
 
-	Inventory & inve = current_attacker->GetInventory();
+	Inventory & inve = enemy.GetInventory();
 	// select random item
 	if (!inve.Empty())
 	{
 		inve.Choose(rng(0, inve.Size()));
-		if (inve.ChosenButton().GetType() == "weapon")
-			GetNotification(Notify::UseOnOpponent);
-		else
-			GetNotification(Notify::UseOnCurrent);
+		inve.ChosenButton().Use(rng(1, 3), GetOpponent());
 	}
 	else
-		GetOpponent()->ChangeHealth(-1 * current_attacker->DefaultDamage);
-	
+		GetOpponent()->ChangeHealth(-1 * current_attacker->DefaultDamage());
 }
 
 bool game_states::Combat::Reacted(int input)
 {
 	if (shal_change_player)
+	{
 		current_attacker = GetOpponent();
+		shal_change_player = false;
+	}
+
 	// fight continues
 	if (gsm->player->IsAlive() && enemy.IsAlive())
 	{
+		// scrolling is allowed
+		if (IGameState::Reacted(input))
+			return true;
+		
 		// current attacker makes turn
 		if (current_attacker == gsm->player.get())
 		{
@@ -106,7 +112,6 @@ bool game_states::Combat::Reacted(int input)
 				return true;
 			}
 
-			shal_change_player = false;
 			return false;
 		}
 		else
@@ -136,23 +141,15 @@ bool game_states::Combat::Reacted(int input)
 
 void game_states::Combat::GetNotification(Notify notification) 
 {
-
-	switch (notification)
+	// fight has finished, player is choosing a crossroad
+	if (notification != Notify::Fight)
+		Page::GetNotification(notification);
+	else // fight continues
 	{
-		case Notify::UseOnCurrent:
-			{
-				size_t choice = current_attacker->GetInventory().GetChoice();
-				current_attacker->GetInventory()[choice].Use(rng(0, 3), current_attacker);
-				break;
-			}
-		case Notify::UseOnOpponent:
-			{
-				size_t choice = current_attacker->GetInventory().GetChoice();
-				current_attacker->GetInventory()[choice].Use(rng(0, 3), GetOpponent());
-				break;
-			}
-		default:
-			Page::GetNotification(notification);
+		if (current_attacker != gsm->player.get() || !current_attacker->IsAlive())
+			throw GameException("something wrong has happened");
+			
+		current_attacker->GetInventory().ChosenButton().Use(rng(1,3), GetOpponent());
 	}
 }
 
@@ -173,13 +170,15 @@ void game_states::Combat::FigureOutDeath()
 	}
 	else
 	{
-		if (remove("save.xml"))
-			gsm->DisplayException(GameException("for some reason couldn't delete save file. game is hardcore don't forget it!!"));
-
+		remove("save.xml");
+		// following command will unlink player's status bar from inventory state
 		gsm->PopUp("death");
 		gsm->SwitchState(menu_state);
 	}
 	
+	RemoveWindow("fight process");
+	BotWindow()->MoveTo(TopWindow()->LowestPoint(), BotWindow()->LeftPoint());
+	BotWindow()->ProlongueToBottom();
 	RemoveWindow("z_tip");
 	death_figured_out = true;
 }

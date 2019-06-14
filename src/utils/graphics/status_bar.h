@@ -12,7 +12,7 @@ namespace graphics
         size_t max_value;
         
         void ApplyChange() override;
-		void DrawSpecific() const override;
+		void DrawSpecific() override;
         public:
             StatusBar(
                 IChangeable * parent,

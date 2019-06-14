@@ -22,18 +22,18 @@ namespace game_states
 		bool death_figured_out;
 		bool shal_change_player;
 		public:
-			/**
-			creates page of type Combat
-			*/
+			/*
+			 * creates page of type Combat
+			 */
 			Combat(const xml::Tag & root, GameStateManager * manager);
 
-			/**
-			enemy has it's own inventory and status.
-			enemy status will be owned by this screen, and deleted
-			when turning page in GSM.
-			enemy inventory will be deleted in here.
-			player's status will be released here because it's also owned by inventory_state
-			*/
+			/*
+			 * enemy has it's own inventory and status.
+			 * enemy status will be owned by this screen, and deleted
+			 * when turning page in GSM.
+			 * enemy inventory will be deleted in here.
+			 * player's status will be untuched, because it is used through linked window
+			 */
 			~Combat() override;
 
 	};

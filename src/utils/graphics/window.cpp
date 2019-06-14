@@ -6,13 +6,14 @@ size_t graphics::max_x = 0;
 size_t graphics::max_y = 0;
 
 graphics::Window::Window(IChangeable * parent, size_t width, short y, short x, short color)
-    : IChangeable(parent),
-      sticky(false),								
-      act_h(0),
-      act_w(width),
-      act_y(y),
-      act_x(x),
-      window_color(color)
+    :
+	IChangeable(parent),
+	sticky(false),								
+	act_h(0),
+	act_w(width),
+	act_y(y),
+	act_x(x),
+	window_color(color)
 {	
 	UpdateOnScreenWidth();
 	UpdateOnScreenPositin();
@@ -32,7 +33,7 @@ void graphics::Window::DrawBackground() const
 	attroff(COLOR_PAIR(window_color));
 }
 
-void graphics::Window::Draw() const
+void graphics::Window::Draw()
 {
 	if (!UpToDate())
 		throw GraphicsException("trying to display uncommited changes");
@@ -48,7 +49,7 @@ graphics::Window & graphics::Window::SetHeight(size_t new_height)
 
 	act_h = new_height;
 	UpdateOnScreenHeight();
-	NotifyParent();
+	NotifyDependent();
 	return *this;
 }
 
@@ -64,6 +65,11 @@ graphics::Window & graphics::Window::SetColor(short new_color)
 {
 	window_color = new_color;
 	return *this;
+}
+
+short graphics::Window::GetColor() const
+{
+	return window_color;
 }
 
 graphics::Window & graphics::Window::SetSticky(bool value)
@@ -146,8 +152,6 @@ void graphics::Window::UpdateOnScreenPositin() noexcept
 	on_screen_x = act_x < 0 ? 0 : act_x;
 	on_screen_y = act_y < 0 ? 0 : act_y;
 }
-
-
 
 short graphics::Window::MidXStart(short len) const
 {

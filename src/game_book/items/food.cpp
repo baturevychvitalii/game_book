@@ -23,9 +23,10 @@ xml::Tag Food::Serialize() const
     return Item::Serialize().AddProp("heal", std::to_string(heal_value));
 }
 
-size_t Food::Use(size_t charges, Creature * creature)
+size_t Food::Use(size_t charges, Creature * potential_opponent)
 {
-    size_t charges_to_use = Item::Use(charges, creature);
-	creature->ChangeHealth(charges_to_use * heal_value);
+	size_t charges_to_use = Item::Use(charges);
+	GetOwner()->ChangeHealth(charges_to_use * heal_value);
 	return charges_to_use;
 }
+

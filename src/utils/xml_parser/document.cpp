@@ -7,7 +7,7 @@ xml::Document::Document(const std::string & filename)
 {
     doc_ptr = xmlParseFile(file.c_str());
     if (doc_ptr == NULL)
-        throw std::invalid_argument("couldn't parse doc with libxml2");
+        throw XmlException(this).Messg("couldn't parse");
     
     root = xmlDocGetRootElement(doc_ptr);
 }
@@ -31,6 +31,11 @@ xml::Document::Document(const std::string & filename, xml::Tag & root_tag)
 xml::Document::~Document()
 {
     xmlFreeDoc(doc_ptr);
+}
+
+const std::string & xml::Document::FileName() const
+{
+	return file;
 }
 
 void xml::Document::Save(const char * filename) const

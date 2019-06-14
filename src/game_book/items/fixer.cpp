@@ -1,5 +1,5 @@
 #include "fixer.h"
-#include "../creature.h"
+#include "../inventory.h"
 #include "../../game_handler/colors.h"
  
 Fixer::Fixer(
@@ -20,19 +20,16 @@ Fixer::Fixer(
 
 xml::Tag Fixer::Serialize() const
 {
-    return Item::Serialize().AddProp("fix", std::to_string(restores));
+    return Item::Serialize().AddProp("fix", restores);
 }
 
-size_t Fixer::Use(size_t charges, Creature * creature)
+size_t Fixer::Use(size_t charges, Creature *potential_opponent)
 {
-	size_t charges_to_use = Item::Use(charges, creature);
-	Inventory & inve = creature->GetInventory();
-	for (size_t i = 0; i < inve.Size(); i++)
+	size_t charges_to_use = Item::Use(charges);
+	for (size_t i = 0; i < GetInventory()->Size()  ; i++)
 	{
-		Item & curr = inve[i];
-		if (curr.GetType() != "fixer")
-			curr.Fix(restores * charges_to_use);
+		(*GetInventory())[i].Fix(charges_to_use * restores);
 	}
-	
+
 	return charges_to_use;
 }

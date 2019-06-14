@@ -5,7 +5,7 @@
 #include "colors.h"
 
 InventoryState::InventoryState(GameStateManager * manager)
-	: IGameState(manager),
+	: IGameState(manager, "InventoryState"),
 	current_state(Notify::Empty)
 {
 }
@@ -47,56 +47,29 @@ void InventoryState::GetNotification(Notify notification)
 	}
 }
 
-bool InventoryState::CustomMenuHandlerReacted(int input)
+void InventoryState::ProcessMenuSelection(graphics::menu_base * to_test)
 {
-	graphics::menu_base & menu = GetWindow<graphics::menu_base>("inventory");
-
-	if (menu.Empty())
-		return false;
-
-	// menu navigation is common for all states of inventory
-	switch (input)
-    {
-        case KEY_UP:
-           	menu.PrevSelect(); 
-		return true;
-        case KEY_DOWN:
-		menu.NextSelect();
-            return true;
-	}
+	if (to_test != BotWindow())
+		throw GameException("must be inventory menu");
 
 	switch (current_state)
 	{
 		case Notify::Continue:
-		case Notify::Trade:
-			if (input == K_ENTER)
-			{
-				gsm->SwitchState(game_state, current_state);
-				return true;
-			}
+			static_cast<Inventory *>(to_test)->ChosenButton().Use();
 			break;
+		case Notify::Trade:
 		case Notify::Fight:
-			if (input == KEY_LEFT)
-			{
-				gsm->SwitchState(game_state, Notify::UseOnCurrent);
-				return true;
-			}
-			else if (input == KEY_RIGHT)
-			{
-				gsm->SwitchState(game_state, Notify::UseOnOpponent);
-				return true;
-			}
+			gsm->SwitchState(game_state, current_state);
 			break;
 		default:
 			throw GameException("invalid inventory state");
 	}
-
-	return false;
 }
 
 bool InventoryState::Reacted(int input)
 {
-	if (CustomMenuHandlerReacted(input))
+	graphics::menu_base * menu = static_cast<graphics::menu_base *>(BotWindow());
+	if (StandardMenuHandlerReacted(menu, input))
 		return true;
 
 	switch (input)
@@ -115,3 +88,4 @@ bool InventoryState::Reacted(int input)
 			return IGameState::Reacted(input);
 	}	
 }
+

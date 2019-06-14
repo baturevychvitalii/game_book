@@ -4,7 +4,7 @@
 #include "../utils/graphics/menu.h"
 
 MainMenu::MainMenu(GameStateManager * manager)
-	: IGameState(manager)
+	: IGameState(manager, "MainMenu")
 {
 	auto & menu = AddWindow<graphics::Menu<>>(
 		"main menu",
@@ -73,4 +73,7 @@ bool MainMenu::Reacted(int input)
 
 void MainMenu::GetNotification(Notify notification)
 {
+	if (notification != Notify::Empty)
+		throw std::invalid_argument("main menu shall get only Notify::Empty. \
+							(to keep things consistent)");
 }

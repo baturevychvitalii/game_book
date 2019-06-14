@@ -4,17 +4,19 @@
 #include "items/weapon.h"
 #include "items/fixer.h"
 #include "../game_handler/game_exception.h"
+#include "creature.h"
 
 static const size_t inventory_colomns = 3;
 
-Inventory::Inventory()
-	: graphics::Menu<Item>(nullptr, graphics::max_x, 0, 0, menu_bg_color, menu_active_color, menu_inactive_color, inventory_colomns)
+Inventory::Inventory(Creature * owner)
+	: graphics::Menu<Item>(nullptr, graphics::max_x, 0, 0, menu_bg_color, menu_active_color, menu_inactive_color, inventory_colomns),
+	owner(owner)
 {
 	Commit();
 }
 
-Inventory::Inventory(const xml::Tag & t)
-    : Inventory()
+Inventory::Inventory(const xml::Tag & t, Creature * owner)
+    : Inventory(owner)
 {
     std::string type;
     for (const auto & item : t.GetVector("item"))
@@ -38,7 +40,7 @@ Inventory & Inventory::StealItemFrom(Inventory & other, size_t idx)
 	AddOption(
 		other.ReleaseOption(idx)
 	);
-
+	
 	return *this;
 }
 
@@ -50,6 +52,11 @@ Inventory & Inventory::StealWholeInventory(Inventory & other)
 	}
 	
 	return *this;
+}
+
+Creature * Inventory::GetOwner() const
+{
+	return owner;
 }
 
 xml::Tag Inventory::Serialize() const

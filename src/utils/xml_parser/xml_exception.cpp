@@ -1,8 +1,14 @@
 #include "xml_exception.h"
 #include "tag.h"
+#include "document.h"
 
 xml::XmlException::XmlException(const xml::Tag * t)
-	:message("in tag " + t->Name() + " ")
+	:message("in tag '" + t->Name() + "' ")
+{
+}
+
+xml::XmlException::XmlException(const xml::Document * d)
+	:message("in document '" + d->FileName() + "' ")
 {
 }
 

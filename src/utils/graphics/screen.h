@@ -12,9 +12,11 @@ namespace graphics
 	/**
 	container of windows
 	*/
-	class Screen
+	class Screen : public IChangeable
 	{
 		std::map<std::string, std::unique_ptr<Window>> windows;
+
+		void ApplyChange() override;
 		public:
 			const std::string Name;
 
@@ -29,7 +31,6 @@ namespace graphics
 			Screen & Clear();
 			bool Empty() const;
 			bool HasWindow(const std::string & id);
-			Screen & Commit();
 			void Draw();
 			Screen & Move(short dy, short dx);
 			Screen & Move(graphics::Direction direction, unsigned multiplier);
@@ -41,22 +42,23 @@ namespace graphics
 				if (HasWindow(id))
 					throw GraphicsException("window already exists");
 
-				Win * new_win = new Win(nullptr, width, y, x, bg_color, std::forward<UniqueArgs>(args) ...);
+				Win * new_win = new Win(this, width, y, x, bg_color, std::forward<UniqueArgs>(args) ...);
 				windows.emplace(id, new_win);
 				return *new_win;
 			}
 
-			template <typename Win>
+			template <typename Win = Window>
 			Win & GetWindow(const std::string & id)
 			{
-				Win * result = dynamic_cast<Win *>(& GetWindow(id));
+				if (!HasWindow(id))
+					throw GraphicsException("window with id '" + id + "' doesn't exist");
+
+				Win * result = dynamic_cast<Win *>(windows[id].get());
 				if (!result)
 					throw GraphicsException("GetWindow called with invalid type.");
 
 				return *result;
 			}
-
-			Window & GetWindow(const std::string & id);
 	};
 }
 

@@ -8,3 +8,4 @@ int RandomNumberGenerator::operator()(int from, int to)
         throw std::invalid_argument("from > to");
     return from + (rd() % Distance(from, to));
 }
+

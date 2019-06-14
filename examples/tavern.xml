@@ -6,13 +6,14 @@
     <trader name="aiziken">
         <inventory>
             <item type="weapon" name="ukulele" charges="10" ppd="8" damage="15"/>
-            <item type="food" name="apple of Adam" charges="3" ppd="333" heal="111111"/>
+            <item type="food" name="apple of Adam" fixible="0" charges="3" ppd="333" heal="111111"/>
             <item type="weapon" name="ukulele" charges="10" ppd="10" damage="20"/>
-			<item type="fixer" name="victorinox" charges="2" ppd="100" fix="30"/>
+			<item type="fixer" name="victorinox" fixible="0" charges="2" ppd="100" fix="30"/>
         </inventory>
     </trader>
     <crossroad>
 		<path to="begin.xml">back home</path>
 		<path to="new_york.xml">or to city</path>
+		<path to="binjon">binjon</path>
 	</crossroad>
 </page>

@@ -28,7 +28,7 @@ size_t graphics::StatusBar::MinHeight() const
     return 1;
 }
 
-void graphics::StatusBar::DrawSpecific() const
+void graphics::StatusBar::DrawSpecific()
 {
 	DrawBackground();
 

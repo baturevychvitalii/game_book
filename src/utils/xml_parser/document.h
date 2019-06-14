@@ -19,6 +19,8 @@ namespace xml
             Document(const std::string & filename, const std::string & root);
             Document(const std::string & filename, Tag & root);
             ~Document();
+
+			const std::string & FileName() const;
             void Save(const char * filename = nullptr) const;
             const Tag Root() const;
     };

@@ -5,13 +5,13 @@
 #include "../utils/xml_parser/xml_parser.h"
 
 Page::Page(GameStateManager * gsm)
-    : IGameState(gsm)
+    : IGameState(gsm, "dummy page")
 {
     // no this will wait for notification
 }
 
 Page::Page(const xml::Tag & root, GameStateManager * g)
-    : IGameState(g), filename(root.GetFilename())
+    : IGameState(g, "page(" + root.Prop("type") + ")"), filename(root.GetFilename())
 {
     crossroads.reserve(5);
     for (const xml::Tag & tag : root.Child("crossroad").GetVector("path"))
@@ -77,7 +77,7 @@ void Page::GetNotification(Notify notification)
                 Load();
 				gsm->SendNotification(inventory_state, Notify::New);
             }
-            catch(const std::exception& e)
+            catch(const xml::XmlException & e)
             {
                 gsm->DisplayException(e);
                 gsm->SwitchState(menu_state);
@@ -147,7 +147,7 @@ void Page::ProcessMenuSelection(graphics::menu_base * crossroads_menu)
 		{    
 			gsm->TurnPage(crossroads[crossroads_menu->GetChoice()].first);
 		}
-		catch (std::exception & e)
+		catch (xml::XmlException & e)
 		{
 			gsm->DisplayException(e);
 		}

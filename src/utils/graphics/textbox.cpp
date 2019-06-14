@@ -29,7 +29,7 @@ void graphics::Textbox::DrawLines() const
 	}
 }
 
-void graphics::Textbox::DrawSpecific() const
+void graphics::Textbox::DrawSpecific()
 {
 	DrawBackground();
 	DrawLines();

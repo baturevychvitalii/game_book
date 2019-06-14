@@ -2,16 +2,15 @@
 #include "../game_handler/colors.h"
 #include "../utils/graphics/status_bar.h"
 
-const size_t Creature::DefaultDamage = 10;
-
 Creature::Creature(
 	const std::string & nome,
 	size_t heal,
 	size_t max_heal,
+	size_t damage,
 	size_t cash,
 	Inventory * inv
 )
-	: name(nome), health(heal), max_health(max_heal), cash(cash),
+	: name(nome), health(heal), max_health(max_heal), default_damage(damage), cash(cash),
 	inventory(inv),
 	status(new graphics::Group<graphics::Textbox>(nullptr, graphics::max_x, 0, 0, white_on_magneta, 2, 0, 1))
 {
@@ -28,29 +27,31 @@ Creature::Creature(
 }
 
 Creature::Creature()
-	: Creature("Lorry", 77, 111, 777, new Inventory())
+	: Creature("Lorry", 77, 111, 2, 777, new Inventory(this))
 {
 }
 
 Creature::Creature(const xml::Tag & tag)
 	: Creature(
 		tag.Prop("name"),
-		std::stoi(tag.Child("health").Text()),
-		std::stoi(tag.Child("max_health").Text()),
-		std::stoi(tag.Child("cash").Text()),
-		new Inventory(tag.Child("inventory"))
+		std::stoi(tag.Prop("health")),
+		std::stoi(tag.Prop("max_health")),
+		std::stoi(tag.Prop("damage")),
+		std::stoi(tag.Prop("cash")),
+		new Inventory(tag.Child("inventory"), this)
 	)
 {
 }
 
 xml::Tag Creature::Serialize() const
 {
-    auto tag = xml::Tag("player").AddProp("name", name);
-    tag.AddChild("health").AddText(std::to_string(health));
-    tag.AddChild("max_health").AddText(std::to_string(max_health));
-    tag.AddChild("cash").AddText(std::to_string(cash));
-    tag.AddChild(inventory->Serialize());
-    return tag;
+    auto tag = xml::Tag("player").AddProp("name", name).
+		AddProp("health", health).
+		AddProp("max_health", max_health).
+		AddProp("damage", default_damage).
+		AddProp("cash", cash);
+	tag.AddChild(inventory->Serialize());
+	return tag;
 }
 
 Inventory & Creature::GetInventory()
@@ -66,6 +67,11 @@ graphics::Group<graphics::Textbox> & Creature::GetStatusBar()
 size_t Creature::Budget() const
 {
 	return cash;
+}
+
+size_t Creature::DefaultDamage() const
+{
+	return default_damage;
 }
 
 bool Creature::ChangeBudget(int value)

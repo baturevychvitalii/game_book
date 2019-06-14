@@ -9,7 +9,7 @@ is supposed to heal the creature, on which is being used
 class Food : public Item
 {
     int heal_value;
-    size_t Use(size_t charges, Creature * creature) override;
+	size_t Use(size_t charges = 1, Creature *potential_opponent = nullptr) override;
     public:
 		/**
 		constructs item from xml tag

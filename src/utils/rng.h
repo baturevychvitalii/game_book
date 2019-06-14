@@ -13,9 +13,10 @@ class RandomNumberGenerator
     public:
         RandomNumberGenerator() = default;
         RandomNumberGenerator(const RandomNumberGenerator & other) = delete;
-		/**
-		@return random value between from and to
-		*/
+
+		/*
+		 * @return random value in range [from; to)
+		 */
         int operator() (int from , int to);
 };
 

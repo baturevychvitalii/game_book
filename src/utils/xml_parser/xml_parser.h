@@ -8,31 +8,30 @@ namespace xml
 	/**
 	initializes parser, and cleans up mess after libxml2 is no longer needed
 	*/
-    class Parser final
-    {
-        public:
-            Parser();
-            ~Parser();
+	struct Parser final
+	{
+		Parser();
+		~Parser();
 
-			/**
-			Reads xml document from a file
-			*/
-            static Document GetDoc(const std::string & name);
+		/**
+		Reads xml document from a file
+		*/
+		static Document GetDoc(const std::string & name);
 
-			/**
-			creates xml document
-			@param name name of a document
-			@param root name of a root element of a document
-			*/
-            static Document NewDoc(const std::string & name, const std::string & root);
+		/**
+		creates xml document
+		@param name name of a document
+		@param root name of a root element of a document
+		*/
+		static Document NewDoc(const std::string & name, const std::string & root);
 
-			/**
-			creates xml document
-			@param name name of a document
-			@param root root tag of a document
-			*/
-            static Document NewDoc(const std::string & name, Tag & root);
-    };
+		/**
+		creates xml document
+		@param name name of a document
+		@param root root tag of a document
+		*/
+		static Document NewDoc(const std::string & name, Tag & root);
+	};
 }
 
 #endif

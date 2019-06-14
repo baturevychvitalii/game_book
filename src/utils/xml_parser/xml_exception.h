@@ -6,12 +6,15 @@
 
 namespace xml
 {
-	class Tag;
+	struct Tag;
+	class Document;
+
     class XmlException : public std::exception
     {
         std::string message;
         public:
 			XmlException(const xml::Tag * t);
+			XmlException(const xml::Document * d);
 			XmlException & NoProp(const std::string & prop_name);
 			XmlException & NoChild(const std::string & child_name);
 			XmlException & Messg(const std::string & msg);

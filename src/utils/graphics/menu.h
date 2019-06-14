@@ -31,21 +31,37 @@ namespace graphics
 			buttons.Move(dy,dx);
 		}
 
+		void SelectClosest()
+		{
+			if (Empty())
+			{
+				current = 0;
+			}
+			else
+			{
+				if (current == Size())
+					current--;
+
+				buttons[current].Select();
+			}
+		}
+
+
 		protected:
-		void ApplyChange() override
-		{
-			buttons.Commit();
-			buttons.MoveTo(act_y + Textbox::MinHeight(), act_x + 1);
+			void ApplyChange() override
+			{
+				buttons.Commit();
+				buttons.MoveTo(act_y + Textbox::MinHeight(), act_x + 1);
 
-			if (act_h < MinHeight())
-				SetHeight(MinHeight());
-		}
+				if (act_h < MinHeight())
+					SetHeight(MinHeight());
+			}
 
-		void DrawSpecific() const override
-		{
-			Textbox::DrawSpecific();
-			buttons.Draw();
-		}
+			void DrawSpecific() override
+			{
+				Textbox::DrawSpecific();
+				buttons.Draw();
+			}
 
 		public:
 			Menu(
@@ -104,11 +120,8 @@ namespace graphics
 				buttons.Erase(idx);
 
 				// if deleting currently selected element
-				if (idx == current && !buttons.Empty())
-				{
-					current = 0;
-					buttons[current].Select();
-				}
+				if (idx == current)
+					SelectClosest();
 
 				return *this;
 			}
@@ -121,11 +134,9 @@ namespace graphics
 				Butt & result = buttons.Release(idx);
 				result.Unselect();
 
-				if (idx == current && !buttons.Empty())
-				{
-					current = 0;
-					buttons[current].Select();
-				}
+				// if deleting currently selected element
+				if (idx == current)
+					SelectClosest();
 
 				return result;
 			}
@@ -160,7 +171,7 @@ namespace graphics
 			Menu & UpperSelect(bool visible_check = true) override
 			{
 				if (!buttons.Empty() &&
-					current - buttons.ColomnsCount() >= 0 &&
+					current - buttons.ColomnsCount() < Size() &&
 					(!visible_check || buttons[current - buttons.ColomnsCount()].Visible()))
 						Choose(current - buttons.ColomnsCount());
 
@@ -180,7 +191,8 @@ namespace graphics
 
 			Menu & LeftSelect(bool visible_check = true) override
 			{
-				if (!buttons.Empty() && current % buttons.ColomnsCount() > 0 &&
+				if (!buttons.Empty() &&
+					current % buttons.ColomnsCount() > 0 &&
 					(!visible_check || buttons[current - 1].Visible()))
 						Choose(current - 1);
 
@@ -189,7 +201,8 @@ namespace graphics
 
 			Menu & LowerSelect(bool visible_check = true) override
 			{
-				if (!buttons.Empty() && current + buttons.ColomnsCount() < buttons.Size() &&
+				if (!buttons.Empty() &&
+					current + buttons.ColomnsCount() < buttons.Size() &&
 					(!visible_check || buttons[current + buttons.ColomnsCount()].Visible()))
 						Choose(current + buttons.ColomnsCount());
 

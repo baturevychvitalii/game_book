@@ -1,16 +1,9 @@
 #include "screen.h"
 
 graphics::Screen::Screen(std::string name)
-    : Name(std::move(name))
+    : 	IChangeable(nullptr),
+		Name(std::move(name))
 {
-}
-
-graphics::Screen & graphics::Screen::Commit()
-{
-    for (auto & id_win : windows)
-        id_win.second->Commit();
-    
-    return *this;
 }
 
 bool graphics::Screen::Empty() const
@@ -23,9 +16,14 @@ bool graphics::Screen::HasWindow(const std::string & id)
     return windows.find(id) != windows.end();
 }
 
+void graphics::Screen::ApplyChange()
+{
+	for (auto & id_win : windows)
+		id_win.second->Commit();
+}
+
 graphics::Screen & graphics::Screen::Move(short dy, short dx)
 {
-    Commit();
     for (auto & id_win : windows)
         id_win.second->Move(dy,dx);
     
@@ -41,7 +39,7 @@ graphics::Screen & graphics::Screen::Move(graphics::Direction direction, unsigne
 
 void graphics::Screen::Draw()
 {
-    Commit();
+	Commit();
 
     clear();
     for (auto & id_win : windows)
@@ -58,11 +56,10 @@ graphics::Screen & graphics::Screen::Clear()
 
 graphics::Window & graphics::Screen::AddWindow(const std::string & id, graphics::Window & new_win)
 {
-	if (new_win.HasParent())
-		throw GraphicsException("trying to add window, which has a parent");
-
 	if (HasWindow(id))
 		throw GraphicsException("window already exists");
+
+	new_win.SetParent(this);
 
 	windows.emplace(id, &new_win);
 	return *(windows[id]);
@@ -84,13 +81,7 @@ graphics::Window & graphics::Screen::ReleaseWindow(const std::string & id)
 
 	Window * released = windows[id].release();
 	windows.erase(id);
+	released->SetParent(nullptr);
 	return *released;
 }
 
-graphics::Window & graphics::Screen::GetWindow(const std::string & id)
-{
-    if (!HasWindow(id))
-        throw std::invalid_argument("id");
-
-    return *(windows[id]);
-}

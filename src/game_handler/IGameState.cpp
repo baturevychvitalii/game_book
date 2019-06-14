@@ -4,12 +4,8 @@
 
 static const unsigned scroll_speed = 1; 
 
-IGameState::IGameState(GameStateManager * manager)
-    : Screen("detetched"), top(nullptr), bot(nullptr), gsm(manager)
-{
-}
-
-void IGameState::GetNotification(Notify notification)
+IGameState::IGameState(GameStateManager * manager, const std::string & name_scr)
+    : Screen("game state " + name_scr + " screen"), top(nullptr), bot(nullptr), gsm(manager)
 {
 }
 
@@ -57,8 +53,7 @@ bool IGameState::StandardMenuHandlerReacted(graphics::menu_base * to_test, int i
 	// standard handler doesn't know what to do with this menu, may be
 	// it'is normal, who knows better than derived class itself
 	if (to_test->Size() == 0)
-	return false;
-
+		return false;
 	switch (input)
 	{
 		case KEY_UP:

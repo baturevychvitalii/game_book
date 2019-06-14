@@ -10,7 +10,6 @@ int main(int argc, char * argv[])
 			return 1;
 	}
 
-	std::cout << "i am the darkest night" << std::endl;
 	xml::Parser xmp;
 	graphics::Window::visible_consiederation = 30;
 	GameStateManager gsm(argv[1]);

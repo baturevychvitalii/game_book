@@ -6,7 +6,7 @@
 
 game_states::Trade::Trade(const xml::Tag & root, GameStateManager * manager)
     : Page(root, manager),
-	trader_inventory(new Inventory(root.Child("trader").Child("inventory"))),
+	trader_inventory(new Inventory(root.Child("trader").Child("inventory"), nullptr)),
 	player_inventory(&(gsm->player->GetInventory())),
 	crossroads_menu(static_cast<graphics::menu_base *>(BotWindow())),
 	current_menu(trader_inventory)
@@ -92,7 +92,11 @@ void game_states::Trade::ProcessMenuSelection(graphics::menu_base * menu)
 		size_t choice = menu->GetChoice();
 		size_t price = (*trader_inventory)[choice].Price();
 		if ( gsm->player->ChangeBudget(-1 * static_cast<int>(price)))
+		{
 			player_inventory->StealItemFrom(*trader_inventory, choice);
+			trader_inventory->Commit();
+			BotWindow()->MoveTo(trader_inventory->LowestPoint(), BotWindow()->LeftPoint());
+		}
 		else
 			gsm->PopUp("no money");
 	}

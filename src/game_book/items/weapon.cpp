@@ -23,13 +23,15 @@ xml::Tag Weapon::Serialize() const
 	return Item::Serialize().AddProp("damage", damage);
 }
 
-size_t Weapon::Use(size_t charges, Creature * creature)
+size_t Weapon::Use(size_t charges, Creature * potential_opponent)
 {
-	size_t to_use_charges = Item::Use(charges, creature);
-	if (to_use_charges == 0)
-		creature->ChangeHealth(-1 * Creature::DefaultDamage);
-	else
-		creature->ChangeHealth(-1 * to_use_charges * damage);
+	// must be used on opponent. If no opponent, use on owner))
+	if (!potential_opponent)
+		potential_opponent = GetOwner();
+
+	size_t to_use_charges = Item::Use(charges);
+	potential_opponent->ChangeHealth(-1 * (to_use_charges * damage + GetOwner()->DefaultDamage()));
 		
 	return to_use_charges;
 }
+
