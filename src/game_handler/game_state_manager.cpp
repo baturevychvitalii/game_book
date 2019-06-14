@@ -48,7 +48,7 @@ GameStateManager::GameStateManager(char * folder_name)
         text.AppendText("Controls");
         text.AppendText("press any key to continue");
         text.NewLine();
-        text.NewLine("   ^ v      switch button (menu)");
+        text.NewLine("  arrows    switch button (menu)");
 		text.NewLine("pgup pgdown scroll window  (all)");
         text.NewLine("   j k      scroll window  (all)");
         text.NewLine("  Enter     select          all)");

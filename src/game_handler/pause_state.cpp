@@ -50,12 +50,18 @@ void PauseState::ProcessMenuSelection(graphics::menu_base * to_test)
 
 bool PauseState::Reacted(int input)
 {
-    graphics::menu_base * menu = static_cast<graphics::menu_base *>(BotWindow());
+	graphics::menu_base * menu = static_cast<graphics::menu_base *>(BotWindow());
 
-    if (StandardMenuHandlerReacted(menu, input))
-        return true;
+	if (StandardMenuHandlerReacted(menu, input))
+		return true;
 
-    return IGameState::Reacted(input);
+	if (input == 'P' || input == 'p')
+	{
+		gsm->SwitchState(game_state, Notify::Continue);
+		return true;
+	}
+
+	return IGameState::Reacted(input);
 }
 
 void PauseState::GetNotification(Notify notification)

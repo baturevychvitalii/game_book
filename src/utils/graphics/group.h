@@ -42,7 +42,7 @@ namespace graphics
 
             // now we have maximum window height
             // make them all have same height and move them to correct positions
-            short startx = act_x, starty = act_y;
+            short startx, starty = act_y;
             for (size_t r = 0; r < normal_rows; r++, starty += window_height + y_indent)
             {
                 startx = act_x;

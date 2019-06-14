@@ -19,9 +19,6 @@ MainMenu::MainMenu(GameStateManager * manager)
 
 
 	menu.AppendText("Story of Lory");
-	menu.NewLine();
-	menu.AppendText("^ or v to select different options").
-	AppendText("pgup or pgdn to scroll");
 
 	menu.AddOption().AppendText("New");
 	menu.AddOption().AppendText("Load");

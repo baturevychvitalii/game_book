@@ -58,6 +58,8 @@ void InventoryState::ProcessMenuSelection(graphics::menu_base * to_test)
 			static_cast<Inventory *>(to_test)->ChosenButton().Use();
 			break;
 		case Notify::Trade:
+			gsm->SendNotification(game_state, current_state);
+			break;
 		case Notify::Fight:
 			gsm->SwitchState(game_state, current_state);
 			break;

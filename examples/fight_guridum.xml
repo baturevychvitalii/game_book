@@ -11,6 +11,16 @@
     </enemy>
     <crossroad>
 		<path to="tavern.xml">let's go back to tavern and buy what we couldn't afford</path>
+		<path to="tavern.xml">let's go back to tavern and buy what we couldn't afford</path>
+		<path to="tavern.xml">let's go back to tavern and buy what we couldn't afford</path>
+		<path to="tavern.xml">let's go back to tavern and buy what we couldn't afford</path>
+		<path to="tavern.xml">let's go back to tavern and buy what we couldn't afford</path>
+		<path to="tavern.xml">let's go back to tavern and buy what we couldn't afford</path>
+		<path to="last.xml">or maybe to an end</path>
+		<path to="last.xml">or maybe to an end</path>
+		<path to="last.xml">or maybe to an end</path>
+		<path to="last.xml">or maybe to an end</path>
+		<path to="last.xml">or maybe to an end</path>
 		<path to="last.xml">or maybe to an end</path>
     </crossroad>
 </page>

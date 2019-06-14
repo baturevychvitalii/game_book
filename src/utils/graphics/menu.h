@@ -201,10 +201,14 @@ namespace graphics
 
 			Menu & LowerSelect(bool visible_check = true) override
 			{
-				if (!buttons.Empty() &&
-					current + buttons.ColomnsCount() < buttons.Size() &&
-					(!visible_check || buttons[current + buttons.ColomnsCount()].Visible()))
-						Choose(current + buttons.ColomnsCount());
+				if (!buttons.Empty())
+				{
+					if (current + buttons.ColomnsCount() < buttons.Size() &&
+						(!visible_check || buttons[current + buttons.ColomnsCount()].Visible()))
+							Choose(current + buttons.ColomnsCount());
+					else if (!visible_check || buttons[buttons.Size() - 1].Visible())
+						Choose(buttons.Size() - 1);
+				}
 
 				return *this;
 			}

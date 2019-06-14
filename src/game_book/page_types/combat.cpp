@@ -45,6 +45,7 @@ game_states::Combat::Combat(const xml::Tag & root, GameStateManager * manager)
 	tip.NewLine(current_attacker == &enemy ? "AI turn" : "your turn");
 	tip.Commit();
 	tip.MoveToTouch(graphics::Direction::Down);
+	tip.SetSticky();
 	Commit();
 }
 
