@@ -55,13 +55,21 @@ bool PauseState::Reacted(int input)
 	if (StandardMenuHandlerReacted(menu, input))
 		return true;
 
-	if (input == 'P' || input == 'p')
+	switch (input)
 	{
-		gsm->SwitchState(game_state, Notify::Continue);
-		return true;
+		case 'p':
+		case 'P':
+			gsm->SwitchState(game_state, Notify::Continue);
+			break;
+		case 'q':
+		case 'Q':
+			gsm->SwitchState(menu_state);
+			break;
+		default:
+			return IGameState::Reacted(input);
 	}
 
-	return IGameState::Reacted(input);
+	return true;
 }
 
 void PauseState::GetNotification(Notify notification)

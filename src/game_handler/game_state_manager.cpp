@@ -65,7 +65,7 @@ GameStateManager::GameStateManager(char * folder_name)
 		AppendText("press LEFT_ARROW to use item on player").
 		AppendText("press RIGHT_ARROW to use on opponent.");
 		text.Commit();
-		text.SetHeight(graphics::max_y);
+		text.ProlongueToBottom();
     }
 
 	// about
@@ -160,12 +160,18 @@ GameStateManager::~GameStateManager()
 
 void GameStateManager::SwitchState(size_t state_code, Notify notification)
 {
+	if (state_code >= states.size())
+		throw GameException("wrong state code");
+
     current_state = state_code;
     states[current_state]->GetNotification(notification);
 }
 
 void GameStateManager::SendNotification(size_t state_code, Notify notification)
 {
+	if (state_code >= states.size())
+		throw GameException("wrong state code");
+
 	states[state_code]->GetNotification(notification);
 }
 

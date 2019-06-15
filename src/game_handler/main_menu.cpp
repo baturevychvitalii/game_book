@@ -64,6 +64,11 @@ bool MainMenu::Reacted(int input)
 
 	if (StandardMenuHandlerReacted(menu, input))
 		return true;
+	else if (input == 'q' || input == 'Q')
+	{
+		gsm->Stop();
+		return true;
+	}
 
 	return IGameState::Reacted(input);
 }
