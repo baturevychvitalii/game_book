@@ -1,11 +1,13 @@
 
 0 CONTENTS:
+
 	1 Description
 	2 Installation
 		2.1 Dependencies
 		2.2 Installation
 
 1 DESCRIPTION
+
 	This application is my university project in C++ (C++14). The goal of the project was to
 	make a gamebook engine in C++.
 
@@ -33,6 +35,7 @@
 
 
 2 INSTALLATION
+
 	1). Dependencies:
 		ncurses library (https://invisible-island.net/ncurses/)
 		libxml2 library (http://www.xmlsoft.org/)
