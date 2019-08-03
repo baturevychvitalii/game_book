@@ -24,9 +24,9 @@
 	was written in about 5 minutes. No coding is needed, Just write couple XMLs and
 	interlink them between each other as in the example.
 
-	I've put more effort and time into wrapping ncurses with C++ object features and levels
+	More effort and time was put into wrapping ncurses with C++ object features and levels
 	of abstraction, so the class hierarchy of graphics part (see src/graphics) looks more
-	or less the way I wanted it to look like.
+	or less the way it has to.
 	Graphics part provided me with high level interface to several types of windows,
 	which made it possible to say: "hey, create menu at X,Y, it'll be white with pink buttons,
 	and choices will be A,B,C". This would create menu, give me handlers to move it around the
@@ -40,7 +40,7 @@
 		ncurses library (https://invisible-island.net/ncurses/)
 		libxml2 library (http://www.xmlsoft.org/)
 		libxml2 and ncurses libraries are usually preinstalled on major linux distributions so no worries.
-		C++ compiler, with support of c++14 (I used gcc)
+		C++ compiler, with support of c++14 (gcc 9.1 was used)
 		Cmake
 
 	2). Installation:
